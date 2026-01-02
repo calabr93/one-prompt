@@ -62,23 +62,23 @@ When working on something important, you want the best possible answers. Often t
 
 ## Supported AI Platforms
 
-### ✅ Working
-- **Microsoft Copilot** - Fully functional
-- **DeepSeek** - Fully functional
-- **Grok** (X.AI) - Fully functional
-- **Perplexity** - Functional (limited automation)
+### Currently Working (with limitations)
+- ChatGPT (OpenAI)
+- Claude (Anthropic)
+- Gemini (Google)
+- Microsoft Copilot
+- DeepSeek
+- Grok (X.AI)
+- Perplexity
 
-### 🔄 In Development
-- ChatGPT (OpenAI) - Login automation in progress
-- Claude (Anthropic) - Login automation in progress
-- Gemini (Google) - Login automation in progress
-
-### 📋 Planned
+### Planned
 - Mistral AI
 - Phind
 - Replit AI
 - Bolt.new
 - Lovable.dev
+
+**Note**: Prompt injection and automation features are experimental and may not work consistently across all platforms.
 
 ## Installation
 
