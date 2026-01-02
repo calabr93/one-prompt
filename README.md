@@ -108,7 +108,9 @@ npm run build:mac
 npm run build:win
 ```
 
-## Releases
+## Releases & Updates
+
+### Creating a New Release (for developers)
 
 Releases are created automatically via GitHub Actions when you push a new tag:
 
@@ -119,6 +121,19 @@ git push origin v1.0.0
 ```
 
 GitHub Actions will automatically compile the application for macOS and Windows and create a release with the binaries.
+
+### How Updates Work (for users)
+
+OnePrompt **automatically checks for updates** when you open the app:
+
+1. **On app launch**, OnePrompt contacts the update server
+2. If a **new version is available**, you'll see a notification
+3. **Click to download** and the update installs automatically
+4. **Restart the app** to use the new version
+
+**No manual downloads needed!** The app keeps itself up-to-date.
+
+**Privacy note**: Update checks are anonymous (see [Privacy & Data Collection](#-privacy--data-collection) section).
 
 ## How It Works
 
@@ -201,6 +216,24 @@ Want **zero data collection**? You have options:
 MIT
 
 **Disclaimer**: By using this software, you agree to be solely responsible for compliance with the Terms of Service of the AI platforms you use. The author assumes no responsibility for any bans, limitations, or other consequences arising from the use of this application.
+
+## Bug Reports & Feature Requests
+
+Found a bug? Have an idea for a new feature? I'd love to hear from you!
+
+**Please use GitHub Issues:**
+
+- 🐛 **Report a bug**: [Create a bug report](https://github.com/calabr93/one-prompt/issues/new?labels=bug&template=bug_report.md)
+- 💡 **Request a feature**: [Create a feature request](https://github.com/calabr93/one-prompt/issues/new?labels=enhancement&template=feature_request.md)
+- 💬 **General discussion**: [Open an issue](https://github.com/calabr93/one-prompt/issues/new)
+
+**Before creating an issue**, please:
+1. Search existing issues to avoid duplicates
+2. Include your OS and OnePrompt version
+3. For bugs: Steps to reproduce, expected vs actual behavior
+4. For features: Explain the use case and why it would be useful
+
+All feedback is appreciated! 🙏
 
 ## Support
 
