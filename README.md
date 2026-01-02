@@ -4,6 +4,8 @@
 ![Educational](https://img.shields.io/badge/purpose-educational-blue?style=for-the-badge)
 ![Personal Use](https://img.shields.io/badge/use-personal%20only-red?style=for-the-badge)
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/M4M41RI9V7)
+
 **An Electron desktop app to compare responses from multiple AI platforms simultaneously.**
 
 Tired of copy-pasting the same prompt into ChatGPT, Claude, Gemini, and Perplexity to compare responses? OnePrompt solves this: write your prompt once and automatically send it to all the AIs you want, getting multiple responses to compare side-by-side.
