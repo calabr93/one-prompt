@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
@@ -220,6 +220,17 @@ app.whenReady().then(() => {
 
   ipcMain.handle('get-webview-preload-path', () => {
     return path.join(__dirname, 'webview-preload.js');
+  });
+
+  // Open external URL in default browser
+  ipcMain.handle('open-external', async (event, url) => {
+    try {
+      await shell.openExternal(url);
+      return { success: true };
+    } catch (error) {
+      console.error('Error opening external URL:', error);
+      return { success: false, error: error.message };
+    }
   });
 
   createMainWindow();

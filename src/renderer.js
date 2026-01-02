@@ -18,6 +18,7 @@ const translations = {
     'session.default': 'Sessione',
     'sidebar.addService': 'Aggiungi servizio',
     'sidebar.newSession': 'Nuova sessione',
+    'sidebar.reportBug': 'Segnala Bug o Richiedi Funzionalità',
     'sidebar.settings': 'Impostazioni',
     'prompt.placeholder': 'Inserisci il tuo prompt qui...',
     'send': 'Invia',
@@ -32,6 +33,7 @@ const translations = {
     'session.default': 'Session',
     'sidebar.addService': 'Add service',
     'sidebar.newSession': 'New session',
+    'sidebar.reportBug': 'Report Bug or Request Feature',
     'sidebar.settings': 'Settings',
     'prompt.placeholder': 'Enter your prompt here...',
     'send': 'Send',
@@ -62,6 +64,9 @@ function updateUILanguage() {
 
   const newSessionBtn = document.getElementById('newSessionBtn');
   if (newSessionBtn) newSessionBtn.title = t('sidebar.newSession');
+
+  const reportBugBtn = document.getElementById('reportBugBtn');
+  if (reportBugBtn) reportBugBtn.title = t('sidebar.reportBug');
 
   const settingsBtn = document.getElementById('settingsBtn');
   if (settingsBtn) settingsBtn.title = t('sidebar.settings');
@@ -163,6 +168,7 @@ const settingsBtn = document.getElementById('settingsBtn');
 const settingsModal = document.getElementById('settingsModal');
 const closeSettingsModal = document.getElementById('closeSettingsModal');
 const languageSelect = document.getElementById('languageSelect');
+const reportBugBtn = document.getElementById('reportBugBtn');
 
 // Initialize app
 async function init() {
@@ -910,6 +916,11 @@ function setupEventListeners() {
     currentLanguage = e.target.value;
     localStorage.setItem('oneprompt-language', currentLanguage);
     updateUILanguage();
+  });
+
+  // Report Bug button - open GitHub Issues in external browser
+  reportBugBtn.addEventListener('click', () => {
+    window.electronAPI.openExternal('https://github.com/calabr93/one-prompt/issues/new/choose');
   });
 }
 

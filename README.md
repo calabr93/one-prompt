@@ -126,12 +126,14 @@ GitHub Actions will automatically compile the application for macOS and Windows 
 
 OnePrompt **automatically checks for updates** when you open the app:
 
-1. **On app launch**, OnePrompt contacts the update server
-2. If a **new version is available**, you'll see a notification
-3. **Click to download** and the update installs automatically
-4. **Restart the app** to use the new version
+1. **On app launch**, OnePrompt silently contacts the update server (takes ~1 second)
+2. If a **new version is available**, a system notification appears
+3. **Click "Install"** in the notification to download the update in the background
+4. When download completes, **click "Restart"** to install and relaunch the app
 
 **No manual downloads needed!** The app keeps itself up-to-date.
+
+> **Note**: Currently, update notifications appear in the console (for v0.1.0). A visual in-app notification UI will be added in a future release.
 
 **Privacy note**: Update checks are anonymous (see [Privacy & Data Collection](#-privacy--data-collection) section).
 
