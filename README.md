@@ -32,6 +32,12 @@ Quando lavori su qualcosa di importante, vuoi le migliori risposte possibili. Sp
 
 ## Installazione
 
+### Download Binari (Consigliato)
+
+Scarica l'ultima versione dalla [pagina Releases](https://github.com/calabr93/one-prompt/releases):
+- **macOS**: Scarica il file `.dmg` o `.zip`
+- **Windows**: Scarica il file `.exe`
+
 ### Sviluppo
 
 ```bash
@@ -51,6 +57,49 @@ npm run build:mac
 # Build per Windows
 npm run build:win
 ```
+
+## Release e Statistiche Download
+
+### Creare una Nuova Release
+
+Le release vengono create automaticamente tramite GitHub Actions quando si pusha un nuovo tag:
+
+```bash
+# Crea e pusha un tag di versione
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+GitHub Actions compilerà automaticamente l'applicazione per macOS e Windows e creerà una release con i binari.
+
+### Visualizzare le Statistiche Download
+
+Puoi consultare le statistiche di download in due modi:
+
+**1. Script locale (consigliato)**
+
+```bash
+# Statistiche di tutte le release
+node scripts/download-stats.js
+
+# Statistiche di una release specifica
+node scripts/download-stats.js --release v1.0.0
+```
+
+**2. GitHub API manualmente**
+
+```bash
+# Tutte le release
+curl https://api.github.com/repos/calabr93/one-prompt/releases
+
+# Release specifica
+curl https://api.github.com/repos/calabr93/one-prompt/releases/tags/v1.0.0
+```
+
+Le statistiche mostrano:
+- Numero di download per ogni file (DMG, ZIP, EXE)
+- Download totali per release
+- Download totali del progetto
 
 ## Come Funziona
 
