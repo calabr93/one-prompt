@@ -58,9 +58,7 @@ npm run build:mac
 npm run build:win
 ```
 
-## Releases and Download Statistics
-
-### Creating a New Release
+## Releases
 
 Releases are created automatically via GitHub Actions when you push a new tag:
 
@@ -71,35 +69,6 @@ git push origin v1.0.0
 ```
 
 GitHub Actions will automatically compile the application for macOS and Windows and create a release with the binaries.
-
-### View Download Statistics
-
-You can check download statistics in two ways:
-
-**1. Local script (recommended)**
-
-```bash
-# Statistics for all releases
-node scripts/download-stats.js
-
-# Statistics for a specific release
-node scripts/download-stats.js --release v1.0.0
-```
-
-**2. GitHub API manually**
-
-```bash
-# All releases
-curl https://api.github.com/repos/calabr93/one-prompt/releases
-
-# Specific release
-curl https://api.github.com/repos/calabr93/one-prompt/releases/tags/v1.0.0
-```
-
-The statistics show:
-- Number of downloads for each file (DMG, ZIP, EXE)
-- Total downloads per release
-- Total project downloads
 
 ## How It Works
 
