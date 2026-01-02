@@ -11,10 +11,9 @@ autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
 
 // Set custom update server (Cloudflare Worker)
-// IMPORTANT: Replace this URL after deploying the Cloudflare Worker
 autoUpdater.setFeedURL({
   provider: 'generic',
-  url: 'https://updates.oneprompt.dev/latest'
+  url: 'https://tiny-mouse-8a82.old-night-7cdb.workers.dev/latest'
 });
 
 // Auto-update event handlers

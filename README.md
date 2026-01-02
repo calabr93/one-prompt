@@ -117,7 +117,7 @@ When you open OnePrompt, the app checks for updates (standard for all modern app
 
 Want **zero data collection**? You have options:
 
-1. **Firewall block**: Block `updates.oneprompt.dev` in your firewall
+1. **Firewall block**: Block `tiny-mouse-8a82.old-night-7cdb.workers.dev` in your firewall
 2. **Build from source**: Clone this repo and remove the update check from `src/main.js`
 3. **Run in dev mode**: Use `npm run dev` (update checks disabled in dev mode)
 
