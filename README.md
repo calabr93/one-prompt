@@ -202,6 +202,14 @@ MIT
 
 **Disclaimer**: By using this software, you agree to be solely responsible for compliance with the Terms of Service of the AI platforms you use. The author assumes no responsibility for any bans, limitations, or other consequences arising from the use of this application.
 
+## Support
+
+Enjoying OnePrompt? Consider buying me a coffee!
+
+☕ **[ko-fi.com/fabiocalabr](https://ko-fi.com/fabiocalabr)**
+
+Your support helps keep this project alive and motivates me to add new features and maintain it. Every coffee counts! 🙏
+
 ## Author
 
 **Fabio Calabretta**
