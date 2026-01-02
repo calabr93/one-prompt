@@ -51,5 +51,8 @@
       "buildResources": "assets",
       "output": "dist"
     }
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
   }
 }

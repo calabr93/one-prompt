@@ -1,8 +1,48 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
+const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
 
 let mainWindow;
+
+// Configure auto-updater
+// This will be used by our Cloudflare Worker to log anonymous update checks
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
+
+// Set custom update server (Cloudflare Worker)
+// IMPORTANT: Replace this URL after deploying the Cloudflare Worker
+autoUpdater.setFeedURL({
+  provider: 'generic',
+  url: 'https://updates.oneprompt.dev/latest'
+});
+
+// Auto-update event handlers
+autoUpdater.on('update-available', (info) => {
+  console.log('Update available:', info.version);
+  if (mainWindow) {
+    mainWindow.webContents.send('update-available', info);
+  }
+});
+
+autoUpdater.on('update-not-available', () => {
+  console.log('App is up to date');
+});
+
+autoUpdater.on('error', (err) => {
+  console.error('Auto-updater error:', err);
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+  console.log(`Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}%`);
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+  console.log('Update downloaded:', info.version);
+  if (mainWindow) {
+    mainWindow.webContents.send('update-downloaded', info);
+  }
+});
 
 // Configurazione delle AI supportate
 const AI_CONFIGS = {
@@ -144,6 +184,17 @@ app.whenReady().then(() => {
   ipcMain.handle('get-ai-configs', () => {
     return AI_CONFIGS;
   });
+
+  // Check for updates on app start (anonymous logging for usage statistics)
+  // This checks our Cloudflare Worker which logs: timestamp, version, platform
+  // See README.md Privacy section for details
+  if (!process.argv.includes('--dev')) {
+    setTimeout(() => {
+      autoUpdater.checkForUpdates().catch(err => {
+        console.log('Update check failed (this is normal during development):', err.message);
+      });
+    }, 3000); // Wait 3 seconds after app starts
+  }
 
   ipcMain.handle('get-injection-rules', () => {
     const rulesPath = path.join(__dirname, 'injection-rules.json');

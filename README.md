@@ -83,7 +83,52 @@ OnePrompt uses **Electron webviews** to embed various AI platforms directly in t
 - ✅ **No additional costs**: No paid API keys needed
 - ✅ **Full access**: All features of the web platforms
 - ✅ **Persistent sessions**: Your logins stay active between sessions
-- ✅ **Privacy**: No data passes through third-party servers
+- ✅ **Privacy**: Your prompts and AI responses never leave your device
+
+## 🔒 Privacy & Data Collection
+
+OnePrompt collects **minimal, anonymous usage statistics** to understand how many people actively use the app.
+
+### What We Collect
+
+**Update Checks** (automatic, on app launch)
+- **When**: Every time you open OnePrompt (standard practice for all desktop apps)
+- **Data collected**:
+  - App version (e.g., "1.0.0")
+  - Operating system (e.g., "macOS", "Windows", "Linux")
+  - Timestamp
+- **Why**: To estimate Daily Active Users (DAU) and prioritize platform support
+- **What we DON'T collect**:
+  - ❌ IP addresses or location data
+  - ❌ User identifiers or personal information
+  - ❌ Your prompts or AI responses
+  - ❌ Browsing history or usage patterns
+  - ❌ Any data from your AI accounts
+
+### How It Works
+
+When you open OnePrompt, the app checks for updates (standard for all modern apps). This request is logged by our update server with only: timestamp, version, and OS type. That's it.
+
+**Transparency**: All data collection code is visible in this repository:
+- Update check: [`src/main.js`](src/main.js) (lines 188-197)
+- Server logging: [`cloudflare-worker/worker.js`](cloudflare-worker/worker.js) (lines 30-36)
+
+### Opt-Out
+
+Want **zero data collection**? You have options:
+
+1. **Firewall block**: Block `updates.oneprompt.dev` in your firewall
+2. **Build from source**: Clone this repo and remove the update check from `src/main.js`
+3. **Run in dev mode**: Use `npm run dev` (update checks disabled in dev mode)
+
+### Your Data Stays Private
+
+- ✅ Your prompts never leave your device
+- ✅ Your AI conversations are between you and the AI platforms
+- ✅ We never see, store, or transmit your actual usage data
+- ✅ No tracking scripts, no analytics SDKs, no third-party services
+
+**We only know**: "Someone using version X on macOS opened the app today"
 
 ## ⚠️ Important Notes
 
