@@ -5,16 +5,9 @@ const fs = require('fs');
 
 let mainWindow;
 
-// Configure auto-updater
-// This will be used by our Cloudflare Worker to log anonymous update checks
+// Configure auto-updater (uses GitHub Releases directly)
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
-
-// Set custom update server (Cloudflare Worker)
-autoUpdater.setFeedURL({
-  provider: 'generic',
-  url: 'https://tiny-mouse-8a82.old-night-7cdb.workers.dev/latest'
-});
 
 // Auto-update event handlers
 autoUpdater.on('update-available', (info) => {
@@ -184,9 +177,7 @@ app.whenReady().then(() => {
     return AI_CONFIGS;
   });
 
-  // Check for updates on app start (anonymous logging for usage statistics)
-  // This checks our Cloudflare Worker which logs: timestamp, version, platform
-  // See README.md Privacy section for details
+  // Check for updates on app start (from GitHub Releases)
   if (!process.argv.includes('--dev')) {
     setTimeout(() => {
       autoUpdater.checkForUpdates().catch(err => {

@@ -23,7 +23,13 @@
       "Bash(git remote set-url:*)",
       "Bash(git pull:*)",
       "Bash(git count-objects:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(git tag:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(convert:*)",
+      "Bash(git restore:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }
