@@ -24,7 +24,7 @@ This application uses browser automation to interact with AI services. **This vi
 
 ### Why I Built It Anyway
 
-This project exists because I needed a better way to compare AI responses for personal decision-making. Managing 4-5 browser tabs is inefficient, and official APIs are expensive for casual use.
+This project exists because I needed a better way to compare AI responses for personal testing. Managing 4-5 browser tabs is inefficient, and official APIs are expensive for casual use.
 
 **I acknowledge this violates ToS.** I built it as:
 - ✅ A personal productivity tool
@@ -56,8 +56,8 @@ When working on something important, you want the best possible answers. Often t
 
 - 🚀 **One prompt for all AIs**: Write once, send everywhere
 - 🎯 **Flexible selection**: Choose which AIs to use for each prompt
-- 🔐 **Persistent sessions**: Keeps your logins active (like Franz)
-- 💻 **Native for macOS**: Optimized for macOS (Windows coming soon)
+- 🔐 **Persistent sessions**: Keeps your logins active (like Franz and Rambox)
+- 💻 **Cross-platform**: Available for macOS and Windows
 - 🎨 **Clean interface**: Minimalist and intuitive design
 
 ## Supported AI Platforms
@@ -66,9 +66,9 @@ When working on something important, you want the best possible answers. Often t
 - ChatGPT (OpenAI)
 - Claude (Anthropic)
 - Gemini (Google)
-- Microsoft Copilot
+- Copilot (Microsoft)
 - DeepSeek
-- Grok (X.AI)
+- Grok (X)
 - Perplexity
 
 ### Planned
@@ -177,8 +177,17 @@ OnePrompt collects **minimal, anonymous usage statistics** to understand how man
 When you open OnePrompt, the app checks for updates (standard for all modern apps). This request is logged by our update server with only: timestamp, version, and OS type. That's it.
 
 **Transparency**: All data collection code is visible in this repository:
-- Update check: [`src/main.js`](src/main.js) (lines 188-197)
+- Update check: [`src/main.js`](src/main.js) (lines 148-157)
 - Server logging: [`cloudflare-worker/worker.js`](cloudflare-worker/worker.js) (lines 30-36)
+
+### Where to View Statistics
+
+Anonymous usage statistics are logged in **Cloudflare Workers Logs**:
+1. Go to [Cloudflare Dashboard](https://dash.cloudflare.com/)
+2. Navigate to **Workers & Pages** → Select your worker
+3. Click on **Logs** tab to see real-time update checks
+
+**Note**: Cloudflare free tier logs are **not persistent** (real-time only). For persistent analytics, you can optionally enable Cloudflare Analytics Engine (free) to store aggregated statistics with charts.
 
 ### Opt-Out
 
@@ -202,16 +211,11 @@ Want **zero data collection**? You have options:
 **Experimental - Active Development**
 
 ### Current Development Focus
-- ✅ Base interface and webview management (completed)
-- ✅ Auto-update system with anonymous usage statistics (completed)
-- 🔄 Automatic prompt injection (in development)
-- ⏳ Login support for ChatGPT, Claude, Gemini (coming soon)
-- ⏳ Side-by-side response visualization (planned)
-
-### Future Plans
-1. **Short term**: Stable MVP with Copilot, DeepSeek, Grok, Perplexity
-2. **Medium term**: Full login automation for all major AI platforms
-3. **Long term**: Consider API mode for ToS compliance (or maintain as educational project)
+- ✅ Base interface and webview management
+- ✅ Auto-update system with anonymous usage statistics
+- ✅ Automatic prompt injection for supported platforms
+- ✅ Side-by-side response visualization
+- 🔄 Expanding platform support (adding more AI services)
 
 ## License
 
@@ -241,7 +245,7 @@ All feedback is appreciated! 🙏
 
 Enjoying OnePrompt? Consider buying me a coffee!
 
-☕ **[ko-fi.com/fabiocalabr](https://ko-fi.com/fabiocalabr)**
+☕ **[ko-fi.com/calabr93](https://ko-fi.com/calabr93)**
 
 Your support helps keep this project alive and motivates me to add new features and maintain it. Every coffee counts! 🙏
 
