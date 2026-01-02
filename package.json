@@ -27,6 +27,7 @@
   "build": {
     "appId": "com.oneprompt.app",
     "productName": "OnePrompt",
+    "publish": null,
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
