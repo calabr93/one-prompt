@@ -1,8 +1,46 @@
 # OnePrompt
 
+![Experimental](https://img.shields.io/badge/status-experimental-orange?style=for-the-badge)
+![Educational](https://img.shields.io/badge/purpose-educational-blue?style=for-the-badge)
+![Personal Use](https://img.shields.io/badge/use-personal%20only-red?style=for-the-badge)
+
 **An Electron desktop app to compare responses from multiple AI platforms simultaneously.**
 
 Tired of copy-pasting the same prompt into ChatGPT, Claude, Gemini, and Perplexity to compare responses? OnePrompt solves this: write your prompt once and automatically send it to all the AIs you want, getting multiple responses to compare side-by-side.
+
+---
+
+## ⚠️ Legal & Compliance Warning
+
+**READ THIS BEFORE USING OR DOWNLOADING**
+
+This application uses browser automation to interact with AI services. **This violates the Terms of Service of most platforms** and carries real risks:
+
+### Risks
+- 🚫 **Your AI accounts may be banned** (ChatGPT, Claude, Gemini, etc.)
+- 📧 **The project may receive DMCA/takedown notices**
+- ⚖️ **Commercial use could result in legal action**
+- 🔒 **Your accounts may be suspended without warning**
+
+### Why I Built It Anyway
+
+This project exists because I needed a better way to compare AI responses for personal decision-making. Managing 4-5 browser tabs is inefficient, and official APIs are expensive for casual use.
+
+**I acknowledge this violates ToS.** I built it as:
+- ✅ A personal productivity tool
+- ✅ An educational exploration of Electron webviews
+- ✅ A demonstration of what's technically possible
+
+**Use at your own risk.** By downloading or using OnePrompt, you accept full responsibility for any consequences.
+
+### Recommended Use
+- ✅ **Personal and educational use only**
+- ✅ **Understand you may lose access to your AI accounts**
+- ❌ **NOT for commercial distribution**
+- ❌ **NOT for intensive/automated usage**
+- ❌ **NOT if you depend on your AI accounts professionally**
+
+---
 
 ## 🎯 The Problem It Solves
 
@@ -24,11 +62,23 @@ When working on something important, you want the best possible answers. Often t
 
 ## Supported AI Platforms
 
-- ChatGPT (OpenAI)
-- Claude (Anthropic)
-- Gemini (Google)
-- Perplexity
-- More coming...
+### ✅ Working
+- **Microsoft Copilot** - Fully functional
+- **DeepSeek** - Fully functional
+- **Grok** (X.AI) - Fully functional
+- **Perplexity** - Functional (limited automation)
+
+### 🔄 In Development
+- ChatGPT (OpenAI) - Login automation in progress
+- Claude (Anthropic) - Login automation in progress
+- Gemini (Google) - Login automation in progress
+
+### 📋 Planned
+- Mistral AI
+- Phind
+- Replit AI
+- Bolt.new
+- Lovable.dev
 
 ## Installation
 
@@ -130,50 +180,21 @@ Want **zero data collection**? You have options:
 
 **We only know**: "Someone using version X on macOS opened the app today"
 
-## ⚠️ Important Notes
+## 📋 Project Status
 
-### Project Status
+**Experimental - Active Development**
 
-**This is an experimental project under active development.**
-
-Currently working on:
+### Current Development Focus
 - ✅ Base interface and webview management (completed)
-- 🔄 Automatic prompt injection (in development - focusing on Perplexity)
+- ✅ Auto-update system with anonymous usage statistics (completed)
+- 🔄 Automatic prompt injection (in development)
 - ⏳ Login support for ChatGPT, Claude, Gemini (coming soon)
 - ⏳ Side-by-side response visualization (planned)
 
-### Compliance and Legal Disclaimer
-
-**IMPORTANT**: This application uses browser automation to interact with third-party AI services. This **may violate the Terms of Service** of some platforms:
-
-- ⚠️ OpenAI (ChatGPT) - ToS prohibit unauthorized automation
-- ⚠️ Anthropic (Claude) - ToS prohibit bots and scraping
-- ⚠️ Google (Gemini) - ToS prohibit access through unofficial methods
-- 🟡 Perplexity - Less restrictive ToS but still limit automation
-
-**Recommended use**:
-- ✅ Personal and educational use only
-- ❌ Not for commercial distribution
-- ❌ Not for intensive/abusive use
-
-**ToS-compliant alternatives**:
-In the future, the app may support an "API mode" that uses official APIs (paid) instead of browser automation, ensuring full legal compliance.
-
-For more details on legal risks, see the project planning documentation.
-
-### Author's Intent
-
-This project was born from my personal need to **compare responses from different AIs** to make better decisions. Often one AI provides a perspective that others don't, and managing 4-5 separate browser tabs is inconvenient.
-
-**Goals**:
-1. **Short term**: Create a working MVP for personal use with Perplexity (no login required)
-2. **Medium term**: Extend support to all major AIs with login management
-3. **Long term**: Evaluate transition to API mode for full compliance or maintain dual-mode (webview + API)
-
-It's not my intention to violate ToS or harm AI platforms. If this project causes issues, I'm open to:
-- Switching completely to official APIs
-- Removing automation features
-- Making the project purely educational
+### Future Plans
+1. **Short term**: Stable MVP with Copilot, DeepSeek, Grok, Perplexity
+2. **Medium term**: Full login automation for all major AI platforms
+3. **Long term**: Consider API mode for ToS compliance (or maintain as educational project)
 
 ## License
 
