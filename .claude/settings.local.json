@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm start)",
+      "Bash(node:*)",
+      "Bash(cat:*)",
+      "Bash(./node_modules/.bin/electron:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Bash(npx electron:*)",
+      "Bash(curl:*)",
+      "Bash(ls:*)",
+      "Bash(gh --version:*)",
+      "Bash(rm:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

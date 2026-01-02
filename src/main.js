@@ -1,0 +1,188 @@
+const { app, BrowserWindow, ipcMain } = require('electron');
+const path = require('path');
+const fs = require('fs');
+
+let mainWindow;
+
+// Configurazione delle AI supportate
+const AI_CONFIGS = {
+  chatgpt: {
+    name: 'ChatGPT',
+    url: 'https://chat.openai.com',
+    icon: '🤖',
+    logo: 'ai-services/chatgpt.png',
+    color: '#10a37f'
+  },
+  claude: {
+    name: 'Claude',
+    url: 'https://claude.ai',
+    icon: '🧠',
+    logo: 'ai-services/claude.png',
+    color: '#cc785c'
+  },
+  gemini: {
+    name: 'Gemini',
+    url: 'https://gemini.google.com',
+    icon: '✨',
+    logo: 'ai-services/gemini.png',
+    color: '#4285f4'
+  },
+  perplexity: {
+    name: 'Perplexity',
+    url: 'https://www.perplexity.ai',
+    icon: '🔍',
+    logo: 'ai-services/perplexity.png',
+    color: '#20808d'
+  },
+  copilot: {
+    name: 'Copilot',
+    url: 'https://copilot.microsoft.com',
+    icon: '💬',
+    logo: 'ai-services/copilot.png',
+    color: '#0078d4'
+  },
+  deepseek: {
+    name: 'DeepSeek',
+    url: 'https://chat.deepseek.com',
+    icon: '🌊',
+    logo: 'ai-services/deepseek.png',
+    color: '#1e90ff'
+  },
+  grok: {
+    name: 'Grok',
+    url: 'https://x.com/i/grok',
+    icon: '⚡',
+    logo: 'ai-services/grok.png',
+    color: '#ff6b00'
+  },
+  mistral: {
+    name: 'Mistral',
+    url: 'https://chat.mistral.ai',
+    icon: '🌬️',
+    logo: 'ai-services/mistral.png',
+    color: '#ff6b35',
+    comingSoon: true
+  },
+  phind: {
+    name: 'Phind',
+    url: 'https://www.phind.com',
+    icon: '💻',
+    logo: 'ai-services/phind.png',
+    color: '#00d4aa',
+    comingSoon: true
+  },
+  replit: {
+    name: 'Replit',
+    url: 'https://replit.com/ai',
+    icon: '🔧',
+    logo: 'ai-services/replit.png',
+    color: '#f26207',
+    comingSoon: true
+  },
+  bolt: {
+    name: 'Bolt',
+    url: 'https://bolt.new/',
+    icon: '⚡',
+    logo: 'ai-services/bolt.png',
+    color: '#0ea5e9',
+    comingSoon: true
+  },
+  lovable: {
+    name: 'Lovable',
+    url: 'https://lovable.dev/',
+    icon: '💜',
+    logo: 'ai-services/lovable.png',
+    color: '#8b5cf6',
+    comingSoon: true
+  }
+};
+
+function createMainWindow() {
+  // Seleziona l'icona appropriata per la piattaforma
+  let iconPath;
+  if (process.platform === 'darwin') {
+    iconPath = path.join(__dirname, '../assets/logo/logo.icns');
+  } else if (process.platform === 'win32') {
+    iconPath = path.join(__dirname, '../assets/logo/logo.ico');
+  } else {
+    iconPath = path.join(__dirname, '../assets/logo/logo.png');
+  }
+
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
+    title: 'OnePrompt',
+    icon: iconPath,
+    titleBarStyle: 'hidden',
+    trafficLightPosition: { x: 12, y: 12 },
+    backgroundColor: '#1a1a1a',
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      webviewTag: true
+    }
+  });
+
+  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+
+  // Apri DevTools solo in modalità dev
+  if (process.argv.includes('--dev')) {
+    mainWindow.webContents.openDevTools();
+  }
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+}
+
+// Lifecycle dell'app
+app.whenReady().then(() => {
+  // Handler IPC
+  ipcMain.handle('get-ai-configs', () => {
+    return AI_CONFIGS;
+  });
+
+  ipcMain.handle('get-injection-rules', () => {
+    const rulesPath = path.join(__dirname, 'injection-rules.json');
+    try {
+      const data = fs.readFileSync(rulesPath, 'utf8');
+      return JSON.parse(data);
+    } catch (error) {
+      console.error('Errore caricamento injection-rules.json:', error);
+      return {};
+    }
+  });
+
+  ipcMain.handle('send-prompt', async (event, aiKey, prompt) => {
+    // In una implementazione reale, qui inietteremmo il codice nella webview
+    // Ma le webview sono nel renderer process, quindi dobbiamo mandare un messaggio alla webview
+    // Per ora ritorniamo successo
+    return { success: true };
+  });
+
+  ipcMain.handle('open-ai-window', (event, aiKey) => {
+    // Gestito lato renderer con le webview
+    return { success: true };
+  });
+
+  ipcMain.handle('get-webview-preload-path', () => {
+    return path.join(__dirname, 'webview-preload.js');
+  });
+
+  createMainWindow();
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createMainWindow();
+    }
+  });
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});

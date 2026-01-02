@@ -1,0 +1,146 @@
+{
+  "chatgpt": {
+    "selectors": {
+      "input": "#prompt-textarea",
+      "inputAlt": "div[contenteditable=\"true\"]",
+      "sendBtn": "[data-testid=\"send-button\"]",
+      "sendBtnAlt": "button[data-testid=\"send-button\"]",
+      "stopBtn": "[data-testid=\"stop-button\"]"
+    },
+    "inputType": "contenteditable",
+    "injectionMethod": "contenteditable",
+    "requiresLogin": true,
+    "notes": "ChatGPT ha cambiato da textarea a contenteditable div. Usa typing simulato."
+  },
+  "claude": {
+    "selectors": {
+      "input": "div[contenteditable=\"true\"][data-testid=\"chat-input\"]",
+      "inputAlt": "div[contenteditable=\"true\"]",
+      "sendBtn": "button[aria-label=\"Send message\"]",
+      "sendBtnAlt": "[data-testid=\"model-selector-dropdown\"] ~ div button"
+    },
+    "inputType": "contenteditable",
+    "injectionMethod": "contenteditable",
+    "requiresLogin": true,
+    "notes": "Claude usa contenteditable. SendBtnAlt usa la posizione relativa al model selector per essere language-agnostic."
+  },
+  "gemini": {
+    "selectors": {
+      "input": "div.ql-editor[contenteditable=\"true\"]",
+      "inputAlt": "div[role=\"textbox\"][contenteditable=\"true\"]",
+      "sendBtn": "button:has(mat-icon[data-mat-icon-name=\"send\"])",
+      "sendBtnAlt": "button.send-button"
+    },
+    "inputType": "contenteditable",
+    "injectionMethod": "contenteditable",
+    "requiresLogin": true,
+    "notes": "Gemini usa Quill editor. SendBtn usa icona o classe specifica per essere language-agnostic."
+  },
+  "perplexity": {
+    "selectors": {
+      "input": "div[contenteditable=\"true\"]#ask-input",
+      "sendBtn": "button[aria-label=\"Submit\"]",
+      "sendBtnAlt": "button:has(svg[data-icon=\"arrow-right\"]), button:has(use[xlink\\:href*=\"arrow-right\"])"
+    },
+    "inputType": "contenteditable",
+    "injectionMethod": "contenteditable",
+    "requiresLogin": false,
+    "notes": "Perplexity funziona anche senza login. SendBtn usa aria-label o icona arrow-right."
+  },
+  "copilot": {
+    "selectors": {
+      "input": "#userInput",
+      "inputAlt": "textarea[data-testid=\"composer-input\"]",
+      "sendBtn": "button[aria-label=\"Send\"]",
+      "sendBtnAlt": "button[title=\"Send\"]"
+    },
+    "inputType": "textarea",
+    "injectionMethod": "textarea",
+    "requiresLogin": true,
+    "notes": "Copilot usa textarea standard con ID userInput"
+  },
+  "deepseek": {
+    "selectors": {
+      "input": "div[contenteditable=\"true\"]",
+      "inputAlt": "textarea",
+      "sendBtn": "button[type=\"submit\"]",
+      "sendBtnAlt": "button[aria-label]"
+    },
+    "inputType": "contenteditable",
+    "injectionMethod": "contenteditable",
+    "requiresLogin": true,
+    "notes": "DeepSeek - likely uses contenteditable"
+  },
+  "mistral": {
+    "selectors": {
+      "input": "div[contenteditable=\"true\"]",
+      "inputAlt": "textarea",
+      "sendBtn": "button[type=\"submit\"]",
+      "sendBtnAlt": "button[aria-label]"
+    },
+    "inputType": "contenteditable",
+    "injectionMethod": "contenteditable",
+    "requiresLogin": true,
+    "notes": "Mistral AI - likely uses contenteditable"
+  },
+  "phind": {
+    "selectors": {
+      "input": "textarea",
+      "inputAlt": "div[contenteditable=\"true\"]",
+      "sendBtn": "button[type=\"submit\"]",
+      "sendBtnAlt": "button[aria-label]"
+    },
+    "inputType": "textarea",
+    "injectionMethod": "textarea",
+    "requiresLogin": false,
+    "notes": "Phind - developer-focused AI search"
+  },
+  "grok": {
+    "selectors": {
+      "input": "textarea",
+      "inputAlt": "div[contenteditable=\"true\"]",
+      "sendBtn": "button[type=\"button\"][aria-label]",
+      "sendBtnAlt": "button[type=\"button\"]"
+    },
+    "inputType": "textarea",
+    "injectionMethod": "textarea",
+    "requiresLogin": true,
+    "notes": "Grok - X.com AI assistant. Uses textarea and button with type=button (not submit). Classes are obfuscated."
+  },
+  "replit": {
+    "selectors": {
+      "input": "textarea",
+      "inputAlt": "div[contenteditable=\"true\"]",
+      "sendBtn": "button[type=\"submit\"]",
+      "sendBtnAlt": "button[aria-label]"
+    },
+    "inputType": "textarea",
+    "injectionMethod": "textarea",
+    "requiresLogin": true,
+    "notes": "Replit AI - code generation platform"
+  },
+  "bolt": {
+    "selectors": {
+      "input": "textarea",
+      "inputAlt": "div[contenteditable=\"true\"]",
+      "sendBtn": "button[type=\"submit\"]",
+      "sendBtnAlt": "button[aria-label]"
+    },
+    "inputType": "textarea",
+    "injectionMethod": "textarea",
+    "requiresLogin": false,
+    "notes": "Bolt.new by StackBlitz - instant full-stack web apps"
+  },
+  "lovable": {
+    "selectors": {
+      "input": "textarea",
+      "inputAlt": "div[contenteditable=\"true\"]",
+      "sendBtn": "button[type=\"submit\"]",
+      "sendBtnAlt": "button[aria-label]"
+    },
+    "inputType": "textarea",
+    "injectionMethod": "textarea",
+    "requiresLogin": true,
+    "notes": "Lovable.dev - AI app and website builder"
+  }
+}

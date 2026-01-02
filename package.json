@@ -1,0 +1,55 @@
+{
+  "name": "oneprompt",
+  "version": "0.1.0",
+  "description": "Un'applicazione per gestire più AI chat in un unico posto - inserisci un prompt e invialo a tutte le tue AI preferite",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "pack": "electron-builder --dir"
+  },
+  "keywords": [
+    "AI",
+    "chat",
+    "ChatGPT",
+    "Claude",
+    "Gemini",
+    "Electron"
+  ],
+  "author": "Francesco Calabretta",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.oneprompt.app",
+    "productName": "OnePrompt",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/logo/logo.icns"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/logo/logo.ico"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    }
+  }
+}
