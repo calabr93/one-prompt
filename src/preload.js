@@ -24,5 +24,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   isPostHogConfigured: () => ipcRenderer.invoke('is-posthog-configured'),
 
   // Submit feedback
-  submitFeedback: (feedback) => ipcRenderer.invoke('submit-feedback', feedback)
+  submitFeedback: (feedback) => ipcRenderer.invoke('submit-feedback', feedback),
+
+  // Update events
+  onUpdateAvailable: (callback) => ipcRenderer.on('update-available', (event, info) => callback(info)),
+  onUpdateDownloaded: (callback) => ipcRenderer.on('update-downloaded', (event, info) => callback(info)),
+  downloadUpdate: () => ipcRenderer.invoke('download-update'),
+  installUpdate: () => ipcRenderer.invoke('install-update')
 });

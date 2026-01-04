@@ -326,6 +326,7 @@ async function init() {
     // Setup event listeners
     setupEventListeners();
     setupScrollListeners();
+    setupUpdateHandlers();
 
     console.log('=== INIT COMPLETED ===');
   } catch (error) {
@@ -1437,3 +1438,35 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+
+// Update Handling
+function setupUpdateHandlers() {
+  const updateBanner = document.getElementById('updateBanner');
+  const updateText = document.getElementById('updateText');
+  const updateActionBtn = document.getElementById('updateActionBtn');
+
+  if (!updateBanner || !updateText || !updateActionBtn) return;
+
+  window.electronAPI.onUpdateAvailable((info) => {
+    console.log('Update available:', info);
+    updateText.textContent = `Nuova versione ${info.version} disponibile!`;
+    updateActionBtn.textContent = 'Scarica e Installa';
+    updateActionBtn.onclick = () => {
+      updateActionBtn.textContent = 'Download in corso...';
+      updateActionBtn.disabled = true;
+      window.electronAPI.downloadUpdate();
+    };
+    updateBanner.style.display = 'block';
+  });
+
+  window.electronAPI.onUpdateDownloaded((info) => {
+    console.log('Update downloaded:', info);
+    updateText.textContent = `Versione ${info.version} pronta per l'installazione.`;
+    updateActionBtn.textContent = 'Riavvia ora';
+    updateActionBtn.disabled = false;
+    updateActionBtn.onclick = () => {
+      window.electronAPI.installUpdate();
+    };
+    updateBanner.style.display = 'block';
+  });
+}

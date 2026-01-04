@@ -287,6 +287,15 @@ app.whenReady().then(() => {
     }
   });
 
+  // Update handlers
+  ipcMain.handle('download-update', () => {
+    autoUpdater.downloadUpdate();
+  });
+
+  ipcMain.handle('install-update', () => {
+    autoUpdater.quitAndInstall();
+  });
+
   createMainWindow();
 
   app.on('activate', () => {
