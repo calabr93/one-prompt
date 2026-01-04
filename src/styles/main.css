@@ -108,12 +108,15 @@ body {
   width: 100%;
   padding: 0 var(--spacing-md);
   overflow-y: auto;
-  align-items: center; /* Center items horizontally */
-  scrollbar-width: none; /* Firefox */
+  align-items: center;
+  /* Center items horizontally */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .sidebar-nav::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+  display: none;
+  /* Chrome, Safari, Opera */
 }
 
 .sidebar-item {
@@ -129,7 +132,8 @@ body {
   transition: all 0.2s;
   position: relative;
   -webkit-app-region: no-drag;
-  flex-shrink: 0; /* Prevent shrinking */
+  flex-shrink: 0;
+  /* Prevent shrinking */
 }
 
 .sidebar-item:hover {
@@ -308,7 +312,8 @@ body {
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius);
   padding: var(--spacing-md);
-  padding-bottom: 40px; /* Space for send button */
+  padding-bottom: 40px;
+  /* Space for send button */
   color: var(--text-primary);
   font-size: 1rem;
   font-family: inherit;
@@ -440,7 +445,8 @@ body {
 }
 
 /* Hidden elements from previous design */
-.ai-icon, .ai-status {
+.ai-icon,
+.ai-status {
   display: none;
 }
 
@@ -453,12 +459,12 @@ body {
   font-size: 0.75rem;
   padding: 2px 8px;
   border-radius: 12px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   min-width: fit-content;
 }
 
 .ai-card.selected .ai-status-indicator {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .status-sent {
@@ -506,7 +512,9 @@ body {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Status Bar */
@@ -662,7 +670,8 @@ body {
   min-height: 48px;
   max-height: 120px;
   transition: all 0.2s;
-  margin: 0; /* Ensure no margins */
+  margin: 0;
+  /* Ensure no margins */
 }
 
 .prompt-input-wrapper .prompt-input:focus {
@@ -830,11 +839,13 @@ body {
 
 /* Stile bottone nuova sessione */
 .sidebar-item.new-session,
-.sidebar-item.settings {
+.sidebar-item.settings,
+.sidebar-item.report-bug {
   margin-top: var(--spacing-sm);
 }
 
-.sidebar-item.new-session .sidebar-icon svg {
+.sidebar-item.new-session .sidebar-icon svg,
+.sidebar-item.report-bug .sidebar-icon svg {
   width: 20px;
   height: 20px;
   stroke: white;
@@ -1033,7 +1044,8 @@ body {
 .settings-select {
   width: 100%;
   padding: 10px 12px;
-  padding-right: 36px; /* Spazio per il caret */
+  padding-right: 36px;
+  /* Spazio per il caret */
   background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);

@@ -2,7 +2,7 @@
 let aiConfigs = {};
 let injectionRules = {};
 let loadedWebviews = new Set();
-let webviewInstances = {}; // Map aiKey → webview element
+let webviewInstances = {}; // Map sessionId → { aiKey → webview element }
 let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '[]'));
 
 // i18n - Internazionalizzazione
@@ -108,6 +108,7 @@ function createNewSession(name = null, selectedAIsSet = null) {
     name: name || null, // null significa usa il nome di default tradotto
     sessionNumber: nextNumber, // Usa il numero calcolato
     selectedAIs: selectedAIsSet ? Array.from(selectedAIsSet) : [],
+    chatUrls: {}, // Mappa aiKey -> URL della conversazione
     createdAt: Date.now()
   };
 }
@@ -116,7 +117,40 @@ function getCurrentSession() {
   return sessions.find(s => s.id === currentSessionId) || sessions[0];
 }
 
+function getSessionWebviews(sessionId) {
+  if (!webviewInstances[sessionId]) {
+    webviewInstances[sessionId] = {};
+  }
+  return webviewInstances[sessionId];
+}
+
+function getCurrentSessionWebviews() {
+  return getSessionWebviews(currentSessionId);
+}
+
+function captureCurrentUrls() {
+  const currentSession = getCurrentSession();
+  if (!currentSession) return;
+
+  // Inizializza chatUrls se non esiste (per sessioni vecchie)
+  if (!currentSession.chatUrls) {
+    currentSession.chatUrls = {};
+  }
+
+  // Cattura l'URL corrente di ogni webview della sessione corrente
+  const sessionWebviews = getCurrentSessionWebviews();
+  Object.keys(sessionWebviews).forEach(aiKey => {
+    const webview = sessionWebviews[aiKey];
+    if (webview && webview.src) {
+      currentSession.chatUrls[aiKey] = webview.src;
+    }
+  });
+}
+
 function saveSessionsToStorage() {
+  // Cattura gli URL correnti prima di salvare
+  captureCurrentUrls();
+
   localStorage.setItem('oneprompt-sessions', JSON.stringify(sessions));
   localStorage.setItem('oneprompt-current-session', currentSessionId);
   localStorage.setItem('oneprompt-session-counter', sessionCounter.toString());
@@ -632,12 +666,15 @@ async function renderWebviews() {
   webviewGrid.className = 'webview-grid';
 
   if (selectedAIs.size === 0) {
-    // Nascondi tutte le webview esistenti
-    Object.keys(webviewInstances).forEach(aiKey => {
-      const wrapper = document.querySelector(`.webview-wrapper[data-ai-key="${aiKey}"]`);
-      if (wrapper) {
-        wrapper.style.display = 'none';
-      }
+    // Nascondi tutte le webview di tutte le sessioni
+    Object.keys(webviewInstances).forEach(sessionId => {
+      const sessionWebviews = webviewInstances[sessionId];
+      Object.keys(sessionWebviews).forEach(aiKey => {
+        const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${sessionId}"][data-ai-key="${aiKey}"]`);
+        if (wrapper) {
+          wrapper.style.display = 'none';
+        }
+      });
     });
 
     // Mostra placeholder
@@ -669,19 +706,21 @@ async function renderWebviews() {
     placeholder.style.display = 'none';
   }
 
-  // Per ogni AI esistente, nascondi se non selezionata
-  Object.keys(webviewInstances).forEach(aiKey => {
-    const wrapper = document.querySelector(`.webview-wrapper[data-ai-key="${aiKey}"]`);
-    if (wrapper) {
-      if (selectedAIs.has(aiKey)) {
-        wrapper.style.display = 'flex';
-      } else {
+  // Nascondi TUTTE le webview di TUTTE le sessioni
+  Object.keys(webviewInstances).forEach(sessionId => {
+    const sessionWebviews = webviewInstances[sessionId];
+    Object.keys(sessionWebviews).forEach(aiKey => {
+      const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${sessionId}"][data-ai-key="${aiKey}"]`);
+      if (wrapper) {
         wrapper.style.display = 'none';
       }
-    }
+    });
   });
 
-  // Crea wrapper + webview per le AI selezionate che non esistono ancora
+  // Ottieni le webview della sessione corrente
+  const sessionWebviews = getCurrentSessionWebviews();
+
+  // Mostra solo le webview della sessione corrente che sono selezionate
   for (const aiKey of selectedAIs) {
     // Verifica che la config esista
     const config = aiConfigs[aiKey];
@@ -690,13 +729,14 @@ async function renderWebviews() {
       continue;
     }
 
-    // Controlla se il wrapper esiste già
-    let wrapper = document.querySelector(`.webview-wrapper[data-ai-key="${aiKey}"]`);
+    // Controlla se il wrapper per questa sessione e AI esiste già
+    let wrapper = document.querySelector(`.webview-wrapper[data-session-id="${currentSessionId}"][data-ai-key="${aiKey}"]`);
 
     if (!wrapper) {
       // Crea nuovo wrapper e webview
       wrapper = document.createElement('div');
       wrapper.className = 'webview-wrapper';
+      wrapper.dataset.sessionId = currentSessionId;
       wrapper.dataset.aiKey = aiKey;
 
       // Header
@@ -707,20 +747,23 @@ async function renderWebviews() {
           ${config.logo ? `<img src="../assets/${config.logo}" style="width: 16px; height: 16px; object-fit: contain;">` : config.icon}
           ${config.name}
         </div>
-        <div class="webview-header-status" id="status-${aiKey}">●</div>
+        <div class="webview-header-status" id="status-${currentSessionId}-${aiKey}">●</div>
       `;
 
       wrapper.appendChild(header);
 
-      // Crea webview se non esiste
-      let webview = webviewInstances[aiKey];
+      // Crea webview se non esiste per questa sessione
+      let webview = sessionWebviews[aiKey];
       if (!webview) {
         webview = await createWebview(aiKey);
-        webviewInstances[aiKey] = webview;
+        sessionWebviews[aiKey] = webview;
       }
 
       wrapper.appendChild(webview);
       webviewGrid.appendChild(wrapper);
+    } else {
+      // Il wrapper esiste già, mostralo
+      wrapper.style.display = 'flex';
     }
   }
 }
@@ -740,7 +783,12 @@ async function createWebview(aiKey) {
     .replace(/Electron\/[^ ]+ /, '');
   webview.setAttribute('useragent', userAgent);
 
-  webview.setAttribute('src', config.url);
+  // Usa l'URL salvato se disponibile, altrimenti usa l'URL di default
+  const currentSession = getCurrentSession();
+  const savedUrl = currentSession?.chatUrls?.[aiKey];
+  const urlToLoad = savedUrl || config.url;
+
+  webview.setAttribute('src', urlToLoad);
   webview.setAttribute('data-ai-key', aiKey);
   webview.setAttribute('partition', `persist:${aiKey}`);
   webview.setAttribute('allowpopups', 'true');
@@ -781,7 +829,8 @@ async function createWebview(aiKey) {
 
 // Update webview status in header
 function updateWebviewStatus(aiKey, status) {
-  const statusEl = document.getElementById(`status-${aiKey}`);
+  // Lo status ID ora include il sessionId
+  const statusEl = document.getElementById(`status-${currentSessionId}-${aiKey}`);
   if (!statusEl) return;
 
   const statusMap = {
@@ -942,11 +991,14 @@ async function sendPromptToSelectedAIs() {
   try {
     sendBtn.disabled = true;
 
+    // Ottieni le webview della sessione corrente
+    const sessionWebviews = getCurrentSessionWebviews();
+
     // Invia il prompt a tutte le AI selezionate
     const promises = Array.from(selectedAIs).map(async aiKey => {
-      const webview = webviewInstances[aiKey];
+      const webview = sessionWebviews[aiKey];
       if (!webview) {
-        console.error(`Webview for ${aiKey} not found`);
+        console.error(`Webview for ${aiKey} not found in current session`);
         return;
       }
 
@@ -1017,6 +1069,11 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
+
+// Salva gli URL delle chat quando l'app viene chiusa
+window.addEventListener('beforeunload', () => {
+  saveSessionsToStorage();
+});
 
 // Add pulse animation
 const style = document.createElement('style');
