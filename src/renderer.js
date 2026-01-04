@@ -876,6 +876,7 @@ async function renderWebviews() {
   const sessionWebviews = getCurrentSessionWebviews();
 
   // Mostra solo le webview della sessione corrente che sono selezionate
+  let index = 0;
   for (const aiKey of selectedAIs) {
     // Verifica che la config esista
     const config = aiConfigs[aiKey];
@@ -907,6 +908,61 @@ async function renderWebviews() {
 
       wrapper.appendChild(header);
 
+      // Drag & Drop support for webview wrapper
+      header.draggable = true; // Make only header draggable to avoid issues with webview interaction
+      
+      header.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', aiKey);
+        e.dataTransfer.effectAllowed = 'move';
+        wrapper.classList.add('dragging');
+      });
+
+      header.addEventListener('dragend', () => {
+        wrapper.classList.remove('dragging');
+        document.querySelectorAll('.webview-wrapper').forEach(w => w.classList.remove('drag-over'));
+      });
+
+      // Add listeners to wrapper for drop target
+      wrapper.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        if (!wrapper.classList.contains('dragging')) {
+          wrapper.classList.add('drag-over');
+        }
+      });
+
+      wrapper.addEventListener('dragleave', () => {
+        wrapper.classList.remove('drag-over');
+      });
+
+      wrapper.addEventListener('drop', (e) => {
+        e.preventDefault();
+        wrapper.classList.remove('drag-over');
+        
+        const draggedAiKey = e.dataTransfer.getData('text/plain');
+        if (draggedAiKey === aiKey) return;
+
+        // Reorder selectedAIs
+        const newSelectedAIs = new Set();
+        const currentArray = Array.from(selectedAIs);
+        const draggedIndex = currentArray.indexOf(draggedAiKey);
+        const targetIndex = currentArray.indexOf(aiKey);
+
+        if (draggedIndex !== -1 && targetIndex !== -1) {
+          // Remove dragged item
+          currentArray.splice(draggedIndex, 1);
+          // Insert at new position
+          currentArray.splice(targetIndex, 0, draggedAiKey);
+          
+          // Rebuild Set
+          currentArray.forEach(key => newSelectedAIs.add(key));
+          
+          selectedAIs = newSelectedAIs;
+          saveSelectedAIs();
+          renderWebviews();
+        }
+      });
+
       // Crea webview se non esiste per questa sessione
       let webview = sessionWebviews[aiKey];
       if (!webview) {
@@ -915,11 +971,23 @@ async function renderWebviews() {
       }
 
       wrapper.appendChild(webview);
+      
+      // Set order
+      wrapper.style.order = index;
       webviewGrid.appendChild(wrapper);
     } else {
       // Il wrapper esiste già, mostralo
       wrapper.style.display = 'flex';
+      
+      // Update order without moving in DOM (prevents reload)
+      wrapper.style.order = index;
+      
+      // Only append if not already in grid (should not happen if found by querySelector)
+      if (!wrapper.parentElement) {
+        webviewGrid.appendChild(wrapper);
+      }
     }
+    index++;
   }
 }
 
