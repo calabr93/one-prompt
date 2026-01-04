@@ -12,6 +12,10 @@
 
 **An Electron desktop app to compare responses from multiple AI platforms simultaneously.**
 
+<div align="center">
+  <img src="assets/OnePrompt-demo.gif" alt="OnePrompt Demo" width="100%">
+</div>
+
 Tired of copy-pasting the same prompt into ChatGPT, Claude, Gemini, and Perplexity to compare responses? OnePrompt solves this: write your prompt once and automatically send it to all the AIs you want, getting multiple responses to compare side-by-side.
 
 ---
