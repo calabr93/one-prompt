@@ -925,22 +925,33 @@ body {
 }
 
 /* Stile bottone nuova sessione */
-.sidebar-item.new-session,
+.sidebar-item.new-session {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  margin-top: var(--spacing-sm);
+}
+
+.sidebar-item.new-session:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+}
+
+.sidebar-item.new-session .sidebar-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: white;
+}
+
 .sidebar-item.settings,
 .sidebar-item.report-bug {
   margin-top: var(--spacing-sm);
 }
 
-.sidebar-item.new-session .sidebar-icon svg,
 .sidebar-item.report-bug .sidebar-icon svg {
   width: 20px;
   height: 20px;
   stroke: white;
-}
-
-.sidebar-item.new-session:hover {
-  background: var(--accent-color);
-  border-color: var(--accent-color);
 }
 
 /* Modale servizi disponibili */
@@ -1126,6 +1137,7 @@ body {
   font-weight: 500;
   color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
+  margin-left: 11px;
 }
 
 .settings-select {
