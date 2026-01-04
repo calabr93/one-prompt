@@ -255,6 +255,35 @@ app.whenReady().then(() => {
     }
   });
 
+  // Check if PostHog is configured
+  ipcMain.handle('is-posthog-configured', () => {
+    return !!posthog;
+  });
+
+  // Submit feedback
+  ipcMain.handle('submit-feedback', async (event, feedback) => {
+    if (!posthog) return { success: false, error: 'PostHog not configured' };
+
+    try {
+      posthog.capture({
+        distinctId: 'user_' + require('os').hostname(),
+        event: 'feedback_submitted',
+        properties: {
+          type: feedback.type,
+          message: feedback.message,
+          email: feedback.email,
+          app_version: app.getVersion(),
+          platform: process.platform
+        }
+      });
+      await posthog.flush();
+      return { success: true };
+    } catch (error) {
+      console.error('PostHog feedback error:', error);
+      return { success: false, error: error.message };
+    }
+  });
+
   createMainWindow();
 
   app.on('activate', () => {

@@ -29,7 +29,19 @@ const translations = {
     'comingSoon': 'Prossimamente',
     'analytics.text': 'Mi aiuti a capire se OnePrompt è utile? Conto solo quante volte l’app viene aperta, in forma totalmente anonima. Nessun altro dato viene toccato.',
     'analytics.accept': 'Nessun problema',
-    'analytics.decline': 'Preferisco di no'
+    'analytics.decline': 'Preferisco di no',
+    'feedback.title': 'Invia Feedback',
+    'feedback.type': 'Tipo',
+    'feedback.type.bug': 'Segnala un Bug',
+    'feedback.type.feature': 'Richiedi Funzionalità',
+    'feedback.type.other': 'Altro',
+    'feedback.message': 'Messaggio',
+    'feedback.placeholder': 'Descrivi il problema o la tua idea...',
+    'feedback.email': 'Email (opzionale)',
+    'feedback.submit': 'Invia',
+    'feedback.success': 'Grazie per il tuo feedback!',
+    'feedback.error': 'Errore durante l’invio. Riprova più tardi.',
+    'close': 'Chiudi'
   },
   en: {
     'services.title': 'Available Services',
@@ -51,7 +63,19 @@ const translations = {
     'comingSoon': 'Coming Soon',
     'analytics.text': 'Help me understand if OnePrompt is useful? I only count how many times the app is opened, completely anonymously. No other data is touched.',
     'analytics.accept': 'No problem',
-    'analytics.decline': 'I’d rather not'
+    'analytics.decline': 'I’d rather not',
+    'feedback.title': 'Send Feedback',
+    'feedback.type': 'Type',
+    'feedback.type.bug': 'Report a Bug',
+    'feedback.type.feature': 'Request Feature',
+    'feedback.type.other': 'Other',
+    'feedback.message': 'Message',
+    'feedback.placeholder': 'Describe the issue or your idea...',
+    'feedback.email': 'Email (optional)',
+    'feedback.submit': 'Send',
+    'feedback.success': 'Thanks for your feedback!',
+    'feedback.error': 'Error sending feedback. Please try again later.',
+    'close': 'Close'
   }
 };
 
@@ -70,6 +94,11 @@ function updateUILanguage() {
   const promptInput = document.getElementById('promptInput');
   if (promptInput) {
     promptInput.placeholder = t('prompt.placeholder');
+  }
+
+  const feedbackMessage = document.getElementById('feedbackMessage');
+  if (feedbackMessage) {
+    feedbackMessage.placeholder = t('feedback.placeholder');
   }
 
   // Update button titles
@@ -608,6 +637,62 @@ function closeSettingsModalFn() {
   settingsModal.style.display = 'none';
 }
 
+// === MODALE FEEDBACK ===
+
+function openFeedbackModal() {
+  const modal = document.getElementById('feedbackModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    // Reset view
+    document.getElementById('feedbackForm').style.display = 'flex';
+    document.getElementById('feedbackSuccess').style.display = 'none';
+  }
+}
+
+function closeFeedbackModalFn() {
+  const modal = document.getElementById('feedbackModal');
+  if (modal) modal.style.display = 'none';
+  
+  // Reset form
+  document.getElementById('feedbackMessage').value = '';
+  document.getElementById('feedbackEmail').value = '';
+  document.getElementById('feedbackType').value = 'bug';
+}
+
+async function submitFeedback() {
+  const type = document.getElementById('feedbackType').value;
+  const message = document.getElementById('feedbackMessage').value.trim();
+  const email = document.getElementById('feedbackEmail').value.trim();
+  const submitBtn = document.getElementById('submitFeedbackBtn');
+
+  if (!message) {
+    alert(t('feedback.message') + ' required');
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = '...';
+
+  try {
+    const result = await window.electronAPI.submitFeedback({ type, message, email });
+    
+    if (result.success) {
+      // Show success view
+      document.getElementById('feedbackForm').style.display = 'none';
+      document.getElementById('feedbackSuccess').style.display = 'flex';
+    } else {
+      alert(t('feedback.error'));
+      console.error('Feedback error:', result.error);
+    }
+  } catch (error) {
+    console.error('Feedback error:', error);
+    alert(t('feedback.error'));
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = t('feedback.submit');
+  }
+}
+
 // Render griglia servizi
 function renderServicesGrid() {
   servicesGrid.innerHTML = '';
@@ -1111,10 +1196,41 @@ function setupEventListeners() {
     themeLightBtn.addEventListener('click', () => applyTheme('light'));
   }
 
-  // Report Bug button - open GitHub Issues in external browser
-  reportBugBtn.addEventListener('click', () => {
-    window.electronAPI.openExternal('https://github.com/calabr93/one-prompt/issues/new/choose');
+  // Report Bug button
+  reportBugBtn.addEventListener('click', async () => {
+    const isConfigured = await window.electronAPI.isPostHogConfigured();
+    if (isConfigured) {
+      openFeedbackModal();
+    } else {
+      window.electronAPI.openExternal('https://github.com/calabr93/one-prompt/issues/new/choose');
+    }
   });
+
+  // Feedback Modal Listeners
+  const closeFeedbackModalBtn = document.getElementById('closeFeedbackModal');
+  const feedbackModal = document.getElementById('feedbackModal');
+  const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
+  const closeFeedbackSuccessBtn = document.getElementById('closeFeedbackSuccessBtn');
+
+  if (closeFeedbackModalBtn) {
+    closeFeedbackModalBtn.addEventListener('click', closeFeedbackModalFn);
+  }
+
+  if (closeFeedbackSuccessBtn) {
+    closeFeedbackSuccessBtn.addEventListener('click', closeFeedbackModalFn);
+  }
+
+  if (feedbackModal) {
+    feedbackModal.addEventListener('click', (e) => {
+      if (e.target === feedbackModal) {
+        closeFeedbackModalFn();
+      }
+    });
+  }
+
+  if (submitFeedbackBtn) {
+    submitFeedbackBtn.addEventListener('click', submitFeedback);
+  }
 }
 
 // Update send button state

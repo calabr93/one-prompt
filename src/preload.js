@@ -18,5 +18,11 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openExternal: (url) => ipcRenderer.invoke('open-external', url),
 
   // Update analytics consent
-  updateAnalyticsConsent: (allowed) => ipcRenderer.invoke('update-analytics-consent', allowed)
+  updateAnalyticsConsent: (allowed) => ipcRenderer.invoke('update-analytics-consent', allowed),
+
+  // Check if PostHog is configured
+  isPostHogConfigured: () => ipcRenderer.invoke('is-posthog-configured'),
+
+  // Submit feedback
+  submitFeedback: (feedback) => ipcRenderer.invoke('submit-feedback', feedback)
 });
