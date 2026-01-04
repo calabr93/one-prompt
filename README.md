@@ -1,7 +1,7 @@
 # OnePrompt
 
 <div align="center">
-  <img src="assets/logo/icon.png" alt="OnePrompt Logo" width="120" height="120">
+  <img src="assets/logo/logo.webp" alt="OnePrompt Logo" width="120" height="120">
 </div>
 
 ![Experimental](https://img.shields.io/badge/status-experimental-orange?style=for-the-badge)
