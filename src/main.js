@@ -287,6 +287,11 @@ app.whenReady().then(() => {
     }
   });
 
+  // Get App Version
+  ipcMain.handle('get-app-version', () => {
+    return app.getVersion();
+  });
+
   // Update handlers
   ipcMain.handle('download-update', () => {
     autoUpdater.downloadUpdate();

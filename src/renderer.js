@@ -328,6 +328,13 @@ async function init() {
     setupScrollListeners();
     setupUpdateHandlers();
 
+    // Set version in settings
+    const version = await window.electronAPI.getAppVersion();
+    const versionEl = document.getElementById('appVersion');
+    if (versionEl) {
+      versionEl.textContent = `v${version}`;
+    }
+
     console.log('=== INIT COMPLETED ===');
   } catch (error) {
     console.error('Errore durante l\'inizializzazione:', error);

@@ -26,6 +26,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Submit feedback
   submitFeedback: (feedback) => ipcRenderer.invoke('submit-feedback', feedback),
 
+  // Get App Version
+  getAppVersion: () => ipcRenderer.invoke('get-app-version'),
+
   // Update events
   onUpdateAvailable: (callback) => ipcRenderer.on('update-available', (event, info) => callback(info)),
   onUpdateDownloaded: (callback) => ipcRenderer.on('update-downloaded', (event, info) => callback(info)),
