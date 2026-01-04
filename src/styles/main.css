@@ -713,26 +713,41 @@ body {
   stroke: white;
 }
 
-/* Tab Bar (Safari style) */
+/* Tab Bar (Chrome style) */
 .tab-bar {
-  height: 36px;
+  height: 44px;
   background: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-color);
   display: flex;
-  align-items: center;
-  padding: 0 8px;
+  align-items: flex-end;
+  padding: 0 10px;
   -webkit-app-region: drag;
   flex-shrink: 0;
+  position: relative;
+}
+
+/* Continuous bottom line */
+.tab-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #cdcdcd;
+  z-index: 2;
 }
 
 .tab-list {
   display: flex;
-  gap: 4px;
+  gap: 6px;
   flex: 1;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
   -webkit-app-region: no-drag;
+  height: 100%;
+  align-items: flex-end;
+  z-index: auto;
 }
 
 .tab-list::-webkit-scrollbar {
@@ -740,46 +755,41 @@ body {
 }
 
 .tab {
-  height: 28px;
+  height: 34px;
   min-width: 120px;
   max-width: 200px;
-  background: var(--bg-tertiary);
-  border-radius: 6px 6px 0 0;
+  background: transparent;
+  border-radius: 10px 10px 0 0;
   display: flex;
   align-items: center;
   padding: 0 12px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background 0.2s ease;
   position: relative;
   border: 1px solid transparent;
   border-bottom: none;
-  -webkit-app-region: no-drag;
-}
-
-.tab.dragging {
-  opacity: 0.5;
-  background: var(--bg-secondary);
-}
-
-.tab.drag-over {
-  border-left: 2px solid var(--accent-color);
+  margin-bottom: 0;
+  color: var(--text-secondary);
+  z-index: 1; /* Behind the line */
 }
 
 .tab:hover {
-  background: var(--bg-primary);
+  background: var(--bg-tertiary);
 }
 
 .tab.active {
   background: var(--bg-primary);
-  border-color: var(--border-color);
-  border-bottom: 1px solid var(--bg-primary);
-  margin-bottom: -1px;
+  border: 1px solid #cdcdcd;
+  border-bottom: 1px solid var(--bg-primary); /* Hide the line */
+  color: var(--text-primary);
+  z-index: 3; /* Above the line */
+  font-weight: 500;
 }
 
 .tab-name {
   flex: 1;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
+  font-size: 0.85rem;
+  color: inherit;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -787,16 +797,12 @@ body {
   padding-right: 4px;
 }
 
-.tab.active .tab-name {
-  color: var(--text-primary);
-}
-
 .tab-name-input {
   flex: 1;
   background: transparent;
   border: none;
   outline: none;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
   padding: 2px 4px;
   border-radius: 3px;
@@ -808,8 +814,8 @@ body {
 }
 
 .tab-close {
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   display: none;
   align-items: center;
@@ -817,6 +823,7 @@ body {
   margin-left: 4px;
   transition: all 0.15s ease;
   flex-shrink: 0;
+  opacity: 0.7;
 }
 
 .tab:hover .tab-close {
@@ -824,17 +831,14 @@ body {
 }
 
 .tab-close:hover {
-  background: var(--border-color);
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 1;
 }
 
 .tab-close svg {
-  width: 10px;
-  height: 10px;
-  stroke: var(--text-secondary);
-}
-
-.tab-close:hover svg {
-  stroke: var(--text-primary);
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
 }
 
 /* Stile bottone nuova sessione */
