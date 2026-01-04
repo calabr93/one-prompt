@@ -160,13 +160,12 @@ OnePrompt uses **Electron webviews** to embed various AI platforms directly in t
 
 ## 🔒 Privacy
 
-**OnePrompt collects ZERO data.**
+**OnePrompt respects your privacy.**
 
-- ✅ **No analytics** - We don't track usage, downloads, or any statistics
-- ✅ **No telemetry** - No data sent to external servers
-- ✅ **Your prompts never leave your device** - All AI interactions happen directly between you and the AI platforms
-- ✅ **No tracking scripts** - Zero third-party services or analytics SDKs
-- ✅ **Auto-updates use GitHub Releases** - Standard update mechanism, no custom tracking
+- ✅ **Minimal Analytics**: We use PostHog to track basic usage (app opens) to understand how many people use the app. This data is anonymous and helps us improve the project.
+- ✅ **No Personal Data**: We do not collect your prompts, AI responses, or login credentials.
+- ✅ **Your prompts never leave your device**: All AI interactions happen directly between you and the AI platforms.
+- ✅ **Open Source**: You can inspect the code to verify exactly what is being tracked.
 
 **Your data stays completely private.**
 

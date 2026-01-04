@@ -54,6 +54,8 @@
     }
   },
   "dependencies": {
-    "electron-updater": "^6.6.2"
+    "dotenv": "^17.2.3",
+    "electron-updater": "^6.6.2",
+    "posthog-node": "^5.18.1"
   }
 }

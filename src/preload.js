@@ -15,5 +15,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getWebviewPreloadPath: () => ipcRenderer.invoke('get-webview-preload-path'),
 
   // Apri URL esterno nel browser di default
-  openExternal: (url) => ipcRenderer.invoke('open-external', url)
+  openExternal: (url) => ipcRenderer.invoke('open-external', url),
+
+  // Update analytics consent
+  updateAnalyticsConsent: (allowed) => ipcRenderer.invoke('update-analytics-consent', allowed)
 });

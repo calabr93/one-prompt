@@ -1158,6 +1158,36 @@ if (document.readyState === 'loading') {
   init();
 }
 
+// Analytics Consent Logic
+function checkAnalyticsConsent() {
+  const consent = localStorage.getItem('oneprompt-analytics-consent');
+  
+  if (consent === null) {
+    // Show banner if no choice made yet
+    const banner = document.getElementById('analyticsBanner');
+    if (banner) banner.style.display = 'block';
+  } else {
+    // Send current status to main process
+    window.electronAPI.updateAnalyticsConsent(consent === 'true');
+  }
+}
+
+// Setup Analytics Listeners
+document.getElementById('analyticsAccept')?.addEventListener('click', () => {
+  localStorage.setItem('oneprompt-analytics-consent', 'true');
+  document.getElementById('analyticsBanner').style.display = 'none';
+  window.electronAPI.updateAnalyticsConsent(true);
+});
+
+document.getElementById('analyticsDecline')?.addEventListener('click', () => {
+  localStorage.setItem('oneprompt-analytics-consent', 'false');
+  document.getElementById('analyticsBanner').style.display = 'none';
+  window.electronAPI.updateAnalyticsConsent(false);
+});
+
+// Call check on init
+checkAnalyticsConsent();
+
 // Salva gli URL delle chat quando l'app viene chiusa
 window.addEventListener('beforeunload', () => {
   saveSessionsToStorage();

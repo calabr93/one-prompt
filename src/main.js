@@ -2,6 +2,17 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
+const { PostHog } = require('posthog-node');
+require('dotenv').config();
+
+// Initialize PostHog
+let posthog = null;
+if (process.env.POSTHOG_API_KEY) {
+  posthog = new PostHog(
+    process.env.POSTHOG_API_KEY,
+    { host: process.env.POSTHOG_HOST || 'https://eu.i.posthog.com' }
+  );
+}
 
 let mainWindow;
 
@@ -177,6 +188,26 @@ app.whenReady().then(() => {
     return AI_CONFIGS;
   });
 
+  // Analytics handlers
+  ipcMain.handle('update-analytics-consent', (event, allowed) => {
+    if (allowed && posthog) {
+      try {
+        posthog.capture({
+          distinctId: 'user_' + require('os').hostname(),
+          event: 'app_opened',
+          properties: {
+            version: app.getVersion(),
+            platform: process.platform,
+            arch: process.arch
+          }
+        });
+        posthog.flush();
+      } catch (error) {
+        console.error('PostHog tracking error:', error);
+      }
+    }
+  });
+
   // Check for updates on app start (from GitHub Releases)
   if (!process.argv.includes('--dev')) {
     setTimeout(() => {
@@ -236,5 +267,11 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
+  }
+});
+
+app.on('before-quit', () => {
+  if (posthog) {
+    posthog.shutdown();
   }
 });
