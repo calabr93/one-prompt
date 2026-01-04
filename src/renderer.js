@@ -13,6 +13,9 @@ const translations = {
     'services.title': 'Servizi disponibili',
     'settings.title': 'Impostazioni',
     'settings.language': 'Lingua',
+    'settings.theme': 'Tema',
+    'settings.theme.dark': 'Scuro',
+    'settings.theme.light': 'Chiaro',
     'placeholder.title': 'Seleziona almeno un servizio',
     'placeholder.subtitle': 'Clicca sul pulsante + per aggiungere servizi AI',
     'session.default': 'Sessione',
@@ -28,6 +31,9 @@ const translations = {
     'services.title': 'Available Services',
     'settings.title': 'Settings',
     'settings.language': 'Language',
+    'settings.theme': 'Theme',
+    'settings.theme.dark': 'Dark',
+    'settings.theme.light': 'Light',
     'placeholder.title': 'Select at least one service',
     'placeholder.subtitle': 'Click the + button to add AI services',
     'session.default': 'Session',
@@ -86,6 +92,27 @@ function updateUILanguage() {
   // Re-render tabs to update "Sessione X" / "Session X" translations
   renderTabs();
 }
+
+// Theme management
+let currentTheme = localStorage.getItem('oneprompt-theme') || 'dark';
+
+function applyTheme(theme) {
+  document.body.setAttribute('data-theme', theme);
+  currentTheme = theme;
+  localStorage.setItem('oneprompt-theme', theme);
+  
+  // Update buttons state
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    if (btn.dataset.theme === theme) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+}
+
+// Apply theme on startup
+applyTheme(currentTheme);
 
 // Session/Tab management
 let sessions = [];
@@ -1054,6 +1081,18 @@ function setupEventListeners() {
     localStorage.setItem('oneprompt-language', currentLanguage);
     updateUILanguage();
   });
+
+  // Theme buttons
+  const themeDarkBtn = document.getElementById('themeDarkBtn');
+  const themeLightBtn = document.getElementById('themeLightBtn');
+
+  if (themeDarkBtn) {
+    themeDarkBtn.addEventListener('click', () => applyTheme('dark'));
+  }
+
+  if (themeLightBtn) {
+    themeLightBtn.addEventListener('click', () => applyTheme('light'));
+  }
 
   // Report Bug button - open GitHub Issues in external browser
   reportBugBtn.addEventListener('click', () => {
