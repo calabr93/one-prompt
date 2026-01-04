@@ -319,14 +319,6 @@ function sendButtonAfterTyping(aiKey, inputEl, selectors) {
     sendBtnEl.focus();
     
     // Dispatch mouse events sequence
-    // const mouseEventProps = {
-    //   bubbles: true,
-    //   cancelable: true,
-    //   view: window
-    // };
-
-    // sendBtnEl.dispatchEvent(new MouseEvent('mousedown', mouseEventProps));
-    // sendBtnEl.dispatchEvent(new MouseEvent('mouseup', mouseEventProps));
     sendBtnEl.click();
 
     console.log('[OnePrompt] Button clicked (enhanced)');

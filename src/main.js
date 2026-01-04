@@ -254,6 +254,11 @@ app.whenReady().then(() => {
 
   // Open external URL in default browser
   ipcMain.handle('open-external', async (event, url) => {
+    if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+      console.error('Blocked unsafe URL opening attempt:', url);
+      return { success: false, error: 'Invalid protocol' };
+    }
+
     try {
       await shell.openExternal(url);
       return { success: true };

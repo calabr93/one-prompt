@@ -8,83 +8,30 @@ let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configure
 
 // i18n - Internazionalizzazione
 let currentLanguage = localStorage.getItem('oneprompt-language') || 'it';
+let translations = {};
 
-const translations = {
-  it: {
-    'services.title': 'Servizi disponibili',
-    'settings.title': 'Impostazioni',
-    'settings.language': 'Lingua',
-    'settings.theme': 'Tema',
-    'settings.theme.dark': 'Scuro',
-    'settings.theme.light': 'Chiaro',
-    'placeholder.title': 'Seleziona almeno un servizio',
-    'placeholder.subtitle': 'Clicca sul pulsante + per aggiungere servizi AI',
-    'session.default': 'Sessione',
-    'sidebar.addService': 'Aggiungi servizio',
-    'sidebar.newSession': 'Nuova sessione',
-    'sidebar.home': 'Home',
-    'sidebar.reportBug': 'Segnala Bug o Richiedi Funzionalità',
-    'sidebar.settings': 'Impostazioni',
-    'prompt.placeholder': 'Inserisci il tuo prompt qui...',
-    'send': 'Invia',
-    'comingSoon': 'Prossimamente',
-    'analytics.text': 'Mi aiuti a capire se OnePrompt è utile? Conto solo quante volte l’app viene aperta, in forma totalmente anonima. Nessun altro dato viene toccato.',
-    'analytics.accept': 'Nessun problema',
-    'analytics.decline': 'Preferisco di no',
-    'feedback.title': 'Invia Feedback',
-    'feedback.type': 'Tipo',
-    'feedback.type.bug': 'Segnala un Bug',
-    'feedback.type.feature': 'Richiedi Funzionalità',
-    'feedback.type.other': 'Altro',
-    'feedback.message': 'Messaggio',
-    'feedback.placeholder': 'Descrivi il problema o la tua idea...',
-    'feedback.email': 'Email (opzionale)',
-    'feedback.submit': 'Invia',
-    'feedback.success': 'Grazie per il tuo feedback!',
-    'feedback.error': 'Errore durante l’invio. Riprova più tardi.',
-    'close': 'Chiudi'
-  },
-  en: {
-    'services.title': 'Available Services',
-    'settings.title': 'Settings',
-    'settings.language': 'Language',
-    'settings.theme': 'Theme',
-    'settings.theme.dark': 'Dark',
-    'settings.theme.light': 'Light',
-    'placeholder.title': 'Select at least one service',
-    'placeholder.subtitle': 'Click the + button to add AI services',
-    'session.default': 'Session',
-    'sidebar.addService': 'Add service',
-    'sidebar.newSession': 'New session',
-    'sidebar.home': 'Home',
-    'sidebar.reportBug': 'Report Bug or Request Feature',
-    'sidebar.settings': 'Settings',
-    'prompt.placeholder': 'Enter your prompt here...',
-    'send': 'Send',
-    'comingSoon': 'Coming Soon',
-    'analytics.text': 'Help me understand if OnePrompt is useful? I only count how many times the app is opened, completely anonymously. No other data is touched.',
-    'analytics.accept': 'No problem',
-    'analytics.decline': 'I’d rather not',
-    'feedback.title': 'Send Feedback',
-    'feedback.type': 'Type',
-    'feedback.type.bug': 'Report a Bug',
-    'feedback.type.feature': 'Request Feature',
-    'feedback.type.other': 'Other',
-    'feedback.message': 'Message',
-    'feedback.placeholder': 'Describe the issue or your idea...',
-    'feedback.email': 'Email (optional)',
-    'feedback.submit': 'Send',
-    'feedback.success': 'Thanks for your feedback!',
-    'feedback.error': 'Error sending feedback. Please try again later.',
-    'close': 'Close'
+async function loadTranslations(lang) {
+  try {
+    const response = await fetch(`./locales/${lang}.json`);
+    if (!response.ok) throw new Error(`Failed to load ${lang} translations`);
+    translations[lang] = await response.json();
+  } catch (error) {
+    console.error(`Error loading translations for ${lang}:`, error);
+    // Fallback to empty object to prevent crashes
+    translations[lang] = {};
   }
-};
-
-function t(key) {
-  return translations[currentLanguage][key] || key;
 }
 
-function updateUILanguage() {
+function t(key) {
+  return (translations[currentLanguage] && translations[currentLanguage][key]) || key;
+}
+
+async function updateUILanguage() {
+  // Ensure translations are loaded
+  if (!translations[currentLanguage]) {
+    await loadTranslations(currentLanguage);
+  }
+
   // Update all elements with data-i18n attribute
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
@@ -321,6 +268,7 @@ async function init() {
 
     // Imposta la lingua iniziale
     languageSelect.value = currentLanguage;
+    await loadTranslations(currentLanguage);
     updateUILanguage();
 
     // Setup event listeners
@@ -1249,9 +1197,10 @@ function setupEventListeners() {
   });
 
   // Language select change
-  languageSelect.addEventListener('change', (e) => {
+  languageSelect.addEventListener('change', async (e) => {
     currentLanguage = e.target.value;
     localStorage.setItem('oneprompt-language', currentLanguage);
+    await loadTranslations(currentLanguage);
     updateUILanguage();
   });
 
