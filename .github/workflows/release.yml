@@ -28,6 +28,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Create .env file
+        shell: bash
+        run: |
+          echo "POSTHOG_API_KEY=${{ secrets.POSTHOG_API_KEY }}" >> .env
+          echo "POSTHOG_HOST=${{ secrets.POSTHOG_HOST }}" >> .env
+
       - name: Build for macOS
         if: matrix.os == 'macos-latest'
         run: npm run build:mac

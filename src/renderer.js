@@ -3,7 +3,8 @@ let aiConfigs = {};
 let injectionRules = {};
 let loadedWebviews = new Set();
 let webviewInstances = {}; // Map sessionId → { aiKey → webview element }
-let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '[]'));
+// Default to ChatGPT, Perplexity, and Copilot for fresh installations
+let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["chatgpt", "perplexity", "copilot"]'));
 
 // i18n - Internazionalizzazione
 let currentLanguage = localStorage.getItem('oneprompt-language') || 'it';
@@ -283,12 +284,6 @@ const reportBugBtn = document.getElementById('reportBugBtn');
 // Initialize app
 async function init() {
   console.log('=== INIT STARTED ===');
-
-  // Perplexity è sempre configurato (non richiede login obbligatorio)
-  if (!configuredAIs.has('perplexity')) {
-    configuredAIs.add('perplexity');
-    localStorage.setItem('oneprompt-configured-services', JSON.stringify([...configuredAIs]));
-  }
 
   try {
     // Carica le configurazioni delle AI

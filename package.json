@@ -18,7 +18,7 @@
     "Gemini",
     "Electron"
   ],
-  "author": "Francesco Calabretta",
+  "author": "Fabio Calabretta",
   "license": "MIT",
   "devDependencies": {
     "electron": "^39.2.7",
@@ -31,22 +31,45 @@
     "mac": {
       "category": "public.app-category.productivity",
       "target": [
-        "dmg",
-        "zip"
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64", "arm64"]
+        }
       ],
-      "icon": "assets/logo/logo.icns"
+      "icon": "assets/logo/logo.icns",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
     },
     "win": {
       "target": [
-        "nsis",
-        "portable"
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
       ],
-      "icon": "assets/logo/logo.ico"
+      "icon": "assets/logo/logo.ico",
+      "artifactName": "${productName}-${version}-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable-${version}.${ext}"
     },
     "files": [
       "src/**/*",
       "assets/**/*",
-      "package.json"
+      "package.json",
+      ".env"
     ],
     "directories": {
       "buildResources": "assets",

@@ -56,20 +56,6 @@ const AI_CONFIGS = {
     logo: 'ai-services/chatgpt.png',
     color: '#10a37f'
   },
-  claude: {
-    name: 'Claude',
-    url: 'https://claude.ai',
-    icon: '🧠',
-    logo: 'ai-services/claude.png',
-    color: '#cc785c'
-  },
-  gemini: {
-    name: 'Gemini',
-    url: 'https://gemini.google.com',
-    icon: '✨',
-    logo: 'ai-services/gemini.png',
-    color: '#4285f4'
-  },
   perplexity: {
     name: 'Perplexity',
     url: 'https://www.perplexity.ai',
@@ -83,6 +69,20 @@ const AI_CONFIGS = {
     icon: '💬',
     logo: 'ai-services/copilot.png',
     color: '#0078d4'
+  },
+  claude: {
+    name: 'Claude',
+    url: 'https://claude.ai',
+    icon: '🧠',
+    logo: 'ai-services/claude.png',
+    color: '#cc785c'
+  },
+  gemini: {
+    name: 'Gemini',
+    url: 'https://gemini.google.com',
+    icon: '✨',
+    logo: 'ai-services/gemini.png',
+    color: '#4285f4'
   },
   deepseek: {
     name: 'DeepSeek',
@@ -216,6 +216,9 @@ app.whenReady().then(() => {
       });
     }, 3000); // Wait 3 seconds after app starts
   }
+
+  // Disable mDNS to prevent Windows Firewall popup
+  app.commandLine.appendSwitch('disable-features', 'MediaRouter');
 
   ipcMain.handle('get-injection-rules', () => {
     const rulesPath = path.join(__dirname, 'injection-rules.json');

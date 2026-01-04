@@ -345,17 +345,6 @@ function sendButtonAfterTyping(aiKey, inputEl, selectors) {
 
     pressEnter(inputEl);
 
-    // Also try on the input itself
-    const enterEvent = new KeyboardEvent('keydown', {
-      key: 'Enter',
-      code: 'Enter',
-      keyCode: 13,
-      which: 13,
-      bubbles: true,
-      cancelable: true
-    });
-    inputEl.dispatchEvent(enterEvent);
-
     // Reset flag dopo 5 secondi
     setTimeout(() => {
       sendButtonClicked = false;
