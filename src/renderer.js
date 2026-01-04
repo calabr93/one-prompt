@@ -141,8 +141,17 @@ function captureCurrentUrls() {
   const sessionWebviews = getCurrentSessionWebviews();
   Object.keys(sessionWebviews).forEach(aiKey => {
     const webview = sessionWebviews[aiKey];
-    if (webview && webview.src) {
-      currentSession.chatUrls[aiKey] = webview.src;
+    if (webview) {
+      try {
+        // Usa getURL() se disponibile per ottenere l'URL corrente reale (navigazione utente)
+        // altrimenti fallback su src
+        const url = (typeof webview.getURL === 'function') ? webview.getURL() : webview.src;
+        if (url) {
+          currentSession.chatUrls[aiKey] = url;
+        }
+      } catch (e) {
+        console.error(`Errore cattura URL per ${aiKey}:`, e);
+      }
     }
   });
 }
@@ -439,6 +448,9 @@ function startRenameTab(tabNameElement, session) {
 function switchToSession(sessionId) {
   if (sessionId === currentSessionId) return;
 
+  // Salva lo stato della sessione corrente PRIMA di cambiare
+  saveSessionsToStorage();
+
   currentSessionId = sessionId;
   const session = getCurrentSession();
 
@@ -499,6 +511,9 @@ function closeSession(sessionId) {
 
 // Crea nuova sessione
 function createNewSessionAndSwitch() {
+  // Salva lo stato della sessione corrente PRIMA di cambiare
+  saveSessionsToStorage();
+
   // Crea nuova sessione vuota (senza servizi preselezionati)
   const newSession = createNewSession(null, new Set([]));
 
