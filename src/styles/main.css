@@ -725,6 +725,7 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 12px;
+  padding-right: 48px; /* Space for absolute button */
   color: var(--text-primary);
   font-size: 0.95rem;
   font-family: inherit;

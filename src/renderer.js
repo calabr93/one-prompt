@@ -21,11 +21,15 @@ const translations = {
     'session.default': 'Sessione',
     'sidebar.addService': 'Aggiungi servizio',
     'sidebar.newSession': 'Nuova sessione',
+    'sidebar.home': 'Home',
     'sidebar.reportBug': 'Segnala Bug o Richiedi Funzionalità',
     'sidebar.settings': 'Impostazioni',
     'prompt.placeholder': 'Inserisci il tuo prompt qui...',
     'send': 'Invia',
-    'comingSoon': 'Prossimamente'
+    'comingSoon': 'Prossimamente',
+    'analytics.text': 'Mi aiuti a capire se OnePrompt è utile? Conto solo quante volte l’app viene aperta, in forma totalmente anonima. Nessun altro dato viene toccato.',
+    'analytics.accept': 'Nessun problema',
+    'analytics.decline': 'Preferisco di no'
   },
   en: {
     'services.title': 'Available Services',
@@ -39,11 +43,15 @@ const translations = {
     'session.default': 'Session',
     'sidebar.addService': 'Add service',
     'sidebar.newSession': 'New session',
+    'sidebar.home': 'Home',
     'sidebar.reportBug': 'Report Bug or Request Feature',
     'sidebar.settings': 'Settings',
     'prompt.placeholder': 'Enter your prompt here...',
     'send': 'Send',
-    'comingSoon': 'Coming Soon'
+    'comingSoon': 'Coming Soon',
+    'analytics.text': 'Help me understand if OnePrompt is useful? I only count how many times the app is opened, completely anonymously. No other data is touched.',
+    'analytics.accept': 'No problem',
+    'analytics.decline': 'I’d rather not'
   }
 };
 
@@ -65,6 +73,9 @@ function updateUILanguage() {
   }
 
   // Update button titles
+  const homeBtn = document.getElementById('homeBtn');
+  if (homeBtn) homeBtn.title = t('sidebar.home');
+
   const addServiceBtn = document.getElementById('addServiceBtn');
   if (addServiceBtn) addServiceBtn.title = t('sidebar.addService');
 
@@ -1020,6 +1031,12 @@ function updateSidebarButtonState(aiKey) {
 
 // Setup event listeners
 function setupEventListeners() {
+  // Home button
+  const homeBtn = document.getElementById('homeBtn');
+  if (homeBtn) {
+    homeBtn.addEventListener('click', openServicesModal);
+  }
+
   // Prompt input
   promptInput.addEventListener('input', updateSendButton);
   promptInput.addEventListener('keydown', (e) => {
