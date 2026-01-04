@@ -159,6 +159,11 @@ function createMainWindow() {
     title: 'OnePrompt',
     icon: iconPath,
     titleBarStyle: 'hidden',
+    titleBarOverlay: {
+      color: '#2d2d2d',
+      symbolColor: '#ffffff',
+      height: 38
+    },
     trafficLightPosition: { x: 12, y: 12 },
     backgroundColor: '#1a1a1a',
     webPreferences: {
