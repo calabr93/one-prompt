@@ -263,6 +263,7 @@ async function init() {
 
     // Setup event listeners
     setupEventListeners();
+    setupScrollListeners();
 
     console.log('=== INIT COMPLETED ===');
   } catch (error) {
@@ -886,6 +887,62 @@ function renderSidebar() {
       sidebarNav.appendChild(button);
     }
   });
+
+  // Aggiorna indicatori di scroll
+  updateScrollIndicators();
+}
+
+// Gestione indicatori di scroll
+function updateScrollIndicators() {
+  const scrollUpBtn = document.getElementById('scrollUpBtn');
+  const scrollDownBtn = document.getElementById('scrollDownBtn');
+  
+  if (!scrollUpBtn || !scrollDownBtn) return;
+
+  const hasOverflow = sidebarNav.scrollHeight > sidebarNav.clientHeight;
+  const isAtTop = sidebarNav.scrollTop <= 0;
+  const isAtBottom = sidebarNav.scrollTop + sidebarNav.clientHeight >= sidebarNav.scrollHeight - 1;
+
+  if (hasOverflow) {
+    if (!isAtTop) {
+      scrollUpBtn.classList.add('visible');
+    } else {
+      scrollUpBtn.classList.remove('visible');
+    }
+
+    if (!isAtBottom) {
+      scrollDownBtn.classList.add('visible');
+    } else {
+      scrollDownBtn.classList.remove('visible');
+    }
+  } else {
+    scrollUpBtn.classList.remove('visible');
+    scrollDownBtn.classList.remove('visible');
+  }
+}
+
+// Setup scroll listeners
+function setupScrollListeners() {
+  const scrollUpBtn = document.getElementById('scrollUpBtn');
+  const scrollDownBtn = document.getElementById('scrollDownBtn');
+
+  if (sidebarNav) {
+    sidebarNav.addEventListener('scroll', updateScrollIndicators);
+    // Aggiorna anche al resize della finestra
+    window.addEventListener('resize', updateScrollIndicators);
+  }
+
+  if (scrollUpBtn) {
+    scrollUpBtn.addEventListener('click', () => {
+      sidebarNav.scrollBy({ top: -60, behavior: 'smooth' });
+    });
+  }
+
+  if (scrollDownBtn) {
+    scrollDownBtn.addEventListener('click', () => {
+      sidebarNav.scrollBy({ top: 60, behavior: 'smooth' });
+    });
+  }
 }
 
 // Create sidebar button

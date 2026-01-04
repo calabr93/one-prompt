@@ -100,8 +100,18 @@ body {
   box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
 }
 
-.sidebar-nav {
+.sidebar-content-wrapper {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+  align-items: center;
+}
+
+.sidebar-nav {
+  flex: 0 1 auto; /* Shrink if needed, but don't grow to push button down unnecessarily */
   display: flex;
   flex-direction: column;
   gap: var(--spacing-sm);
@@ -109,14 +119,58 @@ body {
   padding: 0 var(--spacing-md);
   overflow-y: auto;
   align-items: center;
-  /* Center items horizontally */
   scrollbar-width: none;
-  /* Firefox */
+  scroll-behavior: smooth;
 }
 
 .sidebar-nav::-webkit-scrollbar {
   display: none;
-  /* Chrome, Safari, Opera */
+}
+
+.add-service-wrapper {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-sm) 0;
+  z-index: 10;
+}
+
+.scroll-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(45, 45, 45, 0.9); /* Match sidebar bg with transparency */
+  color: var(--text-secondary);
+  cursor: pointer;
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.scroll-indicator.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.scroll-indicator:hover {
+  background: var(--bg-tertiary);
+  color: white;
+}
+
+.scroll-indicator.up {
+  top: 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.scroll-indicator.down {
+  bottom: 60px; /* Height of add-service-wrapper approx */
+  border-top: 1px solid var(--border-color);
 }
 
 .sidebar-item {
@@ -217,18 +271,17 @@ body {
   box-shadow: none !important;
 }
 
-.add-service {
-  background: var(--bg-primary);
-  border: 2px dashed var(--accent-color);
-  color: var(--accent-color);
+.sidebar-item.add-service {
+  background: var(--accent-color);
+  color: white;
+  border: none;
   font-size: 1.8rem;
   font-weight: 300;
 }
 
-.add-service:hover {
-  border-color: var(--accent-color);
-  background: var(--accent-color);
-  color: white;
+.sidebar-item.add-service:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
 }
 
 #settingsBtn {

@@ -21,14 +21,27 @@
         </div>
       </div>
       
-      <nav class="sidebar-nav" id="sidebarNav">
-        <!-- Le icone AI verranno generate dinamicamente -->
-      </nav>
+      <div class="sidebar-content-wrapper">
+        <div class="scroll-indicator up" id="scrollUpBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+        </div>
+        
+        <nav class="sidebar-nav" id="sidebarNav">
+          <!-- Le icone AI verranno generate dinamicamente -->
+        </nav>
+        
+        <div class="scroll-indicator down" id="scrollDownBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+
+        <div class="add-service-wrapper">
+          <button class="sidebar-item add-service" id="addServiceBtn" title="Aggiungi servizio">
+            <span class="sidebar-icon">+</span>
+          </button>
+        </div>
+      </div>
       
       <div class="sidebar-footer">
-        <button class="sidebar-item add-service" id="addServiceBtn" title="Aggiungi servizio">
-          <span class="sidebar-icon">+</span>
-        </button>
         <button class="sidebar-item new-session" id="newSessionBtn" title="Nuova sessione">
           <span class="sidebar-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
