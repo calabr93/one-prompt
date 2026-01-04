@@ -1,6 +1,6 @@
 {
   "name": "oneprompt",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Un'applicazione per gestire più AI chat in un unico posto - inserisci un prompt e invialo a tutte le tue AI preferite",
   "main": "src/main.js",
   "scripts": {
