@@ -1,10 +1,14 @@
 # OnePrompt
 
+<div align="center">
+  <img src="assets/logo/icon.png" alt="OnePrompt Logo" width="120" height="120">
+</div>
+
 ![Experimental](https://img.shields.io/badge/status-experimental-orange?style=for-the-badge)
 ![Educational](https://img.shields.io/badge/purpose-educational-blue?style=for-the-badge)
 ![Personal Use](https://img.shields.io/badge/use-personal%20only-red?style=for-the-badge)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/M4M41RI9V7)
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buy.stripe.com/28E6oIcRUcc0cE48oO2wU04)
 
 **An Electron desktop app to compare responses from multiple AI platforms simultaneously.**
 
@@ -205,7 +209,7 @@ All feedback is appreciated! 🙏
 
 Enjoying OnePrompt? Consider buying me a coffee!
 
-☕ **[ko-fi.com/calabr93](https://ko-fi.com/calabr93)**
+[![Buy me a coffee](https://img.shields.io/badge/Buy%20me%20a%20coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buy.stripe.com/28E6oIcRUcc0cE48oO2wU04)
 
 Your support helps keep this project alive and motivates me to add new features and maintain it. Every coffee counts! 🙏
 
