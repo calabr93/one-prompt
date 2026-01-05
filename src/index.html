@@ -138,71 +138,126 @@
           </svg>
         </button>
       </div>
-      <div class="modal-content">
-        <div class="settings-section">
-          <label class="settings-label" data-i18n="settings.theme">Tema</label>
-          <div class="theme-selector">
-            <button class="theme-btn active" data-theme="dark" id="themeDarkBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
-              <span data-i18n="settings.theme.dark">Scuro</span>
-            </button>
-            <button class="theme-btn" data-theme="light" id="themeLightBtn">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-              <span data-i18n="settings.theme.light">Chiaro</span>
-            </button>
+      <div class="modal-content settings-layout">
+        <div class="settings-flex-wrapper">
+          <div class="settings-sidebar">
+            <button class="settings-nav-btn active" data-target="settings-general" data-i18n="settings.general">Generale</button>
+            <button class="settings-nav-btn" data-target="settings-api" data-i18n="settings.apiMode">API</button>
           </div>
-        </div>
-
-        <div class="settings-section">
-          <label class="settings-label" data-i18n="settings.language">Lingua</label>
-          <select id="languageSelect" class="settings-select">
-            <option value="it">Italiano</option>
-            <option value="en">English</option>
-          </select>
-        </div>
-
-        <div class="settings-section">
-          <div class="settings-section-title" data-i18n="settings.apiMode">Modalità API & Injection</div>
           
-          <label class="settings-label" data-i18n="settings.defaultMode">Modalità predefinita</label>
-          <div class="radio-group">
-            <label class="radio-label">
-              <input type="radio" name="defaultMode" value="injection">
-              <span data-i18n="settings.defaultMode.injection">Injection</span>
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="defaultMode" value="api">
-              <span data-i18n="settings.defaultMode.api">API</span>
-            </label>
-            <label class="radio-label">
-              <input type="radio" name="defaultMode" value="ask">
-              <span data-i18n="settings.defaultMode.alwaysAsk">Chiedi sempre</span>
-            </label>
-          </div>
+          <div class="settings-body">
+            <!-- General Section -->
+            <div id="settings-general" class="settings-tab-content active">
+              <div class="settings-section">
+                <label class="settings-label" data-i18n="settings.theme">Tema</label>
+                <div class="theme-selector">
+                  <button class="theme-btn active" data-theme="dark" id="themeDarkBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <span data-i18n="settings.theme.dark">Scuro</span>
+                  </button>
+                  <button class="theme-btn" data-theme="light" id="themeLightBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <span data-i18n="settings.theme.light">Chiaro</span>
+                  </button>
+                </div>
+              </div>
 
-          <div style="margin-top: 1.5rem;">
-            <div class="settings-section-title" data-i18n="settings.apiKeys" style="font-size: 0.95rem; border-bottom: none; margin-bottom: 0.5rem;">Chiavi API</div>
-            <p class="settings-desc" data-i18n="settings.apiKeys.desc" style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Inserisci le tue chiavi API per utilizzare la modalità API.</p>
-            
-            <div class="api-key-input-group">
-              <label class="api-key-label" data-i18n="settings.apiKeys.openai">OpenAI API Key</label>
-              <input type="password" id="apiKeyOpenAI" class="api-key-input" placeholder="sk-...">
-            </div>
-            
-            <div class="api-key-input-group">
-              <label class="api-key-label" data-i18n="settings.apiKeys.anthropic">Anthropic API Key</label>
-              <input type="password" id="apiKeyAnthropic" class="api-key-input" placeholder="sk-ant-...">
+              <div class="settings-section">
+                <label class="settings-label" data-i18n="settings.language">Lingua</label>
+                <select id="languageSelect" class="settings-select">
+                  <option value="it">Italiano</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+
+              <div class="settings-section">
+                <label class="settings-label" data-i18n="settings.defaultMode">Modalità predefinita</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="defaultMode" value="injection">
+                    <span data-i18n="settings.defaultMode.injection">Injection</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="defaultMode" value="api">
+                    <span data-i18n="settings.defaultMode.api">API</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="defaultMode" value="ask">
+                    <span data-i18n="settings.defaultMode.alwaysAsk">Chiedi sempre</span>
+                  </label>
+                </div>
+              </div>
             </div>
 
-            <div class="api-key-input-group">
-              <label class="api-key-label" data-i18n="settings.apiKeys.gemini">Google Gemini API Key</label>
-              <input type="password" id="apiKeyGemini" class="api-key-input" placeholder="AIza...">
+            <!-- API Section -->
+            <div id="settings-api" class="settings-tab-content">
+              <div class="settings-section-title" data-i18n="settings.apiKeys">Chiavi API</div>
+              <p class="settings-desc" data-i18n="settings.apiKeys.desc" style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Inserisci le tue chiavi API per utilizzare la modalità API.</p>
+              
+              <div class="api-service-card">
+                <div class="api-service-header">
+                  <img src="../assets/ai-services/chatgpt.png" alt="OpenAI" style="width: 24px; height: 24px; object-fit: contain;">
+                  <span>OpenAI</span>
+                </div>
+                <div class="api-key-input-group">
+                  <label class="api-key-label" data-i18n="settings.apiKeys.openai">OpenAI API Key</label>
+                  <input type="password" id="apiKeyOpenAI" class="api-key-input" placeholder="sk-...">
+                  <div style="margin-top: 0.5rem;">
+                    <label class="api-key-label" style="font-size: 0.8rem;" data-i18n="settings.model">Modello</label>
+                    <select id="modelOpenAI" class="settings-select" style="width: 100%; margin-top: 0.25rem;">
+                      <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                      <option value="gpt-4o">GPT-4o</option>
+                      <option value="gpt-4o-mini">GPT-4o Mini</option>
+                      <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="api-service-card">
+                <div class="api-service-header">
+                  <img src="../assets/ai-services/claude.png" alt="Anthropic" style="width: 24px; height: 24px; object-fit: contain;">
+                  <span>Anthropic</span>
+                </div>
+                <div class="api-key-input-group">
+                  <label class="api-key-label" data-i18n="settings.apiKeys.anthropic">Anthropic API Key</label>
+                  <input type="password" id="apiKeyAnthropic" class="api-key-input" placeholder="sk-ant-...">
+                  <div style="margin-top: 0.5rem;">
+                    <label class="api-key-label" style="font-size: 0.8rem;" data-i18n="settings.model">Modello</label>
+                    <select id="modelAnthropic" class="settings-select" style="width: 100%; margin-top: 0.25rem;">
+                      <option value="claude-3-opus-20240229">Claude 3 Opus</option>
+                      <option value="claude-3-5-sonnet-20240620">Claude 3.5 Sonnet</option>
+                      <option value="claude-3-sonnet-20240229">Claude 3 Sonnet</option>
+                      <option value="claude-3-haiku-20240307">Claude 3 Haiku</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="api-service-card">
+                <div class="api-service-header">
+                  <img src="../assets/ai-services/gemini.png" alt="Google" style="width: 24px; height: 24px; object-fit: contain;">
+                  <span>Google Gemini</span>
+                </div>
+                <div class="api-key-input-group">
+                  <label class="api-key-label" data-i18n="settings.apiKeys.gemini">Google Gemini API Key</label>
+                  <input type="password" id="apiKeyGemini" class="api-key-input" placeholder="AIza...">
+                  <div style="margin-top: 0.5rem;">
+                    <label class="api-key-label" style="font-size: 0.8rem;" data-i18n="settings.model">Modello</label>
+                    <select id="modelGemini" class="settings-select" style="width: 100%; margin-top: 0.25rem;">
+                      <option value="gemini-pro">Gemini 1.0 Pro</option>
+                      <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                      <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="settings-footer" style="margin-top: 30px; text-align: center; opacity: 0.6; font-size: 0.8rem;">
-          <div style="margin-bottom: 5px;" id="appVersion">v0.1.4</div>
+        <div class="settings-footer" style="padding: 10px; text-align: center; opacity: 0.6; font-size: 0.7rem; border-top: 1px solid var(--border-color);">
+          <div style="margin-bottom: 3px;" id="appVersion">v0.1.5</div>
           <div>
             Crafted by Fabio Calabretta • 
             <a href="#" onclick="window.electronAPI.openExternal('https://buy.stripe.com/28E6oIcRUcc0cE48oO2wU04')" style="color: inherit; text-decoration: underline; cursor: pointer;">Support OnePrompt</a>

@@ -126,12 +126,21 @@ function createNewSession(name = null, selectedAIsSet = null, mode = null) {
     nextNumber++;
   }
 
+  // Determine mode based on default settings if not provided
+  let initialMode = mode;
+  if (!initialMode) {
+      const defaultMode = localStorage.getItem('oneprompt-default-mode');
+      if (defaultMode && defaultMode !== 'ask') {
+          initialMode = defaultMode;
+      }
+  }
+
   return {
     id: `session-${Date.now()}-${sessionCounter}`,
     name: name || null, // null significa usa il nome di default tradotto
     sessionNumber: nextNumber, // Usa il numero calcolato
     selectedAIs: selectedAIsSet ? Array.from(selectedAIsSet) : [],
-    mode: mode || null, // 'injection' or 'api' or null
+    mode: initialMode || null, // 'injection' or 'api' or null
     chatUrls: {}, // Mappa aiKey -> URL della conversazione
     createdAt: Date.now()
   };
@@ -827,37 +836,20 @@ async function renderWebviews() {
       webviewGrid.appendChild(placeholder);
     }
 
+    // Logic moved to createNewSession to avoid changing mode of existing sessions
+    // when settings change.
+    
+    // Default to Injection if no mode is set and no default preference
+    // This is a fallback for very old sessions or edge cases
     const defaultMode = localStorage.getItem('oneprompt-default-mode');
-
-    // If no mode set, and we have a default mode (and it's not 'ask'), use it
-    if (!mode && defaultMode && defaultMode !== 'ask') {
+    if (!mode && !defaultMode) {
         if (currentSession) {
-            currentSession.mode = defaultMode;
-            
-            // If defaulting to API, set default services
-            if (defaultMode === 'api') {
-                 const apiServices = ['chatgpt', 'gemini', 'claude'];
-                 // Ensure they are configured but NOT selected
-                 apiServices.forEach(key => {
-                     if (!configuredApiAIs.has(key)) {
-                         configuredApiAIs.add(key);
-                     }
-                 });
-                 localStorage.setItem('oneprompt-configured-api-services', JSON.stringify([...configuredApiAIs]));
-                 
-                 selectedAIs.clear(); // Ensure no selection
-                 saveSelectedAIs();
-                 renderSidebar(); // Update sidebar
-            }
-
+            currentSession.mode = 'injection';
             saveSessionsToStorage();
-            // Re-render to apply mode logic
             renderWebviews();
             return;
         }
     }
-
-    // Default to Injection if no mode is set and no default preference
     if (!mode && !defaultMode) {
         if (currentSession) {
             currentSession.mode = 'injection';
@@ -874,14 +866,14 @@ async function renderWebviews() {
                 <div class="mode-cards">
                     <div class="mode-card" onclick="selectMode('injection')">
                         <div class="mode-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
                         </div>
                         <div class="mode-title">${t('mode.injection.title')}</div>
                         <div class="mode-desc">${t('mode.injection.desc')}</div>
                     </div>
                     <div class="mode-card" onclick="selectMode('api')">
                         <div class="mode-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
                         </div>
                         <div class="mode-title">${t('mode.api.title')}</div>
                         <div class="mode-desc">${t('mode.api.desc')}</div>
@@ -897,13 +889,16 @@ async function renderWebviews() {
             </div>
         `;
     } else if (mode === 'api') {
-         // API Mode Placeholder (Coming Soon or UI)
+         // API Mode Placeholder
          placeholder.innerHTML = `
             <div class="placeholder-content">
                 <div class="placeholder-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-dasharray="5 5"></rect>
+                    <path d="M12 8v8M8 12h8" stroke-dasharray="none"></path>
+                  </svg>
                 </div>
-                <h3 class="placeholder-title">${t('mode.api.title')}</h3>
+                <h3 class="placeholder-title">${t('placeholder.title')}</h3>
                 <p style="color: var(--text-secondary); margin-top: 10px;">${t('placeholder.subtitle')}</p>
             </div>
          `;
@@ -1637,6 +1632,28 @@ function initSettings() {
     const apiKeyAnthropic = document.getElementById('apiKeyAnthropic');
     const apiKeyGemini = document.getElementById('apiKeyGemini');
 
+    // Settings Sidebar Navigation
+    const settingsNavBtns = document.querySelectorAll('.settings-nav-btn');
+    const settingsTabContents = document.querySelectorAll('.settings-tab-content');
+
+    settingsNavBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons and contents
+            settingsNavBtns.forEach(b => b.classList.remove('active'));
+            settingsTabContents.forEach(c => c.classList.remove('active'));
+
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            // Show corresponding content
+            const targetId = btn.getAttribute('data-target');
+            const targetContent = document.getElementById(targetId);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        });
+    });
+
     // Init radio buttons
     let currentDefaultMode = localStorage.getItem('oneprompt-default-mode');
     if (!currentDefaultMode) {
@@ -1659,14 +1676,32 @@ function initSettings() {
         apiKeyOpenAI.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-openai', e.target.value));
     }
     
+    const modelOpenAI = document.getElementById('modelOpenAI');
+    if (modelOpenAI) {
+        modelOpenAI.value = localStorage.getItem('oneprompt-model-openai') || 'gpt-3.5-turbo';
+        modelOpenAI.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-openai', e.target.value));
+    }
+    
     if (apiKeyAnthropic) {
         apiKeyAnthropic.value = localStorage.getItem('oneprompt-api-anthropic') || '';
         apiKeyAnthropic.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-anthropic', e.target.value));
+    }
+
+    const modelAnthropic = document.getElementById('modelAnthropic');
+    if (modelAnthropic) {
+        modelAnthropic.value = localStorage.getItem('oneprompt-model-anthropic') || 'claude-3-opus-20240229';
+        modelAnthropic.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-anthropic', e.target.value));
     }
     
     if (apiKeyGemini) {
         apiKeyGemini.value = localStorage.getItem('oneprompt-api-gemini') || '';
         apiKeyGemini.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-gemini', e.target.value));
+    }
+
+    const modelGemini = document.getElementById('modelGemini');
+    if (modelGemini) {
+        modelGemini.value = localStorage.getItem('oneprompt-model-gemini') || 'gemini-pro';
+        modelGemini.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-gemini', e.target.value));
     }
 }
 
@@ -1795,6 +1830,7 @@ async function handleApiChat(aiKey, prompt, panel) {
         let responseText = '';
         
         if (aiKey === 'chatgpt') {
+            const model = localStorage.getItem('oneprompt-model-openai') || 'gpt-3.5-turbo';
             const res = await fetch('https://api.openai.com/v1/chat/completions', {
                 method: 'POST',
                 headers: {
@@ -1802,7 +1838,7 @@ async function handleApiChat(aiKey, prompt, panel) {
                     'Authorization': `Bearer ${apiKey}`
                 },
                 body: JSON.stringify({
-                    model: "gpt-3.5-turbo", // Default model
+                    model: model,
                     messages: [{ role: "user", content: prompt }]
                 })
             });
@@ -1811,6 +1847,7 @@ async function handleApiChat(aiKey, prompt, panel) {
             responseText = data.choices[0].message.content;
         } 
         else if (aiKey === 'claude') {
+             const model = localStorage.getItem('oneprompt-model-anthropic') || 'claude-3-opus-20240229';
              const res = await fetch('https://api.anthropic.com/v1/messages', {
                 method: 'POST',
                 headers: {
@@ -1819,7 +1856,7 @@ async function handleApiChat(aiKey, prompt, panel) {
                     'content-type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: "claude-3-opus-20240229",
+                    model: model,
                     max_tokens: 1024,
                     messages: [{ role: "user", content: prompt }]
                 })
@@ -1829,7 +1866,8 @@ async function handleApiChat(aiKey, prompt, panel) {
             responseText = data.content[0].text;
         }
         else if (aiKey === 'gemini') {
-            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+            const model = localStorage.getItem('oneprompt-model-gemini') || 'gemini-pro';
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -33,3 +33,6 @@ Desktop.ini
 # Temporary files
 tmp/
 temp/
+
+# Scripts
+scripts/release.js
