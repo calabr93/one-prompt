@@ -313,12 +313,8 @@ function saveSelectedAIs() {
 function renderTabs() {
   tabList.innerHTML = '';
 
-  // Mostra tab bar solo se ci sono 2+ sessioni
-  if (sessions.length >= 2) {
-    tabBar.style.display = 'flex';
-  } else {
-    tabBar.style.display = 'none';
-  }
+  // Mostra sempre la tab bar (stile Chrome)
+  tabBar.style.display = 'flex';
 
   sessions.forEach(session => {
     const tab = createTabElement(session);
@@ -517,18 +513,19 @@ function updateSidebarState() {
 
 // Chiudi sessione
 function closeSession(sessionId) {
-  if (sessions.length === 1) {
-    // Non permettere di chiudere l'ultima sessione
-    return;
-  }
-
   const sessionIndex = sessions.findIndex(s => s.id === sessionId);
   if (sessionIndex === -1) return;
 
   sessions.splice(sessionIndex, 1);
 
-  // Se abbiamo chiuso la sessione corrente, passa a un'altra
-  if (sessionId === currentSessionId) {
+  // Se abbiamo chiuso tutte le sessioni, crea una nuova sessione vuota (stile Chrome)
+  if (sessions.length === 0) {
+    const newSession = createNewSession(null, new Set([]));
+    sessions.push(newSession);
+    currentSessionId = newSession.id;
+    selectedAIs = new Set(newSession.selectedAIs);
+  } else if (sessionId === currentSessionId) {
+    // Se abbiamo chiuso la sessione corrente, passa a un'altra
     // Prendi la sessione precedente o la prima disponibile
     const newIndex = Math.max(0, sessionIndex - 1);
     currentSessionId = sessions[newIndex].id;
