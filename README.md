@@ -12,6 +12,8 @@
 
 **An Electron desktop app to compare responses from multiple AI platforms simultaneously.**
 
+Now featuring **Dual Mode**: choose between the classic web interface injection or direct API integration for faster responses.
+
 <div align="center">
   <img src="assets/OnePrompt-demo.gif" alt="OnePrompt Demo" width="100%">
 </div>
@@ -24,9 +26,11 @@ Tired of copy-pasting the same prompt into ChatGPT, Claude, Gemini, and Perplexi
 
 **READ THIS BEFORE USING OR DOWNLOADING**
 
-This application uses browser automation to interact with AI services. **This violates the Terms of Service of most platforms** and carries real risks:
+This application uses browser automation (Injection Mode) to interact with AI services. **This violates the Terms of Service of most platforms** and carries real risks.
 
-### Risks
+**API Mode** uses official APIs and is compliant with ToS, but requires your own API keys.
+
+### Risks (Injection Mode)
 - 🚫 **Your AI accounts may be banned** (ChatGPT, Claude, Gemini, etc.)
 - 📧 **The project may receive DMCA/takedown notices**
 - ⚖️ **Commercial use could result in legal action**
@@ -34,9 +38,9 @@ This application uses browser automation to interact with AI services. **This vi
 
 ### Why I Built It Anyway
 
-This project exists because I needed a better way to compare AI responses for personal testing. Managing 4-5 browser tabs is inefficient, and official APIs are expensive for casual use.
+This project exists because I needed a better way to compare AI responses for personal testing. Managing 4-5 browser tabs is inefficient.
 
-**I acknowledge this violates ToS.** I built it as:
+**I acknowledge Injection Mode violates ToS.** I built it as:
 - ✅ A personal productivity tool
 - ✅ An educational exploration of Electron webviews
 - ✅ A demonstration of what's technically possible
@@ -45,10 +49,9 @@ This project exists because I needed a better way to compare AI responses for pe
 
 ### Recommended Use
 - ✅ **Personal and educational use only**
-- ✅ **Understand you may lose access to your AI accounts**
+- ✅ **Use API Mode for critical work (safer)**
 - ❌ **NOT for commercial distribution**
-- ❌ **NOT for intensive/automated usage**
-- ❌ **NOT if you depend on your AI accounts professionally**
+- ❌ **NOT for intensive/automated usage in Injection Mode**
 
 ---
 
@@ -65,14 +68,23 @@ When working on something important, you want the best possible answers. Often t
 ## Features
 
 - 🚀 **One prompt for all AIs**: Write once, send everywhere
+- 🔄 **Dual Mode**:
+  - **Injection Mode**: Use the original web interfaces (free, but slower and riskier).
+  - **API Mode**: Use your own API keys (BYOK) for fast, reliable, and compliant access.
 - 🎯 **Flexible selection**: Choose which AIs to use for each prompt
-- 🔐 **Persistent sessions**: Keeps your logins active (like Franz and Rambox)
+- 🔐 **Privacy First**: API keys and data are stored locally on your device.
+- 📂 **Session Management**: Organize your work in multiple tabs.
 - 💻 **Cross-platform**: Available for macOS and Windows
-- 🎨 **Clean interface**: Minimalist and intuitive design
+- 🎨 **Clean interface**: Minimalist design with Dark/Light themes.
 
 ## Supported AI Platforms
 
-### Currently Working (with limitations)
+### API Mode (BYOK)
+- ChatGPT (OpenAI)
+- Claude (Anthropic)
+- Gemini (Google)
+
+### Injection Mode (Web Interface)
 - ChatGPT (OpenAI)
 - Claude (Anthropic)
 - Gemini (Google)
@@ -88,7 +100,7 @@ When working on something important, you want the best possible answers. Often t
 - Bolt.new
 - Lovable.dev
 
-**Note**: Prompt injection and automation features are experimental and may not work consistently across all platforms.
+**Note**: Prompt injection features are experimental and may not work consistently across all platforms. API Mode is recommended for stability.
 
 ## Installation
 

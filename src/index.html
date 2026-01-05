@@ -161,6 +161,46 @@
           </select>
         </div>
 
+        <div class="settings-section">
+          <div class="settings-section-title" data-i18n="settings.apiMode">Modalità API & Injection</div>
+          
+          <label class="settings-label" data-i18n="settings.defaultMode">Modalità predefinita</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="defaultMode" value="injection">
+              <span data-i18n="settings.defaultMode.injection">Injection</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="defaultMode" value="api">
+              <span data-i18n="settings.defaultMode.api">API</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="defaultMode" value="ask">
+              <span data-i18n="settings.defaultMode.alwaysAsk">Chiedi sempre</span>
+            </label>
+          </div>
+
+          <div style="margin-top: 1.5rem;">
+            <div class="settings-section-title" data-i18n="settings.apiKeys" style="font-size: 0.95rem; border-bottom: none; margin-bottom: 0.5rem;">Chiavi API</div>
+            <p class="settings-desc" data-i18n="settings.apiKeys.desc" style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Inserisci le tue chiavi API per utilizzare la modalità API.</p>
+            
+            <div class="api-key-input-group">
+              <label class="api-key-label" data-i18n="settings.apiKeys.openai">OpenAI API Key</label>
+              <input type="password" id="apiKeyOpenAI" class="api-key-input" placeholder="sk-...">
+            </div>
+            
+            <div class="api-key-input-group">
+              <label class="api-key-label" data-i18n="settings.apiKeys.anthropic">Anthropic API Key</label>
+              <input type="password" id="apiKeyAnthropic" class="api-key-input" placeholder="sk-ant-...">
+            </div>
+
+            <div class="api-key-input-group">
+              <label class="api-key-label" data-i18n="settings.apiKeys.gemini">Google Gemini API Key</label>
+              <input type="password" id="apiKeyGemini" class="api-key-input" placeholder="AIza...">
+            </div>
+          </div>
+        </div>
+
         <div class="settings-footer" style="margin-top: 30px; text-align: center; opacity: 0.6; font-size: 0.8rem;">
           <div style="margin-bottom: 5px;" id="appVersion">v0.1.4</div>
           <div>
@@ -202,7 +242,7 @@
 
           <div class="form-group">
             <label class="form-label" data-i18n="feedback.email">Email (opzionale)</label>
-            <input type="email" id="feedbackEmail" class="form-input" placeholder="name@example.com">
+            <input type="email" id="feedbackEmail" class="form-input" data-i18n-placeholder="feedback.email.placeholder" placeholder="name@example.com">
           </div>
 
           <div class="form-actions">

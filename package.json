@@ -8,7 +8,8 @@
     "dev": "electron . --dev",
     "build:mac": "electron-builder --mac",
     "build:win": "electron-builder --win",
-    "pack": "electron-builder --dir"
+    "pack": "electron-builder --dir",
+    "clean": "rm -rf \"$HOME/Library/Application Support/OnePrompt\" && rm -rf \"$HOME/Library/Preferences/com.oneprompt.app.plist\""
   },
   "keywords": [
     "AI",

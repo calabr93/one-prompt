@@ -5,6 +5,8 @@ let loadedWebviews = new Set();
 let webviewInstances = {}; // Map sessionId → { aiKey → webview element }
 // Default to ChatGPT, Perplexity, and Copilot for fresh installations
 let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["chatgpt", "perplexity", "copilot"]'));
+// Default to ChatGPT, Gemini, and Claude for API mode
+let configuredApiAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-api-services') || '["chatgpt", "gemini", "claude"]'));
 
 // i18n - Internazionalizzazione
 let currentLanguage = localStorage.getItem('oneprompt-language') || 'it';
@@ -48,6 +50,12 @@ async function updateUILanguage() {
   if (feedbackMessage) {
     feedbackMessage.placeholder = t('feedback.placeholder');
   }
+
+  // Update placeholders with data-i18n-placeholder
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    el.placeholder = t(key);
+  });
 
   // Update button titles
   const homeBtn = document.getElementById('homeBtn');
@@ -108,7 +116,7 @@ let currentSessionId = null;
 let sessionCounter = 0;
 
 // Helper functions for sessions
-function createNewSession(name = null, selectedAIsSet = null) {
+function createNewSession(name = null, selectedAIsSet = null, mode = null) {
   sessionCounter++;
 
   // Calcola il numero di sessione più basso disponibile (gap finding)
@@ -123,6 +131,7 @@ function createNewSession(name = null, selectedAIsSet = null) {
     name: name || null, // null significa usa il nome di default tradotto
     sessionNumber: nextNumber, // Usa il numero calcolato
     selectedAIs: selectedAIsSet ? Array.from(selectedAIsSet) : [],
+    mode: mode || null, // 'injection' or 'api' or null
     chatUrls: {}, // Mappa aiKey -> URL della conversazione
     createdAt: Date.now()
   };
@@ -190,7 +199,9 @@ function loadSessionsFromStorage() {
 
   // Inizializza con una sessione di default se non esistono sessioni
   if (sessions.length === 0) {
-    const defaultSession = createNewSession(null, new Set([]));
+    // Default services for first run
+    const defaultServices = new Set(['chatgpt', 'perplexity', 'copilot']);
+    const defaultSession = createNewSession(null, defaultServices, 'injection');
     sessions.push(defaultSession);
     currentSessionId = defaultSession.id;
     saveSessionsToStorage();
@@ -492,7 +503,7 @@ function switchToSession(sessionId) {
 
   // Re-render tutto
   renderTabs();
-  updateSidebarState();
+  renderSidebar();
   renderWebviews();
   updateSendButton();
 }
@@ -536,7 +547,7 @@ function closeSession(sessionId) {
 
   // Re-render tutto
   renderTabs();
-  updateSidebarState();
+  renderSidebar();
   renderWebviews();
   updateSendButton();
 }
@@ -557,7 +568,7 @@ function createNewSessionAndSwitch() {
 
   // Re-render tutto
   renderTabs();
-  updateSidebarState();
+  renderSidebar();
   renderWebviews();
   updateSendButton();
 }
@@ -566,7 +577,17 @@ function createNewSessionAndSwitch() {
 
 // Apri modale servizi
 function openServicesModal() {
-  renderServicesGrid();
+  const currentSession = getCurrentSession();
+  const mode = currentSession ? currentSession.mode : 'injection';
+  
+  const modalTitle = document.querySelector('#servicesModal h2');
+  if (mode === 'api') {
+      modalTitle.textContent = t('services.title.api') || 'Servizi disponibili (API)';
+  } else {
+      modalTitle.textContent = t('services.title') || 'Servizi disponibili';
+  }
+
+  renderServicesGrid(mode);
   servicesModal.style.display = 'flex';
 }
 
@@ -642,25 +663,36 @@ async function submitFeedback() {
 }
 
 // Render griglia servizi
-function renderServicesGrid() {
+function renderServicesGrid(mode = 'injection') {
   servicesGrid.innerHTML = '';
+  const apiServices = ['chatgpt', 'gemini', 'claude'];
 
   Object.entries(aiConfigs).forEach(([aiKey, config]) => {
-    const card = createServiceCard(aiKey, config);
+    if (mode === 'api' && !apiServices.includes(aiKey)) {
+        return;
+    }
+    const card = createServiceCard(aiKey, config, mode);
     servicesGrid.appendChild(card);
   });
 }
 
 // Crea card servizio
-function createServiceCard(aiKey, config) {
+function createServiceCard(aiKey, config, mode = 'injection') {
   const card = document.createElement('div');
   card.className = 'service-card';
   card.dataset.aiKey = aiKey;
 
+  let isConfigured = false;
+  if (mode === 'api') {
+      if (configuredApiAIs.has(aiKey)) isConfigured = true;
+  } else {
+      if (configuredAIs.has(aiKey)) isConfigured = true;
+  }
+
   // Aggiungi classe 'coming-soon' se il servizio non è ancora disponibile
   if (config.comingSoon) {
     card.classList.add('coming-soon');
-  } else if (configuredAIs.has(aiKey)) {
+  } else if (isConfigured) {
     // Aggiungi classe 'enabled' se il servizio è abilitato
     card.classList.add('enabled');
   }
@@ -692,7 +724,7 @@ function createServiceCard(aiKey, config) {
   // Click sul card per abilitare/disabilitare (solo se non è coming soon)
   if (!config.comingSoon) {
     card.addEventListener('click', () => {
-      toggleServiceEnabled(aiKey, card);
+      toggleServiceEnabled(aiKey, card, mode);
     });
   }
 
@@ -700,12 +732,15 @@ function createServiceCard(aiKey, config) {
 }
 
 // Toggle servizio abilitato/disabilitato
-function toggleServiceEnabled(aiKey, cardElement) {
-  if (configuredAIs.has(aiKey)) {
+function toggleServiceEnabled(aiKey, cardElement, mode = 'injection') {
+  let targetSet = mode === 'api' ? configuredApiAIs : configuredAIs;
+  const storageKey = mode === 'api' ? 'oneprompt-configured-api-services' : 'oneprompt-configured-services';
+
+  if (targetSet.has(aiKey)) {
     // Disabilita servizio
-    configuredAIs.delete(aiKey);
+    targetSet.delete(aiKey);
     cardElement.classList.remove('enabled');
-    localStorage.setItem('oneprompt-configured-services', JSON.stringify([...configuredAIs]));
+    localStorage.setItem(storageKey, JSON.stringify([...targetSet]));
 
     // Se il servizio è anche selezionato nella sessione corrente, rimuovilo
     if (selectedAIs.has(aiKey)) {
@@ -720,9 +755,9 @@ function toggleServiceEnabled(aiKey, cardElement) {
     renderSidebar();
   } else {
     // Abilita servizio e apri URL
-    configuredAIs.add(aiKey);
+    targetSet.add(aiKey);
     cardElement.classList.add('enabled');
-    localStorage.setItem('oneprompt-configured-services', JSON.stringify([...configuredAIs]));
+    localStorage.setItem(storageKey, JSON.stringify([...targetSet]));
 
     // Re-render sidebar per aggiungere lo status
     renderSidebar();
@@ -767,6 +802,10 @@ function toggleAISelection(aiKey) {
 async function renderWebviews() {
   // Reset classe grid
   webviewGrid.className = 'webview-grid';
+  
+  // Check session mode
+  const currentSession = getCurrentSession();
+  const mode = currentSession ? currentSession.mode : null;
 
   if (selectedAIs.size === 0) {
     // Nascondi tutte le webview di tutte le sessioni
@@ -788,17 +827,102 @@ async function renderWebviews() {
       webviewGrid.appendChild(placeholder);
     }
 
-    placeholder.innerHTML = `
-      <div class="placeholder-content">
-        <div class="placeholder-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-dasharray="5 5"></rect>
-            <path d="M12 8v8M8 12h8" stroke-dasharray="none"></path>
-          </svg>
-        </div>
-        <h3 class="placeholder-title">${t('placeholder.title')}</h3>
-      </div>
-    `;
+    const defaultMode = localStorage.getItem('oneprompt-default-mode');
+
+    // If no mode set, and we have a default mode (and it's not 'ask'), use it
+    if (!mode && defaultMode && defaultMode !== 'ask') {
+        if (currentSession) {
+            currentSession.mode = defaultMode;
+            
+            // If defaulting to API, set default services
+            if (defaultMode === 'api') {
+                 const apiServices = ['chatgpt', 'gemini', 'claude'];
+                 // Ensure they are configured but NOT selected
+                 apiServices.forEach(key => {
+                     if (!configuredApiAIs.has(key)) {
+                         configuredApiAIs.add(key);
+                     }
+                 });
+                 localStorage.setItem('oneprompt-configured-api-services', JSON.stringify([...configuredApiAIs]));
+                 
+                 selectedAIs.clear(); // Ensure no selection
+                 saveSelectedAIs();
+                 renderSidebar(); // Update sidebar
+            }
+
+            saveSessionsToStorage();
+            // Re-render to apply mode logic
+            renderWebviews();
+            return;
+        }
+    }
+
+    // Default to Injection if no mode is set and no default preference
+    if (!mode && !defaultMode) {
+        if (currentSession) {
+            currentSession.mode = 'injection';
+            saveSessionsToStorage();
+            renderWebviews();
+            return;
+        }
+    }
+
+    if (!mode) {
+        // Show Mode Selection Screen
+        placeholder.innerHTML = `
+            <div class="mode-selection-container">
+                <div class="mode-cards">
+                    <div class="mode-card" onclick="selectMode('injection')">
+                        <div class="mode-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path></svg>
+                        </div>
+                        <div class="mode-title">${t('mode.injection.title')}</div>
+                        <div class="mode-desc">${t('mode.injection.desc')}</div>
+                    </div>
+                    <div class="mode-card" onclick="selectMode('api')">
+                        <div class="mode-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                        </div>
+                        <div class="mode-title">${t('mode.api.title')}</div>
+                        <div class="mode-desc">${t('mode.api.desc')}</div>
+                    </div>
+                </div>
+                <div class="mode-remember">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="rememberModeToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span>${t('mode.remember')}</span>
+                </div>
+            </div>
+        `;
+    } else if (mode === 'api') {
+         // API Mode Placeholder (Coming Soon or UI)
+         placeholder.innerHTML = `
+            <div class="placeholder-content">
+                <div class="placeholder-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </div>
+                <h3 class="placeholder-title">${t('mode.api.title')}</h3>
+                <p style="color: var(--text-secondary); margin-top: 10px;">${t('placeholder.subtitle')}</p>
+            </div>
+         `;
+    } else {
+        // Injection Mode (Default Placeholder)
+        placeholder.innerHTML = `
+          <div class="placeholder-content">
+            <div class="placeholder-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-dasharray="5 5"></rect>
+                <path d="M12 8v8M8 12h8" stroke-dasharray="none"></path>
+              </svg>
+            </div>
+            <h3 class="placeholder-title">${t('placeholder.title')}</h3>
+            <p style="color: var(--text-secondary); margin-top: 10px;">${t('placeholder.subtitle')}</p>
+          </div>
+        `;
+    }
+
     placeholder.style.display = 'flex';
     return;
   }
@@ -818,6 +942,7 @@ async function renderWebviews() {
         wrapper.style.display = 'none';
       }
     });
+
   });
 
   // Ottieni le webview della sessione corrente
@@ -914,7 +1039,11 @@ async function renderWebviews() {
       // Crea webview se non esiste per questa sessione
       let webview = sessionWebviews[aiKey];
       if (!webview) {
-        webview = await createWebview(aiKey);
+        if (mode === 'api') {
+            webview = createApiPanel(aiKey);
+        } else {
+            webview = await createWebview(aiKey);
+        }
         sessionWebviews[aiKey] = webview;
       }
 
@@ -1019,9 +1148,26 @@ function updateWebviewStatus(aiKey, status) {
 function renderSidebar() {
   sidebarNav.innerHTML = '';
 
+  const currentSession = getCurrentSession();
+  const mode = currentSession ? currentSession.mode : 'injection';
+  const apiServices = ['chatgpt', 'gemini', 'claude'];
+
   // Mostra solo i servizi configurati nella sidebar
   Object.entries(aiConfigs).forEach(([key, config]) => {
-    if (configuredAIs.has(key)) {
+    let isConfigured = false;
+    if (mode === 'api') {
+        // In API mode, check configuredApiAIs AND if it's an API service
+        if (configuredApiAIs.has(key) && apiServices.includes(key)) {
+            isConfigured = true;
+        }
+    } else {
+        // In Injection mode, check configuredAIs
+        if (configuredAIs.has(key)) {
+            isConfigured = true;
+        }
+    }
+
+    if (isConfigured) {
       const button = createSidebarButton(key, config);
       sidebarNav.appendChild(button);
     }
@@ -1096,8 +1242,18 @@ function createSidebarButton(key, config) {
     button.classList.add('active');
   }
 
+  const currentSession = getCurrentSession();
+  const mode = currentSession ? currentSession.mode : 'injection';
+
   // Aggiungi classe logged-in se configurato
-  if (configuredAIs.has(key)) {
+  let isConfigured = false;
+  if (mode === 'api') {
+      if (configuredApiAIs.has(key)) isConfigured = true;
+  } else {
+      if (configuredAIs.has(key)) isConfigured = true;
+  }
+
+  if (isConfigured) {
     button.classList.add('logged-in');
   }
 
@@ -1279,8 +1435,11 @@ async function sendPromptToSelectedAIs() {
         return;
       }
 
-      // Aspetta che sia caricata
-      if (!loadedWebviews.has(aiKey)) {
+      const currentSession = getCurrentSession();
+      const isApiMode = currentSession && currentSession.mode === 'api';
+
+      // Aspetta che sia caricata (solo per Injection Mode)
+      if (!isApiMode && !loadedWebviews.has(aiKey)) {
         console.log(`Waiting for ${aiKey} to load...`);
         updateWebviewStatus(aiKey, 'thinking');
 
@@ -1310,20 +1469,27 @@ async function sendPromptToSelectedAIs() {
         await new Promise(r => setTimeout(r, 2000));
       }
 
-      // Send via IPC to webview
-      console.log(`Sending prompt to ${aiKey} webview...`);
-      try {
-        // Invia anche le injection rules per questo AI
-        webview.send('send-prompt', { 
-          prompt, 
-          aiKey,
-          injectionRules: injectionRules[aiKey] 
-        });
-        console.log(`Prompt sent to ${aiKey}`);
-        updateWebviewStatus(aiKey, 'sent');
-      } catch (err) {
-        console.error(`Error sending to ${aiKey}:`, err);
-        updateWebviewStatus(aiKey, 'error');
+      // Send via IPC to webview or Handle API
+      if (isApiMode) {
+          console.log(`Handling API chat for ${aiKey}...`);
+          // webview here is actually the div panel
+          handleApiChat(aiKey, prompt, webview);
+      } else {
+          // Injection Mode
+          console.log(`Sending prompt to ${aiKey} webview...`);
+          try {
+            // Invia anche le injection rules per questo AI
+            webview.send('send-prompt', { 
+              prompt, 
+              aiKey,
+              injectionRules: injectionRules[aiKey] 
+            });
+            console.log(`Prompt sent to ${aiKey}`);
+            updateWebviewStatus(aiKey, 'sent');
+          } catch (err) {
+            console.error(`Error sending to ${aiKey}:`, err);
+            updateWebviewStatus(aiKey, 'error');
+          }
       }
     });
 
@@ -1422,4 +1588,303 @@ function setupUpdateHandlers() {
     };
     updateBanner.style.display = 'block';
   });
+}
+
+// === MODE SELECTION & SETTINGS ===
+
+window.selectMode = function(mode) {
+    const rememberToggle = document.getElementById('rememberModeToggle');
+    const remember = rememberToggle ? rememberToggle.checked : false;
+    
+    if (remember) {
+        localStorage.setItem('oneprompt-default-mode', mode);
+        // Update settings UI if open
+        const radio = document.querySelector(`input[name="defaultMode"][value="${mode}"]`);
+        if (radio) {
+            radio.checked = true;
+        }
+    }
+    
+    const currentSession = getCurrentSession();
+    if (currentSession) {
+        currentSession.mode = mode;
+        
+        // If switching to API mode, set default API services
+        if (mode === 'api') {
+             selectedAIs.clear();
+             // Do NOT auto-select services. User must add them manually.
+             // Just ensure they are configured so they appear in sidebar.
+             const apiServices = ['chatgpt', 'gemini', 'claude'];
+             apiServices.forEach(key => {
+                 if (!configuredApiAIs.has(key)) {
+                     configuredApiAIs.add(key);
+                 }
+             });
+             localStorage.setItem('oneprompt-configured-api-services', JSON.stringify([...configuredApiAIs]));
+             saveSelectedAIs();
+        }
+        
+        saveSessionsToStorage();
+        renderSidebar(); // Update sidebar for new mode
+        renderWebviews();
+    }
+};
+
+// Settings Elements & Logic
+function initSettings() {
+    const defaultModeRadios = document.querySelectorAll('input[name="defaultMode"]');
+    const apiKeyOpenAI = document.getElementById('apiKeyOpenAI');
+    const apiKeyAnthropic = document.getElementById('apiKeyAnthropic');
+    const apiKeyGemini = document.getElementById('apiKeyGemini');
+
+    // Init radio buttons
+    let currentDefaultMode = localStorage.getItem('oneprompt-default-mode');
+    if (!currentDefaultMode) {
+        currentDefaultMode = 'injection'; // Default to injection if not set
+    }
+
+    defaultModeRadios.forEach(radio => {
+        if (radio.value === currentDefaultMode) {
+            radio.checked = true;
+        }
+        radio.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                localStorage.setItem('oneprompt-default-mode', e.target.value);
+            }
+        });
+    });
+
+    if (apiKeyOpenAI) {
+        apiKeyOpenAI.value = localStorage.getItem('oneprompt-api-openai') || '';
+        apiKeyOpenAI.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-openai', e.target.value));
+    }
+    
+    if (apiKeyAnthropic) {
+        apiKeyAnthropic.value = localStorage.getItem('oneprompt-api-anthropic') || '';
+        apiKeyAnthropic.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-anthropic', e.target.value));
+    }
+    
+    if (apiKeyGemini) {
+        apiKeyGemini.value = localStorage.getItem('oneprompt-api-gemini') || '';
+        apiKeyGemini.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-gemini', e.target.value));
+    }
+}
+
+// Initialize settings logic
+initSettings();
+
+// Create API Panel
+function createApiPanel(aiKey) {
+  const config = aiConfigs[aiKey];
+  const panel = document.createElement('div');
+  panel.className = 'api-panel';
+  panel.dataset.aiKey = aiKey;
+  panel.style.width = '100%';
+  panel.style.height = '100%';
+  panel.style.display = 'flex';
+  panel.style.flexDirection = 'column';
+  panel.style.backgroundColor = 'var(--bg-primary)';
+  panel.style.color = 'var(--text-primary)';
+  panel.style.overflow = 'hidden';
+  
+  // Chat Container
+  const chatContainer = document.createElement('div');
+  chatContainer.className = 'api-chat-container';
+  chatContainer.style.flex = '1';
+  chatContainer.style.overflowY = 'auto';
+  chatContainer.style.padding = '20px';
+  chatContainer.style.display = 'flex';
+  chatContainer.style.flexDirection = 'column';
+  chatContainer.style.gap = '16px';
+
+  // Welcome Message
+  const welcome = document.createElement('div');
+  welcome.className = 'api-welcome';
+  welcome.style.textAlign = 'center';
+  welcome.style.opacity = '0.7';
+  welcome.style.marginTop = 'auto';
+  welcome.style.marginBottom = 'auto';
+  welcome.innerHTML = `
+      <div style="font-size: 3rem; margin-bottom: 1rem; display: flex; justify-content: center;">
+        ${config.logo ? `<img src="../assets/${config.logo}" style="width: 48px; height: 48px; object-fit: contain;">` : config.icon}
+      </div>
+      <h3>${config.name} (API Mode)</h3>
+      <p>Waiting for prompt...</p>
+  `;
+  chatContainer.appendChild(welcome);
+  
+  panel.appendChild(chatContainer);
+  return panel;
+}
+
+// Helper to append message to API panel
+function appendApiMessage(panel, role, text) {
+    const chatContainer = panel.querySelector('.api-chat-container');
+    const welcome = panel.querySelector('.api-welcome');
+    if (welcome) welcome.remove();
+
+    const bubble = document.createElement('div');
+    bubble.className = `api-message ${role}`;
+    bubble.style.maxWidth = '85%';
+    bubble.style.padding = '12px 16px';
+    bubble.style.borderRadius = '12px';
+    bubble.style.lineHeight = '1.5';
+    bubble.style.fontSize = '0.95rem';
+    bubble.style.wordWrap = 'break-word';
+    
+    // Colors based on role and service
+    if (role === 'user') {
+        bubble.style.alignSelf = 'flex-end';
+        bubble.style.backgroundColor = 'var(--bg-tertiary)';
+        bubble.style.color = 'var(--text-primary)';
+        bubble.style.borderBottomRightRadius = '4px';
+    } else {
+        bubble.style.alignSelf = 'flex-start';
+        bubble.style.borderBottomLeftRadius = '4px';
+        bubble.style.color = '#fff';
+        
+        // Service specific colors
+        const aiKey = panel.dataset.aiKey;
+        if (aiKey === 'chatgpt') bubble.style.backgroundColor = '#10a37f'; // OpenAI Green
+        else if (aiKey === 'claude') bubble.style.backgroundColor = '#d97757'; // Claude Clay
+        else if (aiKey === 'gemini') bubble.style.backgroundColor = '#1b72e8'; // Google Blue
+        else if (aiKey === 'perplexity') bubble.style.backgroundColor = '#22b8cf'; // Perplexity Cyan
+        else if (aiKey === 'copilot') bubble.style.backgroundColor = '#24292f'; // GitHub/Copilot Black
+        else bubble.style.backgroundColor = 'var(--accent-color)';
+    }
+
+    // Simple markdown-like parsing (bold, code blocks) could be added here
+    // For now, just text with whitespace preservation
+    bubble.style.whiteSpace = 'pre-wrap';
+    
+    // Allow HTML for system messages (e.g. settings link)
+    if (role === 'system') {
+        bubble.innerHTML = text;
+    } else {
+        bubble.textContent = text;
+    }
+
+    chatContainer.appendChild(bubble);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    return bubble;
+}
+
+// Handle API Chat Logic
+async function handleApiChat(aiKey, prompt, panel) {
+    // 1. Show User Message immediately
+    appendApiMessage(panel, 'user', prompt);
+
+    // 2. Get API Key
+    let apiKey = '';
+    if (aiKey === 'chatgpt') apiKey = localStorage.getItem('oneprompt-api-openai');
+    else if (aiKey === 'claude') apiKey = localStorage.getItem('oneprompt-api-anthropic');
+    else if (aiKey === 'gemini') apiKey = localStorage.getItem('oneprompt-api-gemini');
+    
+    if (!apiKey) {
+        appendApiMessage(panel, 'system', t('error.apiKeyMissing'));
+        updateWebviewStatus(aiKey, 'error');
+        return;
+    }
+
+    updateWebviewStatus(aiKey, 'thinking');
+    
+    // Show loader
+    const loader = appendApiLoader(panel);
+    
+    try {
+        let responseText = '';
+        
+        if (aiKey === 'chatgpt') {
+            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: "gpt-3.5-turbo", // Default model
+                    messages: [{ role: "user", content: prompt }]
+                })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            responseText = data.choices[0].message.content;
+        } 
+        else if (aiKey === 'claude') {
+             const res = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: "claude-3-opus-20240229",
+                    max_tokens: 1024,
+                    messages: [{ role: "user", content: prompt }]
+                })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            responseText = data.content[0].text;
+        }
+        else if (aiKey === 'gemini') {
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{ parts: [{ text: prompt }] }]
+                })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            responseText = data.candidates[0].content.parts[0].text;
+        }
+        else {
+            responseText = "API support for this service is not yet implemented.";
+        }
+
+        // Remove loader
+        loader.remove();
+        
+        appendApiMessage(panel, 'assistant', responseText);
+        updateWebviewStatus(aiKey, 'ready');
+
+    } catch (error) {
+        console.error(`API Error (${aiKey}):`, error);
+        // Remove loader
+        loader.remove();
+        appendApiMessage(panel, 'system', `Error: ${error.message}`);
+        updateWebviewStatus(aiKey, 'error');
+    }
+}
+
+// Helper to append loader
+function appendApiLoader(panel) {
+    const chatContainer = panel.querySelector('.api-chat-container');
+    const welcome = panel.querySelector('.api-welcome');
+    if (welcome) welcome.remove();
+
+    const loader = document.createElement('div');
+    loader.className = 'api-message assistant loader-bubble';
+    loader.style.alignSelf = 'flex-start';
+    loader.style.borderBottomLeftRadius = '4px';
+    loader.style.backgroundColor = 'var(--bg-secondary)';
+    loader.style.padding = '12px 16px';
+    loader.style.borderRadius = '12px';
+    loader.style.width = 'fit-content';
+    
+    loader.innerHTML = `
+        <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    `;
+
+    chatContainer.appendChild(loader);
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    return loader;
 }
