@@ -1,0 +1,106 @@
+.pricing {
+  background: var(--bg-primary);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--spacing-3xl);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-xl);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+}
+
+.header h3 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.subtitle {
+  color: var(--accent-color);
+  font-weight: 500;
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-xl);
+}
+
+.startingFrom {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-right: var(--spacing-xs);
+}
+
+.currency {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.amount {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.period {
+  font-size: 1rem;
+  color: var(--text-secondary);
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-xl);
+  flex: 1;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.features svg {
+  color: var(--success-color);
+  flex-shrink: 0;
+}
+
+.cta {
+  width: 100%;
+}
+
+.note {
+  margin-top: var(--spacing-md);
+  font-size: 0.85rem;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

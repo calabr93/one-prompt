@@ -10,7 +10,8 @@
     "build:win": "electron-builder --win",
     "pack": "electron-builder --dir",
     "clean": "rm -rf \"$HOME/Library/Application Support/OnePrompt\" && rm -rf \"$HOME/Library/Preferences/com.oneprompt.app.plist\"",
-    "publish": "node scripts/release.js"
+    "publish": "node scripts/release.js",
+    "deploy:website": "cd website && npm install && npm run deploy"
   },
   "keywords": [
     "AI",

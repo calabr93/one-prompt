@@ -1,0 +1,133 @@
+{
+  "nav": {
+    "features": "Funzionalità",
+    "pricing": "Prezzi",
+    "download": "Scarica Gratis",
+    "github": "GitHub"
+  },
+  "hero": {
+    "badge": "Open Source - Gratuito - BYOK",
+    "headline": "Un Prompt, Tutte le AI",
+    "subheadline": "Basta copiare e incollare lo stesso prompt in 5 servizi diversi. Scrivi una volta, confronta le risposte di ChatGPT, Claude, Gemini e altri - tutto in un'unica finestra.",
+    "cta": {
+      "mac": "Scarica per Mac",
+      "windows": "Scarica per Windows"
+    },
+    "github": "Vedi su GitHub"
+  },
+  "problem": {
+    "title": "Il Problema che Conosci Bene",
+    "steps": [
+      "Apro ChatGPT, copio il prompt, aspetto la risposta...",
+      "Poi apro Claude, incollo, aspetto...",
+      "Poi Gemini, poi Perplexity...",
+      "5 tab aperti, 5 volte lo stesso lavoro"
+    ],
+    "closing": "Ogni giorno, migliaia di sviluppatori e creator perdono tempo prezioso alternando tra servizi AI. C'è un modo migliore."
+  },
+  "solution": {
+    "title": "La Soluzione: Scrivi Una Volta, Confronta Subito",
+    "description": "OnePrompt è un'app desktop che invia il tuo prompt a tutti i servizi AI che vuoi, simultaneamente. Vedi le risposte affiancate e scegli la migliore.",
+    "features": [
+      "Un solo input per tutti i servizi",
+      "Risposte affiancate per confronto immediato",
+      "Funziona con i tuoi account esistenti",
+      "I tuoi dati restano sul tuo computer"
+    ]
+  },
+  "features": {
+    "title": "Funzionalità",
+    "items": [
+      {
+        "title": "Un Prompt, Ovunque",
+        "description": "Scrivi una volta, invia a ChatGPT, Claude, Gemini e altri simultaneamente."
+      },
+      {
+        "title": "Confronto Affiancato",
+        "description": "Vedi tutte le risposte in una griglia adattiva per confronto immediato."
+      },
+      {
+        "title": "Due Modalità",
+        "description": "API Mode (veloce, affidabile) o Injection Mode (usa le interfacce web)."
+      },
+      {
+        "title": "Privacy First",
+        "description": "Le tue chiavi API e i tuoi dati restano sul tuo dispositivo."
+      },
+      {
+        "title": "Sessioni Multiple",
+        "description": "Organizza il lavoro in tab separate, come un browser."
+      },
+      {
+        "title": "Open Source",
+        "description": "Codice aperto su GitHub. Ispeziona, modifica, contribuisci."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Scegli la Tua Modalità",
+    "free": {
+      "title": "Gratuito",
+      "subtitle": "Open Source",
+      "price": "0€",
+      "priceLabel": "per sempre",
+      "features": [
+        "Injection mode",
+        "API mode: usa le tue chiavi",
+        "Nessun limite di utilizzo",
+        "Privacy totale"
+      ],
+      "cta": "Scarica da GitHub"
+    },
+    "cloud": {
+      "title": "OnePrompt Cloud",
+      "startingFrom": "a partire da",
+      "price": "4,99€",
+      "features": [
+        "Injection mode",
+        "API mode: pronto all'uso (50 crediti gratis)",
+        "Crediti prepagati",
+        "Privacy totale"
+      ],
+      "cta": "Scarica l'App"
+    }
+  },
+  "platforms": {
+    "title": "Piattaforme Supportate",
+    "api": "API Mode (BYOK)",
+    "injection": "Injection Mode",
+    "comingSoon": "In arrivo"
+  },
+  "faq": {
+    "title": "Domande Frequenti",
+    "items": [
+      {
+        "question": "OnePrompt è davvero gratuito?",
+        "answer": "Sì, la versione desktop open source è completamente gratuita. Usa le tue chiavi API e non paghi nulla a noi."
+      },
+      {
+        "question": "I miei dati sono al sicuro?",
+        "answer": "Assolutamente. I tuoi prompt e le risposte non lasciano mai il tuo dispositivo. Le chiavi API sono salvate localmente."
+      },
+      {
+        "question": "Cosa significa BYOK?",
+        "answer": "\"Bring Your Own Key\" - porti le tue chiavi API dai vari servizi (OpenAI, Anthropic, Google) e le usi direttamente nell'app."
+      },
+      {
+        "question": "Qual è la differenza tra API Mode e Injection Mode?",
+        "answer": "API Mode usa le API ufficiali (più veloce e affidabile). Injection Mode usa le interfacce web (funziona con account gratuiti)."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Pronto a Risparmiare Tempo?",
+    "subtitle": "Scarica OnePrompt e inizia a confrontare le AI in secondi.",
+    "github": "Codice sorgente su GitHub"
+  },
+  "footer": {
+    "tagline": "Un prompt, tutte le AI.",
+    "reportBug": "Segnala Bug",
+    "support": "Supporta il Progetto",
+    "copyright": "Rilasciato sotto licenza MIT"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "nav": {
+    "features": "Features",
+    "pricing": "Pricing",
+    "download": "Download Free",
+    "github": "GitHub"
+  },
+  "hero": {
+    "badge": "Open Source - Free - BYOK",
+    "headline": "One Prompt, All AIs",
+    "subheadline": "Stop copy-pasting the same prompt into 5 different services. Write once, compare responses from ChatGPT, Claude, Gemini and more - all in one window.",
+    "cta": {
+      "mac": "Download for Mac",
+      "windows": "Download for Windows"
+    },
+    "github": "View on GitHub"
+  },
+  "problem": {
+    "title": "The Problem You Know Too Well",
+    "steps": [
+      "Open ChatGPT, paste the prompt, wait for the response...",
+      "Then open Claude, paste, wait...",
+      "Then Gemini, then Perplexity...",
+      "5 tabs open, 5 times the same work"
+    ],
+    "closing": "Every day, thousands of developers and creators waste precious time switching between AI services. There's a better way."
+  },
+  "solution": {
+    "title": "The Solution: Write Once, Compare Instantly",
+    "description": "OnePrompt is a desktop app that sends your prompt to all the AI services you want, simultaneously. See responses side-by-side and choose the best one.",
+    "features": [
+      "Single input for all services",
+      "Side-by-side responses for instant comparison",
+      "Works with your existing accounts",
+      "Your data stays on your computer"
+    ]
+  },
+  "features": {
+    "title": "Features",
+    "items": [
+      {
+        "title": "One Prompt, Everywhere",
+        "description": "Write once, send to ChatGPT, Claude, Gemini and more simultaneously."
+      },
+      {
+        "title": "Side-by-Side Comparison",
+        "description": "See all responses in an adaptive grid for instant comparison."
+      },
+      {
+        "title": "Two Modes",
+        "description": "API Mode (fast, reliable) or Injection Mode (use web interfaces)."
+      },
+      {
+        "title": "Privacy First",
+        "description": "Your API keys and data stay on your device."
+      },
+      {
+        "title": "Multiple Sessions",
+        "description": "Organize your work in separate tabs, like a browser."
+      },
+      {
+        "title": "Open Source",
+        "description": "Open code on GitHub. Inspect, modify, contribute."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Choose Your Mode",
+    "free": {
+      "title": "Free",
+      "subtitle": "Open Source",
+      "price": "$0",
+      "priceLabel": "forever",
+      "features": [
+        "Injection mode",
+        "API mode: use your own keys",
+        "No usage limits",
+        "Total privacy"
+      ],
+      "cta": "Download from GitHub"
+    },
+    "cloud": {
+      "title": "OnePrompt Cloud",
+      "startingFrom": "starting from",
+      "price": "$4.99",
+      "features": [
+        "Injection mode",
+        "API mode: ready to use (50 free credits)",
+        "Prepaid credits",
+        "Total privacy"
+      ],
+      "cta": "Download the App"
+    }
+  },
+  "platforms": {
+    "title": "Supported Platforms",
+    "api": "API Mode (BYOK)",
+    "injection": "Injection Mode",
+    "comingSoon": "Coming Soon"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "Is OnePrompt really free?",
+        "answer": "Yes, the open source desktop version is completely free. Use your own API keys and pay nothing to us."
+      },
+      {
+        "question": "Is my data safe?",
+        "answer": "Absolutely. Your prompts and responses never leave your device. API keys are stored locally."
+      },
+      {
+        "question": "What does BYOK mean?",
+        "answer": "\"Bring Your Own Key\" - you bring your own API keys from various services (OpenAI, Anthropic, Google) and use them directly in the app."
+      },
+      {
+        "question": "What's the difference between API Mode and Injection Mode?",
+        "answer": "API Mode uses official APIs (faster and more reliable). Injection Mode uses web interfaces (works with free accounts)."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Ready to Save Time?",
+    "subtitle": "Download OnePrompt and start comparing AIs in seconds.",
+    "github": "Source code on GitHub"
+  },
+  "footer": {
+    "tagline": "One prompt, all AIs.",
+    "reportBug": "Report Bug",
+    "support": "Support the Project",
+    "copyright": "Released under MIT license"
+  }
+}
