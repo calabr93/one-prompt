@@ -80,7 +80,7 @@
       "cta": "Download from GitHub"
     },
     "cloud": {
-      "title": "OnePrompt Cloud",
+      "title": "OnePrompt PRO",
       "startingFrom": "starting from",
       "price": "$4.99",
       "features": [
@@ -128,6 +128,97 @@
     "tagline": "One prompt, all AIs.",
     "reportBug": "Report Bug",
     "support": "Support the Project",
-    "copyright": "Released under MIT license"
+    "copyright": "© 2026 Fabio Calabretta. All rights reserved.",
+    "license": "The source code is available under the MIT License. OnePrompt PRO features are proprietary.",
+    "builtIn": "Built for productivity in Milano.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "privacy": {
+    "lastUpdated": "Last updated: January 2026",
+    "intro": {
+      "title": "Introduction",
+      "text": "Fabio Calabretta (\"we\", \"us\", or \"our\") operates OnePrompt. This Privacy Policy explains how we collect, use, and protect your information when you use our desktop application."
+    },
+    "dataCollection": {
+      "title": "Data We Collect",
+      "text": "OnePrompt is designed with privacy as a core principle. The data we may collect depends on how you use the application:",
+      "item1": "Local Data: Your prompts, AI responses, and settings are stored locally on your device and never transmitted to our servers.",
+      "item2": "API Keys: If you use BYOK (Bring Your Own Key) mode, your API keys are stored locally and encrypted on your device.",
+      "item3": "OnePrompt PRO: If you use OnePrompt PRO features, we process minimal data necessary to provide the service (authentication tokens, usage metrics for billing)."
+    },
+    "dataStorage": {
+      "title": "Data Storage and Security",
+      "text": "All local data is stored on your device using industry-standard encryption. We do not have access to your locally stored data, including your prompts, responses, or API keys."
+    },
+    "thirdParty": {
+      "title": "Third-Party Services",
+      "text": "When you use OnePrompt to interact with AI services (ChatGPT, Claude, Gemini, etc.), your prompts are sent directly to those services. Each service has its own privacy policy that governs how they handle your data. We recommend reviewing the privacy policies of the AI services you use."
+    },
+    "apiKeys": {
+      "title": "API Keys",
+      "text": "Your API keys are stored locally on your device and are never transmitted to our servers. They are used exclusively to authenticate requests to the respective AI services on your behalf."
+    },
+    "proFeatures": {
+      "title": "OnePrompt PRO Features",
+      "text": "If you subscribe to OnePrompt PRO, we collect minimal information necessary to provide the service: your email for account management, payment information processed securely through Stripe, and usage data for billing purposes. We do not store or access your prompts or AI responses."
+    },
+    "rights": {
+      "title": "Your Rights",
+      "text": "Under GDPR and applicable data protection laws, you have the right to access, correct, or delete your personal data. Since most data is stored locally on your device, you have direct control over it. For any data related to OnePrompt PRO subscriptions, contact us at the address below."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "text": "For any questions about this Privacy Policy, please contact: Fabio Calabretta, P.IVA: 13010040965, Milan, Italy."
+    }
+  },
+  "terms": {
+    "lastUpdated": "Last updated: January 2026",
+    "acceptance": {
+      "title": "Acceptance of Terms",
+      "text": "By downloading, installing, or using OnePrompt, you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the application."
+    },
+    "license": {
+      "title": "License",
+      "text": "OnePrompt is distributed under a dual licensing model:",
+      "item1": "The core application source code is available under the MIT License, allowing you to use, modify, and distribute it freely.",
+      "item2": "OnePrompt PRO features are proprietary and require a valid subscription to use."
+    },
+    "proFeatures": {
+      "title": "OnePrompt PRO",
+      "text": "OnePrompt PRO features are available through a subscription. Subscriptions are billed as indicated at the time of purchase. You may cancel your subscription at any time, and you will continue to have access until the end of your billing period. Refunds are handled on a case-by-case basis."
+    },
+    "usage": {
+      "title": "Acceptable Use",
+      "text": "You agree to use OnePrompt in compliance with all applicable laws and regulations. You may not:",
+      "item1": "Use the application for any illegal purpose or to violate any laws",
+      "item2": "Attempt to reverse engineer, decompile, or extract the source code of proprietary components",
+      "item3": "Redistribute OnePrompt PRO features without authorization",
+      "item4": "Use the application to harass, abuse, or harm others"
+    },
+    "thirdParty": {
+      "title": "Third-Party Services",
+      "text": "OnePrompt integrates with third-party AI services (OpenAI, Anthropic, Google, etc.). Your use of these services is subject to their respective terms of service. You are responsible for complying with the terms of each AI service you use through OnePrompt."
+    },
+    "disclaimer": {
+      "title": "Disclaimer of Warranties",
+      "text": "OnePrompt is provided \"as is\" without warranty of any kind, express or implied. We do not guarantee that the application will be error-free, secure, or available at all times. We are not responsible for the content, accuracy, or reliability of responses from third-party AI services."
+    },
+    "limitation": {
+      "title": "Limitation of Liability",
+      "text": "To the maximum extent permitted by law, Fabio Calabretta shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from your use of OnePrompt."
+    },
+    "changes": {
+      "title": "Changes to Terms",
+      "text": "We reserve the right to modify these terms at any time. We will notify users of significant changes through the application or our website. Your continued use of OnePrompt after changes constitutes acceptance of the new terms."
+    },
+    "governing": {
+      "title": "Governing Law",
+      "text": "These terms are governed by and construed in accordance with the laws of Italy. Any disputes arising from these terms will be subject to the exclusive jurisdiction of the courts of Milan, Italy."
+    },
+    "contact": {
+      "title": "Contact",
+      "text": "For any questions about these Terms of Service, please contact: Fabio Calabretta, P.IVA: 13010040965, Milan, Italy."
+    }
   }
 }
