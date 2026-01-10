@@ -10,10 +10,21 @@ const CheckIcon = () => (
   </svg>
 );
 
+const CrossIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" width="16" height="16">
+    <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" strokeLinejoin="round"/>
+  </svg>
+);
+
+interface FeatureItem {
+  text: string;
+  included: boolean;
+}
+
 export function PricingSection() {
   const { t } = useTranslation();
-  const freeFeatures = t('pricing.free.features', { returnObjects: true }) as string[];
-  const cloudFeatures = t('pricing.cloud.features', { returnObjects: true }) as string[];
+  const freeFeatures = t('pricing.free.features', { returnObjects: true }) as FeatureItem[];
+  const proFeatures = t('pricing.pro.features', { returnObjects: true }) as FeatureItem[];
 
   return (
     <section className={styles.pricing} id="pricing">
@@ -21,29 +32,32 @@ export function PricingSection() {
         <h2 className={styles.title}>{t('pricing.title')}</h2>
 
         <div className={styles.grid}>
-          {/* Free Plan */}
-          <Card variant="highlighted" className={styles.card}>
+          {/* Free Plan - LEFT */}
+          <Card className={styles.card}>
             <div className={styles.header}>
               <h3>{t('pricing.free.title')}</h3>
-              <span className={styles.subtitle}>{t('pricing.free.subtitle')}</span>
+              <span className={styles.openSourceBadge}>Open Source</span>
             </div>
 
-            <div className={styles.price}>
-              <span className={styles.amount}>{t('pricing.free.price')}</span>
-              <span className={styles.period}>{t('pricing.free.priceLabel')}</span>
+            <div className={styles.priceSection}>
+              <div className={styles.price}>
+                <span className={styles.amount}>{t('pricing.free.price')}</span>
+                <span className={styles.period}>{t('pricing.free.priceLabel')}</span>
+              </div>
             </div>
 
             <ul className={styles.features}>
               {freeFeatures.map((feature, index) => (
-                <li key={index}>
-                  <CheckIcon />
-                  {feature}
+                <li key={index} className={feature.included ? styles.included : styles.excluded}>
+                  {feature.included ? <CheckIcon /> : <CrossIcon />}
+                  {feature.text}
                 </li>
               ))}
             </ul>
 
             <Button
-              href="https://github.com/calabr93/one-prompt/releases/latest"
+              href="https://github.com/calabr93/one-prompt"
+              variant="secondary"
               size="large"
               className={styles.cta}
             >
@@ -51,22 +65,25 @@ export function PricingSection() {
             </Button>
           </Card>
 
-          {/* Cloud Plan */}
-          <Card className={styles.card}>
+          {/* PRO Plan - RIGHT (Highlighted) */}
+          <Card variant="highlighted" className={`${styles.card} ${styles.proCard}`}>
             <div className={styles.header}>
-              <h3>{t('pricing.cloud.title')}</h3>
+              <h3>{t('pricing.pro.title')}</h3>
+              <span className={styles.noBadge}>{t('pricing.pro.badge')}</span>
             </div>
 
-            <div className={styles.price}>
-              <span className={styles.startingFrom}>{t('pricing.cloud.startingFrom')}</span>
-              <span className={styles.amount}>{t('pricing.cloud.price')}</span>
+            <div className={styles.priceSection}>
+              <div className={styles.price}>
+                <span className={styles.startingFrom}>{t('pricing.pro.startingFrom')}</span>
+                <span className={styles.amount}>{t('pricing.pro.price')}</span>
+              </div>
             </div>
 
             <ul className={styles.features}>
-              {cloudFeatures.map((feature, index) => (
-                <li key={index}>
+              {proFeatures.map((feature, index) => (
+                <li key={index} className={styles.included}>
                   <CheckIcon />
-                  {feature}
+                  {feature.text}
                 </li>
               ))}
             </ul>
@@ -76,7 +93,7 @@ export function PricingSection() {
               size="large"
               className={styles.cta}
             >
-              {t('pricing.cloud.cta')}
+              {t('pricing.pro.cta')}
             </Button>
           </Card>
         </div>

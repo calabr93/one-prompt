@@ -66,29 +66,29 @@
   "pricing": {
     "title": "Scegli la Tua Modalità",
     "free": {
-      "title": "Gratuito",
-      "subtitle": "Open Source",
+      "title": "FREE",
       "price": "0€",
       "priceLabel": "per sempre",
       "features": [
-        "Injection mode",
-        "API mode: usa le tue chiavi",
-        "Nessun limite di utilizzo",
-        "Privacy totale"
+        { "text": "Injection Mode: gratuita illimitata", "included": true },
+        { "text": "Privacy Totale (dati locali)", "included": true },
+        { "text": "API Mode: configurazione manuale", "included": false },
+        { "text": "Nessun credito incluso", "included": false }
       ],
       "cta": "Scarica da GitHub"
     },
-    "cloud": {
-      "title": "OnePrompt PRO",
-      "startingFrom": "a partire da",
+    "pro": {
+      "title": "PRO",
+      "badge": "Nessun abbonamento",
+      "startingFrom": "crediti a partire da",
       "price": "4,99€",
       "features": [
-        "Injection mode",
-        "API mode: pronto all'uso (50 crediti gratis)",
-        "Crediti prepagati",
-        "Privacy totale"
+        { "text": "Injection Mode: gratuita illimitata", "included": true },
+        { "text": "API Mode: pronto all'uso", "included": true },
+        { "text": "50 crediti inclusi subito", "included": true },
+        { "text": "Privacy Totale (dati locali)", "included": true }
       ],
-      "cta": "Scarica l'App"
+      "cta": "Scarica gratis"
     }
   },
   "platforms": {
@@ -120,16 +120,8 @@
   },
   "cta": {
     "title": "Confronta le AI in un click",
-    "subtitle": "Scarica OnePrompt e inizia a confrontare le AI in secondi.",
-    "free": {
-      "title": "OnePrompt Free",
-      "subtitle": "Open Source - Usa le tue chiavi API"
-    },
-    "pro": {
-      "title": "OnePrompt PRO",
-      "subtitle": "Crediti API pronti all'uso inclusi"
-    },
-    "github": "Codice sorgente su GitHub"
+    "subtitle": "Scarica OnePrompt PRO e inizia a confrontare le AI in secondi.",
+    "github": "Oppure scarica versione Free da GitHub"
   },
   "footer": {
     "tagline": "Un prompt, tutte le AI.",

@@ -14,103 +14,69 @@
   margin-bottom: var(--spacing-md);
 }
 
-.content > p {
+.content>p {
   font-size: 1.25rem;
-  margin-bottom: var(--spacing-xl);
-}
-
-.downloadGrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
-}
-
-.downloadCard {
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: var(--spacing-lg);
-  text-align: left;
-}
-
-.proCard {
-  border-color: var(--accent-color);
-  background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(0, 122, 255, 0.05) 100%);
-}
-
-.cardTitle {
-  font-size: 1.25rem;
-  margin-bottom: var(--spacing-xs);
-  color: var(--text-primary);
-}
-
-.proCard .cardTitle {
-  color: var(--accent-color);
-}
-
-.cardSubtitle {
-  font-size: 0.9rem;
+  margin-bottom: var(--spacing-2xl);
   color: var(--text-secondary);
-  margin-bottom: var(--spacing-md);
 }
 
-.downloadLinks {
+.downloadButtons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-3xl);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.platformSection {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: var(--spacing-md);
 }
 
-.platformGroup {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-xs);
-}
-
-.platformLabel {
+.platformHeader {
   display: flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-sm);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: var(--text-primary);
 }
 
-.platformLinks {
+.buttonGroup {
   display: flex;
   gap: var(--spacing-md);
-  padding-left: calc(18px + var(--spacing-xs));
 }
 
-.platformLinks a {
-  color: var(--accent-color);
-  font-size: 0.875rem;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.platformLinks a:hover {
-  color: var(--accent-hover);
-  text-decoration: underline;
+.downloadBtn {
+  min-width: 140px;
 }
 
 .github {
   color: var(--text-secondary);
   font-weight: 500;
+  font-size: 0.95rem;
   transition: color 0.2s;
+  text-decoration: none;
 }
 
 .github:hover {
   color: var(--accent-color);
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {
-  .downloadGrid {
-    grid-template-columns: 1fr;
+  .downloadButtons {
+    flex-direction: column;
+    gap: var(--spacing-xl);
   }
 
-  .platformLinks {
+  .buttonGroup {
     flex-direction: column;
-    gap: var(--spacing-xs);
+    width: 100%;
+  }
+
+  .downloadBtn {
+    width: 100%;
   }
 }

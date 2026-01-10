@@ -21,6 +21,14 @@
   flex-direction: column;
 }
 
+.proCard {
+  border: 2px solid var(--accent-color);
+  box-shadow:
+    0 0 20px rgba(0, 122, 255, 0.15),
+    0 0 40px rgba(0, 122, 255, 0.1);
+  position: relative;
+}
+
 .header {
   display: flex;
   align-items: center;
@@ -33,16 +41,43 @@
   margin: 0;
 }
 
+.proCard .header h3 {
+  color: var(--accent-color);
+}
+
 .subtitle {
   color: var(--accent-color);
   font-weight: 500;
+}
+
+.openSourceBadge {
+  font-size: 0.8rem;
+  color: var(--accent-color);
+  font-weight: 500;
+}
+
+.noBadge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+  background: var(--accent-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+}
+
+.priceSection {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: var(--spacing-lg);
 }
 
 .price {
   display: flex;
   align-items: baseline;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-xs);
 }
 
 .startingFrom {
@@ -62,6 +97,10 @@
   color: var(--text-primary);
 }
 
+.proCard .amount {
+  color: var(--accent-color);
+}
+
 .period {
   font-size: 1rem;
   color: var(--text-secondary);
@@ -79,13 +118,26 @@
   align-items: center;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm) 0;
-  color: var(--text-primary);
   font-size: 0.95rem;
 }
 
-.features svg {
+.features li.included {
+  color: var(--text-primary);
+}
+
+.features li.included svg {
   color: var(--success-color);
   flex-shrink: 0;
+}
+
+.features li.excluded {
+  color: var(--text-secondary);
+}
+
+.features li.excluded svg {
+  color: var(--text-tertiary, #666);
+  flex-shrink: 0;
+  opacity: 0.6;
 }
 
 .cta {

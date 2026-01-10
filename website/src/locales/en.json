@@ -66,29 +66,29 @@
   "pricing": {
     "title": "Choose Your Mode",
     "free": {
-      "title": "Free",
-      "subtitle": "Open Source",
+      "title": "FREE",
       "price": "$0",
       "priceLabel": "forever",
       "features": [
-        "Injection mode",
-        "API mode: use your own keys",
-        "No usage limits",
-        "Total privacy"
+        { "text": "Injection Mode: free unlimited", "included": true },
+        { "text": "Total Privacy (local data)", "included": true },
+        { "text": "API Mode: manual configuration", "included": false },
+        { "text": "No credits included", "included": false }
       ],
       "cta": "Download from GitHub"
     },
-    "cloud": {
-      "title": "OnePrompt PRO",
-      "startingFrom": "starting from",
+    "pro": {
+      "title": "PRO",
+      "badge": "No subscription",
+      "startingFrom": "credits starting from",
       "price": "$4.99",
       "features": [
-        "Injection mode",
-        "API mode: ready to use (50 free credits)",
-        "Prepaid credits",
-        "Total privacy"
+        { "text": "Injection Mode: free unlimited", "included": true },
+        { "text": "API Mode: ready to use", "included": true },
+        { "text": "50 credits included instantly", "included": true },
+        { "text": "Total Privacy (local data)", "included": true }
       ],
-      "cta": "Download the App"
+      "cta": "Download for free"
     }
   },
   "platforms": {
@@ -120,16 +120,8 @@
   },
   "cta": {
     "title": "Compare AIs in one click",
-    "subtitle": "Download OnePrompt and start comparing AIs in seconds.",
-    "free": {
-      "title": "OnePrompt Free",
-      "subtitle": "Open Source - Use your own API keys"
-    },
-    "pro": {
-      "title": "OnePrompt PRO",
-      "subtitle": "Ready-to-use API credits included"
-    },
-    "github": "Source code on GitHub"
+    "subtitle": "Download OnePrompt PRO and start comparing AIs in seconds.",
+    "github": "Or download Free version from GitHub"
   },
   "footer": {
     "tagline": "One prompt, all AIs.",
