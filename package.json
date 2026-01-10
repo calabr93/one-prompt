@@ -50,7 +50,7 @@
         }
       ],
       "icon": "assets/logo/logo.icns",
-      "artifactName": "${productName}-${version}-${arch}.${ext}"
+      "artifactName": "${productName}-${arch}.${ext}"
     },
     "win": {
       "target": [
@@ -68,15 +68,15 @@
         }
       ],
       "icon": "assets/logo/logo.ico",
-      "artifactName": "${productName}-${version}-Setup.${ext}"
+      "artifactName": "${productName}-Setup.${ext}"
     },
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "artifactName": "${productName}-Setup-${version}.${ext}"
+      "artifactName": "${productName}-Setup.${ext}"
     },
     "portable": {
-      "artifactName": "${productName}-Portable-${version}.${ext}"
+      "artifactName": "${productName}-Portable.${ext}"
     },
     "files": [
       "src/**/*",
@@ -86,7 +86,7 @@
     ],
     "directories": {
       "buildResources": "assets",
-      "output": "dist"
+      "output": "release"
     }
   },
   "dependencies": {

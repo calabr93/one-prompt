@@ -10,13 +10,12 @@
     "headline": "Un Prompt, Tutte le AI",
     "subheadline": "Basta copiare e incollare lo stesso prompt in 5 servizi diversi. Scrivi una volta, confronta le risposte di ChatGPT, Claude, Gemini e altri - tutto in un'unica finestra.",
     "cta": {
-      "mac": "Scarica per Mac",
-      "windows": "Scarica per Windows"
+      "download": "Scarica Gratis"
     },
     "github": "Vedi su GitHub"
   },
   "problem": {
-    "title": "Il Problema che Conosci Bene",
+    "title": "Il problema che conosci bene",
     "steps": [
       "Apro ChatGPT, copio il prompt, aspetto la risposta...",
       "Poi apro Claude, incollo, aspetto...",
@@ -60,7 +59,7 @@
       },
       {
         "title": "Open Source",
-        "description": "Codice aperto su GitHub. Ispeziona, modifica, contribuisci."
+        "description": "Open source su GitHub. Ispeziona, modifica, contribuisci."
       }
     ]
   },
@@ -94,7 +93,7 @@
   },
   "platforms": {
     "title": "Piattaforme Supportate",
-    "api": "API Mode (BYOK)",
+    "api": "API Mode",
     "injection": "Injection Mode",
     "comingSoon": "In arrivo"
   },
@@ -103,7 +102,7 @@
     "items": [
       {
         "question": "OnePrompt è davvero gratuito?",
-        "answer": "Sì, la versione desktop open source è completamente gratuita. Usa le tue chiavi API e non paghi nulla a noi."
+        "answer": "Sì, la versione desktop open source è completamente gratuita. Usa le tue chiavi API e non paghi nulla."
       },
       {
         "question": "I miei dati sono al sicuro?",
@@ -115,13 +114,21 @@
       },
       {
         "question": "Qual è la differenza tra API Mode e Injection Mode?",
-        "answer": "API Mode usa le API ufficiali (più veloce e affidabile). Injection Mode usa le interfacce web (funziona con account gratuiti)."
+        "answer": "API Mode usa le API ufficiali. Injection Mode usa le interfacce web."
       }
     ]
   },
   "cta": {
-    "title": "Pronto a Risparmiare Tempo?",
+    "title": "Confronta le AI in un click",
     "subtitle": "Scarica OnePrompt e inizia a confrontare le AI in secondi.",
+    "free": {
+      "title": "OnePrompt Free",
+      "subtitle": "Open Source - Usa le tue chiavi API"
+    },
+    "pro": {
+      "title": "OnePrompt PRO",
+      "subtitle": "Crediti API pronti all'uso inclusi"
+    },
     "github": "Codice sorgente su GitHub"
   },
   "footer": {

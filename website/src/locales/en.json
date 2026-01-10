@@ -10,13 +10,12 @@
     "headline": "One Prompt, All AIs",
     "subheadline": "Stop copy-pasting the same prompt into 5 different services. Write once, compare responses from ChatGPT, Claude, Gemini and more - all in one window.",
     "cta": {
-      "mac": "Download for Mac",
-      "windows": "Download for Windows"
+      "download": "Download Free"
     },
     "github": "View on GitHub"
   },
   "problem": {
-    "title": "The Problem You Know Too Well",
+    "title": "The problem you know too well",
     "steps": [
       "Open ChatGPT, paste the prompt, wait for the response...",
       "Then open Claude, paste, wait...",
@@ -94,7 +93,7 @@
   },
   "platforms": {
     "title": "Supported Platforms",
-    "api": "API Mode (BYOK)",
+    "api": "API Mode",
     "injection": "Injection Mode",
     "comingSoon": "Coming Soon"
   },
@@ -103,7 +102,7 @@
     "items": [
       {
         "question": "Is OnePrompt really free?",
-        "answer": "Yes, the open source desktop version is completely free. Use your own API keys and pay nothing to us."
+        "answer": "Yes, the open source desktop version is completely free. Use your own API keys and pay nothing."
       },
       {
         "question": "Is my data safe?",
@@ -115,13 +114,21 @@
       },
       {
         "question": "What's the difference between API Mode and Injection Mode?",
-        "answer": "API Mode uses official APIs (faster and more reliable). Injection Mode uses web interfaces (works with free accounts)."
+        "answer": "API Mode uses official APIs. Injection Mode uses web interfaces."
       }
     ]
   },
   "cta": {
-    "title": "Ready to Save Time?",
+    "title": "Compare AIs in one click",
     "subtitle": "Download OnePrompt and start comparing AIs in seconds.",
+    "free": {
+      "title": "OnePrompt Free",
+      "subtitle": "Open Source - Use your own API keys"
+    },
+    "pro": {
+      "title": "OnePrompt PRO",
+      "subtitle": "Ready-to-use API credits included"
+    },
     "github": "Source code on GitHub"
   },
   "footer": {

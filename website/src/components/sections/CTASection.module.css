@@ -6,7 +6,7 @@
 
 .content {
   text-align: center;
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -14,17 +14,84 @@
   margin-bottom: var(--spacing-md);
 }
 
-.content p {
+.content > p {
   font-size: 1.25rem;
   margin-bottom: var(--spacing-xl);
 }
 
-.buttons {
+.downloadGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.downloadCard {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: var(--spacing-lg);
+  text-align: left;
+}
+
+.proCard {
+  border-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(0, 122, 255, 0.05) 100%);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.proCard .cardTitle {
+  color: var(--accent-color);
+}
+
+.cardSubtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.downloadLinks {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   gap: var(--spacing-md);
-  flex-wrap: wrap;
-  margin-bottom: var(--spacing-lg);
+}
+
+.platformGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.platformLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.platformLinks {
+  display: flex;
+  gap: var(--spacing-md);
+  padding-left: calc(18px + var(--spacing-xs));
+}
+
+.platformLinks a {
+  color: var(--accent-color);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.platformLinks a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
 }
 
 .github {
@@ -38,8 +105,12 @@
 }
 
 @media (max-width: 768px) {
-  .buttons {
+  .downloadGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .platformLinks {
     flex-direction: column;
-    align-items: center;
+    gap: var(--spacing-xs);
   }
 }
