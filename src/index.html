@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="styles/feedback.css">
   <link rel="stylesheet" href="styles/drag-drop.css">
 </head>
+
 <body>
   <!-- Titlebar -->
   <div class="titlebar">
@@ -19,15 +21,21 @@
     <aside class="sidebar">
       <div class="sidebar-content-wrapper">
         <div class="scroll-indicator up" id="scrollUpBtn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
         </div>
-        
+
         <nav class="sidebar-nav" id="sidebarNav">
           <!-- Le icone AI verranno generate dinamicamente -->
         </nav>
-        
+
         <div class="scroll-indicator down" id="scrollDownBtn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </div>
 
         <div class="add-service-wrapper">
@@ -36,11 +44,12 @@
           </button>
         </div>
       </div>
-      
+
       <div class="sidebar-footer">
         <button class="sidebar-item new-session" id="newSessionBtn" title="Nuova sessione">
           <span class="sidebar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 20h9"></path>
               <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
             </svg>
@@ -48,7 +57,8 @@
         </button>
         <button class="sidebar-item report-bug" id="reportBugBtn" title="Report Bug or Request Feature">
           <span class="sidebar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
               <line x1="12" y1="9" x2="12" y2="13"></line>
               <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -57,8 +67,11 @@
         </button>
         <button class="sidebar-item settings" id="settingsBtn" title="Impostazioni">
           <span class="sidebar-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+              </path>
               <circle cx="12" cy="12" r="3"></circle>
             </svg>
           </span>
@@ -85,20 +98,21 @@
         <div class="prompt-bar-inner">
           <!-- Prompt input -->
           <div class="prompt-input-wrapper">
-            <textarea
-              id="promptInput"
-              class="prompt-input"
-              placeholder="Inserisci il tuo prompt qui..."
-              rows="2"
-            ></textarea>
+            <textarea id="promptInput" class="prompt-input" placeholder="Inserisci il tuo prompt qui..."
+              rows="2"></textarea>
           </div>
           <button id="crossCheckBtn" class="btn-cross-check" title="Cross-Check" style="display: none;">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" fill="currentColor">
-              <path d="M24.414,16.586L30.828,23l-6.414,6.414l-2.828-2.828L23.172,25H22c-3.924,0-6.334-2.289-8.173-4.747c0.987-1.097,1.799-2.285,2.516-3.36C18.109,19.46,19.521,21,22,21h1.172l-1.586-1.586L24.414,16.586z M22,11h1.172l-1.586,1.586l2.828,2.828L30.828,9l-6.414-6.414l-2.828,2.828L23.172,7H22c-5.07,0-7.617,3.82-9.664,6.891C10.224,17.059,8.788,19,6,19H2v4h4c5.07,0,7.617-3.82,9.664-6.891C17.776,12.941,19.212,11,22,11z M10.212,15.191c0.399-0.539,1.957-2.848,2.322-3.365C10.917,10.216,8.86,9,6,9H2v4h4C7.779,13,9.007,13.797,10.212,15.191z"/>
+              <path
+                d="M24.414,16.586L30.828,23l-6.414,6.414l-2.828-2.828L23.172,25H22c-3.924,0-6.334-2.289-8.173-4.747c0.987-1.097,1.799-2.285,2.516-3.36C18.109,19.46,19.521,21,22,21h1.172l-1.586-1.586L24.414,16.586z M22,11h1.172l-1.586,1.586l2.828,2.828L30.828,9l-6.414-6.414l-2.828,2.828L23.172,7H22c-5.07,0-7.617,3.82-9.664,6.891C10.224,17.059,8.788,19,6,19H2v4h4c5.07,0,7.617-3.82,9.664-6.891C17.776,12.941,19.212,11,22,11z M10.212,15.191c0.399-0.539,1.957-2.848,2.322-3.365C10.917,10.216,8.86,9,6,9H2v4h4C7.779,13,9.007,13.797,10.212,15.191z" />
             </svg>
           </button>
           <button id="sendBtn" class="btn-send" title="Invia">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
           </button>
         </div>
       </div>
@@ -111,7 +125,8 @@
       <div class="modal-header">
         <h2 data-i18n="services.title">Servizi disponibili</h2>
         <button class="modal-close" id="closeServicesModal">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -131,7 +146,8 @@
       <div class="modal-header">
         <h2 data-i18n="settings.title">Impostazioni</h2>
         <button class="modal-close" id="closeSettingsModal">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -140,11 +156,13 @@
       <div class="modal-content settings-layout">
         <div class="settings-flex-wrapper">
           <div class="settings-sidebar">
-            <button class="settings-nav-btn active" data-target="settings-general" data-i18n="settings.general">Generale</button>
+            <button class="settings-nav-btn active" data-target="settings-general"
+              data-i18n="settings.general">Generale</button>
             <button class="settings-nav-btn" data-target="settings-api" data-i18n="settings.apiMode">API</button>
-            <button class="settings-nav-btn" data-target="settings-crosscheck" data-i18n="settings.crosscheck">Cross Check</button>
+            <button class="settings-nav-btn" data-target="settings-crosscheck" data-i18n="settings.crosscheck">Cross
+              Check</button>
           </div>
-          
+
           <div class="settings-body">
             <!-- General Section -->
             <div id="settings-general" class="settings-tab-content active">
@@ -152,11 +170,25 @@
                 <label class="settings-label" data-i18n="settings.theme">Tema</label>
                 <div class="theme-selector">
                   <button class="theme-btn active" data-theme="dark" id="themeDarkBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
                     <span data-i18n="settings.theme.dark">Scuro</span>
                   </button>
                   <button class="theme-btn" data-theme="light" id="themeLightBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
                     <span data-i18n="settings.theme.light">Chiaro</span>
                   </button>
                 </div>
@@ -197,11 +229,14 @@
             <!-- API Section -->
             <div id="settings-api" class="settings-tab-content">
               <div class="settings-section-title" data-i18n="settings.apiKeys">Chiavi API</div>
-              <p class="settings-desc" data-i18n="settings.apiKeys.desc" style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Inserisci le tue chiavi API per utilizzare la modalità API.</p>
-              
+              <p class="settings-desc" data-i18n="settings.apiKeys.desc"
+                style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 1rem;">Inserisci le tue chiavi
+                API per utilizzare la modalità API.</p>
+
               <div class="api-service-card">
                 <div class="api-service-header">
-                  <img src="../assets/ai-services/chatgpt.png" alt="OpenAI" style="width: 24px; height: 24px; object-fit: contain;">
+                  <img src="../assets/ai-services/chatgpt.png" alt="OpenAI"
+                    style="width: 24px; height: 24px; object-fit: contain;">
                   <span>OpenAI</span>
                 </div>
                 <div class="api-key-input-group">
@@ -218,10 +253,11 @@
                   </div>
                 </div>
               </div>
-              
+
               <div class="api-service-card">
                 <div class="api-service-header">
-                  <img src="../assets/ai-services/claude.png" alt="Anthropic" style="width: 24px; height: 24px; object-fit: contain;">
+                  <img src="../assets/ai-services/claude.png" alt="Anthropic"
+                    style="width: 24px; height: 24px; object-fit: contain;">
                   <span>Anthropic</span>
                 </div>
                 <div class="api-key-input-group">
@@ -241,7 +277,8 @@
 
               <div class="api-service-card">
                 <div class="api-service-header">
-                  <img src="../assets/ai-services/gemini.png" alt="Google" style="width: 24px; height: 24px; object-fit: contain;">
+                  <img src="../assets/ai-services/gemini.png" alt="Google"
+                    style="width: 24px; height: 24px; object-fit: contain;">
                   <span>Google Gemini</span>
                 </div>
                 <div class="api-key-input-group">
@@ -260,7 +297,8 @@
 
               <div class="api-service-card">
                 <div class="api-service-header">
-                  <img src="../assets/ai-services/grok.png" alt="xAI" style="width: 24px; height: 24px; object-fit: contain;">
+                  <img src="../assets/ai-services/grok.png" alt="xAI"
+                    style="width: 24px; height: 24px; object-fit: contain;">
                   <span>xAI (Grok)</span>
                 </div>
                 <div class="api-key-input-group">
@@ -281,38 +319,36 @@
             <!-- Cross Check Section -->
             <div id="settings-crosscheck" class="settings-tab-content">
               <div class="settings-section">
-                <label class="settings-label" data-i18n="settings.crosscheck.customPrompt">Prompt personalizzabile</label>
-                <p class="settings-hint" data-i18n="settings.crosscheck.hint">Usa {{ORIGINAL_PROMPT}} per il prompt originale e {{OTHER_RESPONSES}} per le risposte delle altre AI.</p>
+                <label class="settings-label" data-i18n="settings.crosscheck.customPrompt">Prompt
+                  personalizzabile</label>
+                <p class="settings-hint" data-i18n="settings.crosscheck.hint">Usa {{ORIGINAL_PROMPT}} per il prompt
+                  originale e {{OTHER_RESPONSES}} per le risposte delle altre AI.</p>
                 <textarea id="crossCheckPromptTemplate" class="settings-textarea" rows="14"></textarea>
                 <div class="settings-actions">
-                  <button id="resetCrossCheckPrompt" class="btn-secondary" data-i18n="settings.crosscheck.reset">Ripristina default</button>
+                  <button id="resetCrossCheckPrompt" class="btn-secondary"
+                    data-i18n="settings.crosscheck.reset">Ripristina default</button>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="settings-footer" style="padding: 10px; text-align: center; opacity: 0.6; font-size: 0.7rem; border-top: 1px solid var(--border-color);">
+        <div class="settings-footer"
+          style="padding: 10px; text-align: center; opacity: 0.6; font-size: 0.7rem; border-top: 1px solid var(--border-color);">
           <div style="margin-bottom: 3px;" id="appVersion">v0.1.5</div>
           <div>
-            Crafted by Fabio Calabretta • 
-            <a href="#" onclick="window.electronAPI.openExternal('https://buy.stripe.com/28E6oIcRUcc0cE48oO2wU04')" style="color: inherit; text-decoration: underline; cursor: pointer;">Support OnePrompt</a>
+            Crafted by Fabio Calabretta •
+            <a href="#" onclick="window.electronAPI.openExternal('https://buy.stripe.com/28E6oIcRUcc0cE48oO2wU04')"
+              style="color: inherit; text-decoration: underline; cursor: pointer;">Support OnePrompt</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Update Notification Banner -->
-  <div id="updateBanner" class="analytics-banner" style="display: none; background-color: #2563eb;">
-    <div class="analytics-content">
-      <p class="analytics-text" id="updateText">È disponibile una nuova versione!</p>
-      <div class="analytics-buttons">
-        <button id="updateActionBtn" class="analytics-btn primary" style="background-color: white; color: #2563eb;">Scarica</button>
-      </div>
-    </div>
-  </div>
+
 
   <script src="renderer.js"></script>
 </body>
+
 </html>
