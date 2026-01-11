@@ -71,34 +71,30 @@ When working on something important, you want the best possible answers. Often t
 - 🔄 **Dual Mode**:
   - **Injection Mode**: Use the original web interfaces (free, but slower and riskier).
   - **API Mode**: Use your own API keys (BYOK) for fast, reliable, and compliant access.
+- 🔍 **Web Search**: AI responses enhanced with real-time web search (API Mode)
+- 🔀 **Cross-Check**: Each AI analyzes the others' responses for comprehensive validation
 - 🎯 **Flexible selection**: Choose which AIs to use for each prompt
 - 🔐 **Privacy First**: API keys and data are stored locally on your device.
-- 📂 **Session Management**: Organize your work in multiple tabs.
+- 📂 **Session Management**: Organize your work in multiple tabs with conversation history.
 - 💻 **Cross-platform**: Available for macOS and Windows
 - 🎨 **Clean interface**: Minimalist design with Dark/Light themes.
+- 🌍 **Multi-language**: Available in 7 languages (EN, IT, ES, FR, DE, PT, TR)
 
 ## Supported AI Platforms
 
 ### API Mode (BYOK)
-- ChatGPT (OpenAI)
-- Claude (Anthropic)
-- Gemini (Google)
+- ChatGPT (OpenAI) - with Web Search
+- Claude (Anthropic) - with Web Search
+- Gemini (Google) - with Web Search
+- Grok (xAI) - with Web Search + X/Twitter Search
 
 ### Injection Mode (Web Interface)
 - ChatGPT (OpenAI)
 - Claude (Anthropic)
 - Gemini (Google)
-- Copilot (Microsoft)
 - DeepSeek
-- Grok (X)
+- Grok (xAI)
 - Perplexity
-
-### Planned
-- Mistral AI
-- Phind
-- Replit AI
-- Bolt.new
-- Lovable.dev
 
 **Note**: Prompt injection features are experimental and may not work consistently across all platforms. API Mode is recommended for stability.
 

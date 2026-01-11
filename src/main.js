@@ -86,46 +86,6 @@ const AI_CONFIGS = {
     icon: '⚡',
     logo: 'ai-services/grok.png',
     color: '#ff6b00'
-  },
-  mistral: {
-    name: 'Mistral',
-    url: 'https://chat.mistral.ai',
-    icon: '🌬️',
-    logo: 'ai-services/mistral.png',
-    color: '#ff6b35',
-    comingSoon: true
-  },
-  phind: {
-    name: 'Phind',
-    url: 'https://www.phind.com',
-    icon: '💻',
-    logo: 'ai-services/phind.png',
-    color: '#00d4aa',
-    comingSoon: true
-  },
-  replit: {
-    name: 'Replit',
-    url: 'https://replit.com/ai',
-    icon: '🔧',
-    logo: 'ai-services/replit.png',
-    color: '#f26207',
-    comingSoon: true
-  },
-  bolt: {
-    name: 'Bolt',
-    url: 'https://bolt.new/',
-    icon: '⚡',
-    logo: 'ai-services/bolt.png',
-    color: '#0ea5e9',
-    comingSoon: true
-  },
-  lovable: {
-    name: 'Lovable',
-    url: 'https://lovable.dev/',
-    icon: '💜',
-    logo: 'ai-services/lovable.png',
-    color: '#8b5cf6',
-    comingSoon: true
   }
 };
 

@@ -34,5 +34,12 @@
   "sidebar.settings": "Settings",
   "prompt.placeholder": "Enter your prompt here...",
   "send": "Send",
-  "comingSoon": "Coming Soon"
+  "comingSoon": "Coming Soon",
+  "close": "Close",
+  "webSearch": "Web Search",
+  "settings.apiKeys.xai": "xAI API Key",
+  "settings.crosscheck": "Cross Check",
+  "settings.crosscheck.customPrompt": "Custom Prompt",
+  "settings.crosscheck.hint": "Use {{ORIGINAL_PROMPT}} for the original prompt and {{OTHER_RESPONSES}} for other AI responses.",
+  "settings.crosscheck.reset": "Reset to default"
 }

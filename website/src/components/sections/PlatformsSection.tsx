@@ -6,22 +6,16 @@ const apiPlatforms = [
   { name: 'ChatGPT', logo: 'chatgpt.png' },
   { name: 'Claude', logo: 'claude.png' },
   { name: 'Gemini', logo: 'gemini.png' },
+  { name: 'Grok', logo: 'grok.png' },
 ];
 
 const injectionPlatforms = [
   { name: 'ChatGPT', logo: 'chatgpt.png' },
   { name: 'Claude', logo: 'claude.png' },
   { name: 'Gemini', logo: 'gemini.png' },
-  { name: 'Copilot', logo: 'copilot.png' },
   { name: 'DeepSeek', logo: 'deepseek.png' },
   { name: 'Grok', logo: 'grok.png' },
   { name: 'Perplexity', logo: 'perplexity.png' },
-];
-
-const comingSoon = [
-  { name: 'Mistral', logo: 'mistral.png' },
-  { name: 'Phind', logo: 'phind.png' },
-  { name: 'Replit', logo: 'replit.png' },
 ];
 
 export function PlatformsSection() {
@@ -53,21 +47,6 @@ export function PlatformsSection() {
             <div className={styles.logos}>
               {injectionPlatforms.map((platform) => (
                 <div key={platform.name} className={styles.platform}>
-                  <img
-                    src={`./assets/ai-services/${platform.logo}`}
-                    alt={platform.name}
-                  />
-                  <span>{platform.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className={styles.group}>
-            <h3>{t('platforms.comingSoon')}</h3>
-            <div className={styles.logos}>
-              {comingSoon.map((platform) => (
-                <div key={platform.name} className={`${styles.platform} ${styles.comingSoon}`}>
                   <img
                     src={`./assets/ai-services/${platform.logo}`}
                     alt={platform.name}

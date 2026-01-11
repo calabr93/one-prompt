@@ -19,6 +19,10 @@
   --spacing-md: 16px;
   --spacing-lg: 24px;
   --spacing-xl: 32px;
+  --scrollbar-width: 6px;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.35);
 }
 
 [data-theme="light"] {
@@ -28,6 +32,8 @@
   --text-primary: #000000;
   --text-secondary: #666666;
   --border-color: #d1d1d6;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.35);
 }
 
 body {
@@ -671,6 +677,8 @@ body {
   flex-direction: column;
   background: var(--bg-primary);
   position: relative;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .webview-header {
@@ -1106,8 +1114,15 @@ body {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .services-grid {
@@ -1668,6 +1683,28 @@ input:checked+.toggle-slider:before {
 }
 
 /* API Chat Styles */
+.api-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.api-chat-container {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
 .api-message {
   position: relative;
   animation: fadeIn 0.3s ease;
@@ -1729,4 +1766,117 @@ input:checked+.toggle-slider:before {
   40% {
     transform: scale(1);
   }
+}
+
+/* Cross-Check Button */
+.btn-cross-check {
+  position: absolute;
+  right: 67px;
+  width: 36px;
+  height: 36px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.btn-cross-check:hover {
+  background: var(--bg-secondary);
+  border-color: var(--accent-color);
+  color: var(--text-primary);
+}
+
+.btn-cross-check.active {
+  background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff);
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  border: none;
+  color: white;
+}
+
+.btn-cross-check svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Cross-Check Response Style (Apple Intelligence gradient) */
+.api-message.cross-check-response {
+  background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3, #54a0ff) !important;
+  background-size: 300% 300%;
+  animation: gradientShift 3s ease infinite;
+  color: white !important;
+  border: none;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Settings Textarea */
+.settings-textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  color: var(--text-primary);
+  font-family: monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.settings-textarea:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+/* Settings Hint */
+.settings-hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Settings Actions */
+.settings-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Secondary Button */
+.btn-secondary {
+  padding: 8px 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-secondary);
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
 }

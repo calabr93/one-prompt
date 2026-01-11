@@ -3,10 +3,67 @@ let aiConfigs = {};
 let injectionRules = {};
 let loadedWebviews = new Set();
 let webviewInstances = {}; // Map sessionId → { aiKey → webview element }
-// Default to ChatGPT, Perplexity, and Copilot for fresh installations
-let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["chatgpt", "perplexity", "copilot"]'));
-// Default to ChatGPT, Gemini, and Claude for API mode
-let configuredApiAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-api-services') || '["chatgpt", "gemini", "claude"]'));
+// Default to ChatGPT and Perplexity for fresh installations
+let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["chatgpt", "perplexity"]'));
+// Default to ChatGPT, Gemini, Claude, and Grok for API mode
+let configuredApiAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-api-services') || '["chatgpt", "gemini", "claude", "grok"]'));
+
+// API History limit (sliding window: 6 user/assistant exchanges = 12 messages)
+const API_HISTORY_LIMIT = 12;
+
+// Cross-Check mode state
+let crossCheckEnabled = false;
+
+// Default Cross-Check prompt template
+const DEFAULT_CROSS_CHECK_TEMPLATE = `You are participating in a cross-validation exercise. Your task is to critically analyze responses from other AI assistants and provide your honest assessment.
+
+## Original User Request:
+{{ORIGINAL_PROMPT}}
+
+## Responses from Other AI Assistants:
+{{OTHER_RESPONSES}}
+
+## Your Task:
+1. **Initial Assessment**: Briefly summarize what each AI responded and their main approach
+2. **Critical Analysis**:
+   - Identify strengths and weaknesses in each response
+   - Point out any factual errors, inconsistencies, or missing information
+   - Note where you agree or disagree with their conclusions
+3. **Synthesis**: Provide your own improved answer that:
+   - Incorporates the best elements from all responses
+   - Corrects any errors you identified
+   - Adds any important points that were missed
+4. **Final Verdict**: Give a brief conclusion on which response was most helpful and why
+
+Be honest, objective, and constructive. Don't be defensive - acknowledge if another AI provided a better answer than you would have.
+
+**IMPORTANT: Respond in the same language as the original user request above.**`;
+
+// Get cross-check template from localStorage or use default
+function getCrossCheckTemplate() {
+  return localStorage.getItem('oneprompt-crosscheck-template') || DEFAULT_CROSS_CHECK_TEMPLATE;
+}
+
+// AI display names for cross-check prompts
+const AI_DISPLAY_NAMES = {
+  chatgpt: 'ChatGPT',
+  claude: 'Claude',
+  gemini: 'Gemini',
+  grok: 'Grok'
+};
+
+// Cross-Check prompt builder
+function buildCrossCheckPrompt(originalPrompt, otherResponses) {
+  const responsesSection = otherResponses
+    .map(r => `### ${r.aiName}'s Response:\n${r.response}`)
+    .join('\n\n');
+
+  const template = getCrossCheckTemplate();
+
+  return template
+    .replace('{{ORIGINAL_PROMPT}}', originalPrompt)
+    .replace('{{OTHER_RESPONSES}}', responsesSection);
+}
 
 // i18n - Internazionalizzazione
 let currentLanguage = localStorage.getItem('oneprompt-language') || 'it';
@@ -53,9 +110,6 @@ async function updateUILanguage() {
   });
 
   // Update button titles
-  const homeBtn = document.getElementById('homeBtn');
-  if (homeBtn) homeBtn.title = t('sidebar.home');
-
   const addServiceBtn = document.getElementById('addServiceBtn');
   if (addServiceBtn) addServiceBtn.title = t('sidebar.addService');
 
@@ -137,6 +191,7 @@ function createNewSession(name = null, selectedAIsSet = null, mode = null) {
     selectedAIs: selectedAIsSet ? Array.from(selectedAIsSet) : [],
     mode: initialMode || null, // 'injection' or 'api' or null
     chatUrls: {}, // Mappa aiKey -> URL della conversazione
+    apiChatHistory: {}, // Mappa aiKey -> Array di {role, content} per API mode
     createdAt: Date.now()
   };
 }
@@ -204,7 +259,7 @@ function loadSessionsFromStorage() {
   // Inizializza con una sessione di default se non esistono sessioni
   if (sessions.length === 0) {
     // Default services for first run
-    const defaultServices = new Set(['chatgpt', 'perplexity', 'copilot']);
+    const defaultServices = new Set(['chatgpt', 'perplexity']);
     const defaultSession = createNewSession(null, defaultServices, 'injection');
     sessions.push(defaultSession);
     currentSessionId = defaultSession.id;
@@ -290,6 +345,9 @@ async function init() {
     setupEventListeners();
     setupScrollListeners();
     setupUpdateHandlers();
+
+    // Update cross-check button visibility
+    updateCrossCheckButtonVisibility();
 
     // Set version in settings
     const version = await window.electronAPI.getAppVersion();
@@ -510,6 +568,7 @@ function switchToSession(sessionId) {
   renderSidebar();
   renderWebviews();
   updateSendButton();
+  updateCrossCheckButtonVisibility();
 }
 
 // Aggiorna lo stato della sidebar in base alla sessione corrente
@@ -613,7 +672,7 @@ function closeSettingsModalFn() {
 // Render griglia servizi
 function renderServicesGrid(mode = 'injection') {
   servicesGrid.innerHTML = '';
-  const apiServices = ['chatgpt', 'gemini', 'claude'];
+  const apiServices = ['chatgpt', 'gemini', 'claude', 'grok'];
 
   Object.entries(aiConfigs).forEach(([aiKey, config]) => {
     if (mode === 'api' && !apiServices.includes(aiKey)) {
@@ -744,6 +803,9 @@ function toggleAISelection(aiKey) {
 
   // Update send button
   updateSendButton();
+
+  // Update cross-check button visibility
+  updateCrossCheckButtonVisibility();
 }
 
 // Render webviews (solo quelle selezionate)
@@ -1084,7 +1146,7 @@ function renderSidebar() {
 
   const currentSession = getCurrentSession();
   const mode = currentSession ? currentSession.mode : 'injection';
-  const apiServices = ['chatgpt', 'gemini', 'claude'];
+  const apiServices = ['chatgpt', 'gemini', 'claude', 'grok'];
 
   // Mostra solo i servizi configurati nella sidebar
   Object.entries(aiConfigs).forEach(([key, config]) => {
@@ -1222,12 +1284,6 @@ function updateSidebarButtonState(aiKey) {
 
 // Setup event listeners
 function setupEventListeners() {
-  // Home button
-  const homeBtn = document.getElementById('homeBtn');
-  if (homeBtn) {
-    homeBtn.addEventListener('click', openServicesModal);
-  }
-
   // Prompt input
   promptInput.addEventListener('input', updateSendButton);
   promptInput.addEventListener('keydown', (e) => {
@@ -1329,74 +1385,159 @@ async function sendPromptToSelectedAIs() {
 
     // Ottieni le webview della sessione corrente
     const sessionWebviews = getCurrentSessionWebviews();
+    const currentSession = getCurrentSession();
+    const isApiMode = currentSession && currentSession.mode === 'api';
 
-    // Invia il prompt a tutte le AI selezionate
-    const promises = Array.from(selectedAIs).map(async aiKey => {
-      const webview = sessionWebviews[aiKey];
-      if (!webview) {
-        console.error(`Webview for ${aiKey} not found in current session`);
-        return;
+    // Check if cross-check is enabled (only in API mode with 2+ AIs)
+    const doCrossCheck = crossCheckEnabled && isApiMode && selectedAIs.size >= 2;
+
+    if (doCrossCheck) {
+      // === CROSS-CHECK FLOW (Two Rounds) ===
+      console.log('[OnePrompt] Cross-Check mode: Starting two-round flow...');
+
+      // Round 1: Send original prompt to all AIs and collect responses
+      const round1Responses = {};
+      const aiKeys = Array.from(selectedAIs);
+
+      // Show user message in all panels first
+      for (const aiKey of aiKeys) {
+        const panel = sessionWebviews[aiKey];
+        if (panel) {
+          appendApiMessage(panel, 'user', prompt);
+        }
       }
 
-      const currentSession = getCurrentSession();
-      const isApiMode = currentSession && currentSession.mode === 'api';
+      // Send to all AIs in parallel and collect responses
+      const round1Promises = aiKeys.map(async aiKey => {
+        const panel = sessionWebviews[aiKey];
+        if (!panel) {
+          console.error(`Panel for ${aiKey} not found`);
+          return { aiKey, response: null, error: 'Panel not found' };
+        }
 
-      // Aspetta che sia caricata (solo per Injection Mode)
-      if (!isApiMode && !loadedWebviews.has(aiKey)) {
-        console.log(`Waiting for ${aiKey} to load...`);
-        updateWebviewStatus(aiKey, 'thinking');
+        try {
+          const response = await handleApiChatWithResponse(aiKey, prompt, panel);
+          return { aiKey, response, error: null };
+        } catch (error) {
+          console.error(`Round 1 error for ${aiKey}:`, error);
+          return { aiKey, response: null, error: error.message };
+        }
+      });
 
-        await new Promise(resolve => {
-          if (loadedWebviews.has(aiKey)) {
-            resolve();
-            return;
+      const round1Results = await Promise.all(round1Promises);
+
+      // Collect successful responses
+      for (const result of round1Results) {
+        if (result.response) {
+          round1Responses[result.aiKey] = result.response;
+        }
+      }
+
+      console.log('[OnePrompt] Round 1 complete. Responses collected:', Object.keys(round1Responses));
+
+      // Round 2: Send cross-check prompt to each AI
+      if (Object.keys(round1Responses).length >= 2) {
+        console.log('[OnePrompt] Starting Round 2: Cross-Check...');
+
+        const round2Promises = aiKeys.map(async aiKey => {
+          const panel = sessionWebviews[aiKey];
+          if (!panel || !round1Responses[aiKey]) {
+            return; // Skip AIs that failed in round 1
           }
 
-          const onLoaded = () => {
-            webview.removeEventListener('did-finish-load', onLoaded);
-            console.log(`${aiKey} loaded!`);
-            resolve();
-          };
-          webview.addEventListener('did-finish-load', onLoaded);
+          // Build list of OTHER responses (exclude this AI's own response)
+          const otherResponses = Object.entries(round1Responses)
+            .filter(([key, _]) => key !== aiKey)
+            .map(([key, response]) => ({
+              aiName: AI_DISPLAY_NAMES[key] || key,
+              response: response
+            }));
 
-          // Timeout fallback (10s)
-          setTimeout(() => {
-            webview.removeEventListener('did-finish-load', onLoaded);
-            console.log(`${aiKey} load timeout, continuing anyway...`);
-            resolve();
-          }, 10000);
+          if (otherResponses.length === 0) return;
+
+          // Build cross-check prompt
+          const crossCheckPrompt = buildCrossCheckPrompt(prompt, otherResponses);
+
+          // Send cross-check prompt and mark response with special style
+          try {
+            const crossCheckResponse = await handleApiChatWithResponse(aiKey, crossCheckPrompt, panel, true); // true = isCrossCheck
+          } catch (error) {
+            console.error(`Round 2 error for ${aiKey}:`, error);
+          }
         });
 
-        // Extra delay for SPA hydration
-        console.log(`Waiting extra 2s for ${aiKey} SPA hydration...`);
-        await new Promise(r => setTimeout(r, 2000));
-      }
-
-      // Send via IPC to webview or Handle API
-      if (isApiMode) {
-          console.log(`Handling API chat for ${aiKey}...`);
-          // webview here is actually the div panel
-          handleApiChat(aiKey, prompt, webview);
+        await Promise.all(round2Promises);
+        console.log('[OnePrompt] Cross-Check complete!');
       } else {
-          // Injection Mode
-          console.log(`Sending prompt to ${aiKey} webview...`);
-          try {
-            // Invia anche le injection rules per questo AI
-            webview.send('send-prompt', { 
-              prompt, 
-              aiKey,
-              injectionRules: injectionRules[aiKey] 
-            });
-            console.log(`Prompt sent to ${aiKey}`);
-            updateWebviewStatus(aiKey, 'sent');
-          } catch (err) {
-            console.error(`Error sending to ${aiKey}:`, err);
-            updateWebviewStatus(aiKey, 'error');
-          }
+        console.log('[OnePrompt] Not enough successful responses for cross-check.');
       }
-    });
 
-    await Promise.all(promises);
+    } else {
+      // === NORMAL FLOW (Single Round) ===
+      const promises = Array.from(selectedAIs).map(async aiKey => {
+        const webview = sessionWebviews[aiKey];
+        if (!webview) {
+          console.error(`Webview for ${aiKey} not found in current session`);
+          return;
+        }
+
+        // Aspetta che sia caricata (solo per Injection Mode)
+        if (!isApiMode && !loadedWebviews.has(aiKey)) {
+          console.log(`Waiting for ${aiKey} to load...`);
+          updateWebviewStatus(aiKey, 'thinking');
+
+          await new Promise(resolve => {
+            if (loadedWebviews.has(aiKey)) {
+              resolve();
+              return;
+            }
+
+            const onLoaded = () => {
+              webview.removeEventListener('did-finish-load', onLoaded);
+              console.log(`${aiKey} loaded!`);
+              resolve();
+            };
+            webview.addEventListener('did-finish-load', onLoaded);
+
+            // Timeout fallback (10s)
+            setTimeout(() => {
+              webview.removeEventListener('did-finish-load', onLoaded);
+              console.log(`${aiKey} load timeout, continuing anyway...`);
+              resolve();
+            }, 10000);
+          });
+
+          // Extra delay for SPA hydration
+          console.log(`Waiting extra 2s for ${aiKey} SPA hydration...`);
+          await new Promise(r => setTimeout(r, 2000));
+        }
+
+        // Send via IPC to webview or Handle API
+        if (isApiMode) {
+            console.log(`Handling API chat for ${aiKey}...`);
+            // webview here is actually the div panel
+            handleApiChat(aiKey, prompt, webview);
+        } else {
+            // Injection Mode
+            console.log(`Sending prompt to ${aiKey} webview...`);
+            try {
+              // Invia anche le injection rules per questo AI
+              webview.send('send-prompt', {
+                prompt,
+                aiKey,
+                injectionRules: injectionRules[aiKey]
+              });
+              console.log(`Prompt sent to ${aiKey}`);
+              updateWebviewStatus(aiKey, 'sent');
+            } catch (err) {
+              console.error(`Error sending to ${aiKey}:`, err);
+              updateWebviewStatus(aiKey, 'error');
+            }
+        }
+      });
+
+      await Promise.all(promises);
+    }
 
     // Clear prompt input after successful send
     promptInput.value = '';
@@ -1468,7 +1609,7 @@ function setupUpdateHandlers() {
 window.selectMode = function(mode) {
     const rememberToggle = document.getElementById('rememberModeToggle');
     const remember = rememberToggle ? rememberToggle.checked : false;
-    
+
     if (remember) {
         localStorage.setItem('oneprompt-default-mode', mode);
         // Update settings UI if open
@@ -1477,17 +1618,17 @@ window.selectMode = function(mode) {
             radio.checked = true;
         }
     }
-    
+
     const currentSession = getCurrentSession();
     if (currentSession) {
         currentSession.mode = mode;
-        
+
         // If switching to API mode, set default API services
         if (mode === 'api') {
              selectedAIs.clear();
              // Do NOT auto-select services. User must add them manually.
              // Just ensure they are configured so they appear in sidebar.
-             const apiServices = ['chatgpt', 'gemini', 'claude'];
+             const apiServices = ['chatgpt', 'gemini', 'claude', 'grok'];
              apiServices.forEach(key => {
                  if (!configuredApiAIs.has(key)) {
                      configuredApiAIs.add(key);
@@ -1496,10 +1637,11 @@ window.selectMode = function(mode) {
              localStorage.setItem('oneprompt-configured-api-services', JSON.stringify([...configuredApiAIs]));
              saveSelectedAIs();
         }
-        
+
         saveSessionsToStorage();
         renderSidebar(); // Update sidebar for new mode
         renderWebviews();
+        updateCrossCheckButtonVisibility();
     }
 };
 
@@ -1581,10 +1723,86 @@ function initSettings() {
         modelGemini.value = localStorage.getItem('oneprompt-model-gemini') || 'gemini-pro';
         modelGemini.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-gemini', e.target.value));
     }
+
+    // xAI (Grok) Settings
+    const apiKeyXAI = document.getElementById('apiKeyXAI');
+    if (apiKeyXAI) {
+        apiKeyXAI.value = localStorage.getItem('oneprompt-api-xai') || '';
+        apiKeyXAI.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-xai', e.target.value));
+    }
+
+    const modelXAI = document.getElementById('modelXAI');
+    if (modelXAI) {
+        modelXAI.value = localStorage.getItem('oneprompt-model-xai') || 'grok-3';
+        modelXAI.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-xai', e.target.value));
+    }
 }
 
 // Initialize settings logic
 initSettings();
+
+// Cross-Check Button Logic
+function initCrossCheckButton() {
+  const crossCheckBtn = document.getElementById('crossCheckBtn');
+  if (!crossCheckBtn) return;
+
+  // Toggle button click
+  crossCheckBtn.addEventListener('click', () => {
+    crossCheckEnabled = !crossCheckEnabled;
+    crossCheckBtn.classList.toggle('active', crossCheckEnabled);
+    console.log(`[OnePrompt] Cross-Check mode: ${crossCheckEnabled ? 'enabled' : 'disabled'}`);
+  });
+}
+
+// Update cross-check button visibility based on mode
+function updateCrossCheckButtonVisibility() {
+  const crossCheckBtn = document.getElementById('crossCheckBtn');
+  if (!crossCheckBtn) return;
+
+  const currentSession = getCurrentSession();
+  const mode = currentSession ? currentSession.mode : null;
+
+  // Only show cross-check button in API mode with 2+ services selected
+  if (mode === 'api' && selectedAIs.size >= 2) {
+    crossCheckBtn.style.display = 'flex';
+  } else {
+    crossCheckBtn.style.display = 'none';
+    // Disable cross-check if hidden
+    if (crossCheckEnabled) {
+      crossCheckEnabled = false;
+      crossCheckBtn.classList.remove('active');
+    }
+  }
+}
+
+// Initialize cross-check settings
+function initCrossCheckSettings() {
+  const templateTextarea = document.getElementById('crossCheckPromptTemplate');
+  const resetBtn = document.getElementById('resetCrossCheckPrompt');
+
+  if (templateTextarea) {
+    // Load saved template or default
+    templateTextarea.value = getCrossCheckTemplate();
+
+    // Save on change
+    templateTextarea.addEventListener('input', (e) => {
+      localStorage.setItem('oneprompt-crosscheck-template', e.target.value);
+    });
+  }
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      localStorage.removeItem('oneprompt-crosscheck-template');
+      if (templateTextarea) {
+        templateTextarea.value = DEFAULT_CROSS_CHECK_TEMPLATE;
+      }
+    });
+  }
+}
+
+// Initialize cross-check features
+initCrossCheckButton();
+initCrossCheckSettings();
 
 // Create API Panel
 function createApiPanel(aiKey) {
@@ -1593,18 +1811,20 @@ function createApiPanel(aiKey) {
   panel.className = 'api-panel';
   panel.dataset.aiKey = aiKey;
   panel.style.width = '100%';
-  panel.style.height = '100%';
+  panel.style.flex = '1'; // Fix: Use flex instead of height: 100% to avoid overflow with header
+  panel.style.minHeight = '0'; // Fix: Prevent flex overflow
   panel.style.display = 'flex';
   panel.style.flexDirection = 'column';
   panel.style.backgroundColor = 'var(--bg-primary)';
   panel.style.color = 'var(--text-primary)';
   panel.style.overflow = 'hidden';
-  
+
   // Chat Container
   const chatContainer = document.createElement('div');
   chatContainer.className = 'api-chat-container';
   chatContainer.style.flex = '1';
   chatContainer.style.overflowY = 'auto';
+  chatContainer.style.minHeight = '0'; // Crucial for flex child scrolling
   chatContainer.style.padding = '20px';
   chatContainer.style.display = 'flex';
   chatContainer.style.flexDirection = 'column';
@@ -1625,16 +1845,34 @@ function createApiPanel(aiKey) {
       <p>Waiting for prompt...</p>
   `;
   chatContainer.appendChild(welcome);
-  
+
   panel.appendChild(chatContainer);
+
+  // Restore history if available
+  const session = getCurrentSession();
+  if (session && session.apiChatHistory && session.apiChatHistory[aiKey]) {
+    const history = session.apiChatHistory[aiKey];
+    if (history.length > 0) {
+      history.forEach(msg => {
+        appendApiMessage(panel, msg.role, msg.content, false); // false = don't re-save
+      });
+    }
+  }
+
   return panel;
 }
 
 // Helper to append message to API panel
-function appendApiMessage(panel, role, text) {
+// save: true = save to history, false = just display (for restoring history)
+function appendApiMessage(panel, role, text, save = true) {
     const chatContainer = panel.querySelector('.api-chat-container');
     const welcome = panel.querySelector('.api-welcome');
     if (welcome) welcome.remove();
+
+    // Save to history (only user and assistant, not system messages)
+    if (save && role !== 'system') {
+      saveApiHistory(panel.dataset.aiKey, role, text);
+    }
 
     const bubble = document.createElement('div');
     bubble.className = `api-message ${role}`;
@@ -1663,6 +1901,10 @@ function appendApiMessage(panel, role, text) {
         else if (aiKey === 'gemini') bubble.style.backgroundColor = '#1b72e8'; // Google Blue
         else if (aiKey === 'perplexity') bubble.style.backgroundColor = '#22b8cf'; // Perplexity Cyan
         else if (aiKey === 'copilot') bubble.style.backgroundColor = '#24292f'; // GitHub/Copilot Black
+        else if (aiKey === 'grok') {
+            bubble.style.backgroundColor = '#0e0e0e'; // xAI/Grok Black
+            bubble.style.color = '#c6c6c6';
+        }
         else bubble.style.backgroundColor = 'var(--accent-color)';
     }
 
@@ -1678,38 +1920,83 @@ function appendApiMessage(panel, role, text) {
     }
 
     chatContainer.appendChild(bubble);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    // Use requestAnimationFrame to ensure scroll happens after render
+    requestAnimationFrame(() => {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    });
     return bubble;
 }
 
-// Handle API Chat Logic
-async function handleApiChat(aiKey, prompt, panel) {
-    // 1. Show User Message immediately
-    appendApiMessage(panel, 'user', prompt);
+// Helper to save API chat history with sliding window limit
+function saveApiHistory(aiKey, role, content) {
+  const session = getCurrentSession();
+  if (!session) return;
 
-    // 2. Get API Key
+  if (!session.apiChatHistory) {
+    session.apiChatHistory = {};
+  }
+  if (!session.apiChatHistory[aiKey]) {
+    session.apiChatHistory[aiKey] = [];
+  }
+
+  session.apiChatHistory[aiKey].push({ role, content });
+
+  // Enforce sliding window limit (keep last N messages)
+  if (session.apiChatHistory[aiKey].length > API_HISTORY_LIMIT) {
+    session.apiChatHistory[aiKey] = session.apiChatHistory[aiKey].slice(-API_HISTORY_LIMIT);
+  }
+
+  saveSessionsToStorage();
+}
+
+// Handle API Chat Logic (returns response for cross-check)
+// isCrossCheck: if true, marks the response with special cross-check styling
+// skipUserMessage: if true, doesn't show user message (already shown)
+async function handleApiChatWithResponse(aiKey, prompt, panel, isCrossCheck = false, skipUserMessage = true) {
+    // Only show user message if not cross-check (already shown in sendPromptToSelectedAIs)
+    if (!skipUserMessage) {
+      appendApiMessage(panel, 'user', prompt);
+    }
+
+    // Get API Key
     let apiKey = '';
     if (aiKey === 'chatgpt') apiKey = localStorage.getItem('oneprompt-api-openai');
     else if (aiKey === 'claude') apiKey = localStorage.getItem('oneprompt-api-anthropic');
     else if (aiKey === 'gemini') apiKey = localStorage.getItem('oneprompt-api-gemini');
-    
+    else if (aiKey === 'grok') apiKey = localStorage.getItem('oneprompt-api-xai');
+
     if (!apiKey) {
         appendApiMessage(panel, 'system', t('error.apiKeyMissing'));
         updateWebviewStatus(aiKey, 'error');
-        return;
+        throw new Error('API key missing');
     }
 
     updateWebviewStatus(aiKey, 'thinking');
-    
+
     // Show loader
     const loader = appendApiLoader(panel);
-    
+
+    // Build messages array with history
+    const session = getCurrentSession();
+    const existingHistory = (session?.apiChatHistory?.[aiKey] || [])
+      .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+      .slice(-API_HISTORY_LIMIT);
+
+    // For cross-check, add the prompt as user message to history temporarily
+    const messages = [...existingHistory];
+    if (isCrossCheck || !skipUserMessage) {
+      // Save user message to history for cross-check
+      saveApiHistory(aiKey, 'user', prompt);
+    }
+    // Add current prompt
+    messages.push({ role: 'user', content: prompt });
+
     try {
         let responseText = '';
-        
+
         if (aiKey === 'chatgpt') {
-            const model = localStorage.getItem('oneprompt-model-openai') || 'gpt-3.5-turbo';
-            const res = await fetch('https://api.openai.com/v1/chat/completions', {
+            const model = localStorage.getItem('oneprompt-model-openai') || 'gpt-4o-mini';
+            const res = await fetch('https://api.openai.com/v1/responses', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1717,15 +2004,27 @@ async function handleApiChat(aiKey, prompt, panel) {
                 },
                 body: JSON.stringify({
                     model: model,
-                    messages: [{ role: "user", content: prompt }]
+                    input: messages,
+                    tools: [{ type: "web_search" }]
                 })
             });
             const data = await res.json();
             if (data.error) throw new Error(data.error.message);
-            responseText = data.choices[0].message.content;
-        } 
+            if (data.output_text) {
+              responseText = data.output_text;
+            } else if (data.output && Array.isArray(data.output)) {
+              const messageOutput = data.output.find(item => item.type === 'message');
+              if (messageOutput && messageOutput.content && messageOutput.content[0]) {
+                responseText = messageOutput.content[0].text;
+              } else {
+                throw new Error('Invalid response structure from OpenAI Responses API');
+              }
+            } else {
+              throw new Error('Invalid response from OpenAI');
+            }
+        }
         else if (aiKey === 'claude') {
-             const model = localStorage.getItem('oneprompt-model-anthropic') || 'claude-3-opus-20240229';
+             const model = localStorage.getItem('oneprompt-model-anthropic') || 'claude-3-5-sonnet-20240620';
              const res = await fetch('https://api.anthropic.com/v1/messages', {
                 method: 'POST',
                 headers: {
@@ -1735,28 +2034,236 @@ async function handleApiChat(aiKey, prompt, panel) {
                 },
                 body: JSON.stringify({
                     model: model,
-                    max_tokens: 1024,
-                    messages: [{ role: "user", content: prompt }]
+                    max_tokens: 4096,
+                    messages: messages,
+                    tools: [{
+                      type: "web_search_20250305",
+                      name: "web_search",
+                      max_uses: 5
+                    }]
                 })
             });
             const data = await res.json();
             if (data.error) throw new Error(data.error.message);
-            responseText = data.content[0].text;
+            if (data.content && data.content.length > 0) {
+              const textBlocks = data.content.filter(block => block.type === 'text');
+              if (textBlocks.length > 0) {
+                responseText = textBlocks.map(b => b.text).join('\n');
+              } else {
+                throw new Error('No text content in Anthropic response');
+              }
+            } else {
+              throw new Error('Invalid response from Anthropic');
+            }
         }
         else if (aiKey === 'gemini') {
-            const model = localStorage.getItem('oneprompt-model-gemini') || 'gemini-pro';
+            const model = localStorage.getItem('oneprompt-model-gemini') || 'gemini-1.5-flash';
+            const geminiContents = messages.map(msg => ({
+              role: msg.role === 'assistant' ? 'model' : 'user',
+              parts: [{ text: msg.content }]
+            }));
             const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }]
+                    contents: geminiContents,
+                    tools: [{ google_search: {} }]
                 })
             });
             const data = await res.json();
             if (data.error) throw new Error(data.error.message);
             responseText = data.candidates[0].content.parts[0].text;
+        }
+        else if (aiKey === 'grok') {
+            const model = localStorage.getItem('oneprompt-model-xai') || 'grok-3';
+            const res = await fetch('https://api.x.ai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: messages,
+                    tools: [
+                      { type: "web_search" },
+                      { type: "x_search" }
+                    ]
+                })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            responseText = data.choices[0].message.content;
+        }
+        else {
+            responseText = "API support for this service is not yet implemented.";
+        }
+
+        // Remove loader
+        loader.remove();
+
+        // Append message with special styling if cross-check
+        const bubble = appendApiMessage(panel, 'assistant', responseText);
+        if (isCrossCheck && bubble) {
+          bubble.classList.add('cross-check-response');
+        }
+
+        updateWebviewStatus(aiKey, 'ready');
+
+        return responseText;
+
+    } catch (error) {
+        console.error(`API Error (${aiKey}):`, error);
+        loader.remove();
+        appendApiMessage(panel, 'system', `Error: ${error.message}`);
+        updateWebviewStatus(aiKey, 'error');
+        throw error;
+    }
+}
+
+// Handle API Chat Logic (original - fire and forget)
+async function handleApiChat(aiKey, prompt, panel) {
+    // 1. Show User Message immediately
+    appendApiMessage(panel, 'user', prompt);
+
+    // 2. Get API Key
+    let apiKey = '';
+    if (aiKey === 'chatgpt') apiKey = localStorage.getItem('oneprompt-api-openai');
+    else if (aiKey === 'claude') apiKey = localStorage.getItem('oneprompt-api-anthropic');
+    else if (aiKey === 'gemini') apiKey = localStorage.getItem('oneprompt-api-gemini');
+    else if (aiKey === 'grok') apiKey = localStorage.getItem('oneprompt-api-xai');
+
+    if (!apiKey) {
+        appendApiMessage(panel, 'system', t('error.apiKeyMissing'));
+        updateWebviewStatus(aiKey, 'error');
+        return;
+    }
+
+    updateWebviewStatus(aiKey, 'thinking');
+
+    // Show loader
+    const loader = appendApiLoader(panel);
+
+    // 3. Build messages array with history (including the new user message just saved)
+    const session = getCurrentSession();
+    const existingHistory = (session?.apiChatHistory?.[aiKey] || [])
+      .filter(msg => msg.role === 'user' || msg.role === 'assistant')
+      .slice(-API_HISTORY_LIMIT);
+
+    // Messages array for API call (history already includes the current prompt)
+    const messages = existingHistory;
+
+    try {
+        let responseText = '';
+
+        if (aiKey === 'chatgpt') {
+            const model = localStorage.getItem('oneprompt-model-openai') || 'gpt-4o-mini';
+            // Use Responses API for web search support
+            const res = await fetch('https://api.openai.com/v1/responses', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    input: messages,
+                    tools: [{ type: "web_search" }]
+                })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            // Responses API returns output_text directly or in output array
+            if (data.output_text) {
+              responseText = data.output_text;
+            } else if (data.output && Array.isArray(data.output)) {
+              const messageOutput = data.output.find(item => item.type === 'message');
+              if (messageOutput && messageOutput.content && messageOutput.content[0]) {
+                responseText = messageOutput.content[0].text;
+              } else {
+                throw new Error('Invalid response structure from OpenAI Responses API');
+              }
+            } else {
+              throw new Error('Invalid response from OpenAI');
+            }
+        }
+        else if (aiKey === 'claude') {
+             const model = localStorage.getItem('oneprompt-model-anthropic') || 'claude-3-5-sonnet-20240620';
+             const res = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: {
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01',
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    max_tokens: 4096,
+                    messages: messages,
+                    tools: [{
+                      type: "web_search_20250305",
+                      name: "web_search",
+                      max_uses: 5
+                    }]
+                })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            // With web search, response may have multiple content blocks
+            if (data.content && data.content.length > 0) {
+              const textBlocks = data.content.filter(block => block.type === 'text');
+              if (textBlocks.length > 0) {
+                responseText = textBlocks.map(b => b.text).join('\n');
+              } else {
+                throw new Error('No text content in Anthropic response');
+              }
+            } else {
+              throw new Error('Invalid response from Anthropic');
+            }
+        }
+        else if (aiKey === 'gemini') {
+            const model = localStorage.getItem('oneprompt-model-gemini') || 'gemini-1.5-flash';
+            // Convert to Gemini format (user/model roles)
+            const geminiContents = messages.map(msg => ({
+              role: msg.role === 'assistant' ? 'model' : 'user',
+              parts: [{ text: msg.content }]
+            }));
+            const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: geminiContents,
+                    tools: [{ google_search: {} }]
+                })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            responseText = data.candidates[0].content.parts[0].text;
+        }
+        else if (aiKey === 'grok') {
+            const model = localStorage.getItem('oneprompt-model-xai') || 'grok-3';
+            const res = await fetch('https://api.x.ai/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: messages,
+                    tools: [
+                      { type: "web_search" },
+                      { type: "x_search" }
+                    ]
+                })
+            });
+            const data = await res.json();
+            if (data.error) throw new Error(data.error.message);
+            responseText = data.choices[0].message.content;
         }
         else {
             responseText = "API support for this service is not yet implemented.";
@@ -1801,6 +2308,8 @@ function appendApiLoader(panel) {
     `;
 
     chatContainer.appendChild(loader);
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    requestAnimationFrame(() => {
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+    });
     return loader;
 }

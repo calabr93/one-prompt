@@ -17,12 +17,6 @@
   <div class="app-container">
     <!-- Sidebar laterale -->
     <aside class="sidebar">
-      <div class="sidebar-header">
-        <div class="sidebar-logo" id="homeBtn" title="OnePrompt Home">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-        </div>
-      </div>
-      
       <div class="sidebar-content-wrapper">
         <div class="scroll-indicator up" id="scrollUpBtn">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
@@ -98,6 +92,11 @@
               rows="2"
             ></textarea>
           </div>
+          <button id="crossCheckBtn" class="btn-cross-check" title="Cross-Check" style="display: none;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 32 32" fill="currentColor">
+              <path d="M24.414,16.586L30.828,23l-6.414,6.414l-2.828-2.828L23.172,25H22c-3.924,0-6.334-2.289-8.173-4.747c0.987-1.097,1.799-2.285,2.516-3.36C18.109,19.46,19.521,21,22,21h1.172l-1.586-1.586L24.414,16.586z M22,11h1.172l-1.586,1.586l2.828,2.828L30.828,9l-6.414-6.414l-2.828,2.828L23.172,7H22c-5.07,0-7.617,3.82-9.664,6.891C10.224,17.059,8.788,19,6,19H2v4h4c5.07,0,7.617-3.82,9.664-6.891C17.776,12.941,19.212,11,22,11z M10.212,15.191c0.399-0.539,1.957-2.848,2.322-3.365C10.917,10.216,8.86,9,6,9H2v4h4C7.779,13,9.007,13.797,10.212,15.191z"/>
+            </svg>
+          </button>
           <button id="sendBtn" class="btn-send" title="Invia">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </button>
@@ -143,6 +142,7 @@
           <div class="settings-sidebar">
             <button class="settings-nav-btn active" data-target="settings-general" data-i18n="settings.general">Generale</button>
             <button class="settings-nav-btn" data-target="settings-api" data-i18n="settings.apiMode">API</button>
+            <button class="settings-nav-btn" data-target="settings-crosscheck" data-i18n="settings.crosscheck">Cross Check</button>
           </div>
           
           <div class="settings-body">
@@ -167,6 +167,11 @@
                 <select id="languageSelect" class="settings-select">
                   <option value="it">Italiano</option>
                   <option value="en">English</option>
+                  <option value="es">Espanol</option>
+                  <option value="fr">Francais</option>
+                  <option value="de">Deutsch</option>
+                  <option value="pt">Portugues</option>
+                  <option value="tr">Turkce</option>
                 </select>
               </div>
 
@@ -250,6 +255,37 @@
                       <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
                     </select>
                   </div>
+                </div>
+              </div>
+
+              <div class="api-service-card">
+                <div class="api-service-header">
+                  <img src="../assets/ai-services/grok.png" alt="xAI" style="width: 24px; height: 24px; object-fit: contain;">
+                  <span>xAI (Grok)</span>
+                </div>
+                <div class="api-key-input-group">
+                  <label class="api-key-label" data-i18n="settings.apiKeys.xai">xAI API Key</label>
+                  <input type="password" id="apiKeyXAI" class="api-key-input" placeholder="xai-...">
+                  <div style="margin-top: 0.5rem;">
+                    <label class="api-key-label" style="font-size: 0.8rem;" data-i18n="settings.model">Modello</label>
+                    <select id="modelXAI" class="settings-select" style="width: 100%; margin-top: 0.25rem;">
+                      <option value="grok-3">Grok 3</option>
+                      <option value="grok-3-mini">Grok 3 Mini</option>
+                      <option value="grok-4">Grok 4</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cross Check Section -->
+            <div id="settings-crosscheck" class="settings-tab-content">
+              <div class="settings-section">
+                <label class="settings-label" data-i18n="settings.crosscheck.customPrompt">Prompt personalizzabile</label>
+                <p class="settings-hint" data-i18n="settings.crosscheck.hint">Usa {{ORIGINAL_PROMPT}} per il prompt originale e {{OTHER_RESPONSES}} per le risposte delle altre AI.</p>
+                <textarea id="crossCheckPromptTemplate" class="settings-textarea" rows="14"></textarea>
+                <div class="settings-actions">
+                  <button id="resetCrossCheckPrompt" class="btn-secondary" data-i18n="settings.crosscheck.reset">Ripristina default</button>
                 </div>
               </div>
             </div>
