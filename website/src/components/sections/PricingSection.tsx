@@ -16,15 +16,34 @@ const CrossIcon = () => (
   </svg>
 );
 
+const DiamondIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+    <path d="M12 2L2 9l10 13 10-13L12 2zm0 3.84L18.26 9 12 18.54 5.74 9 12 5.84z"/>
+  </svg>
+);
+
+type FeatureType = 'included' | 'excluded' | 'premium';
+
 interface FeatureItem {
   text: string;
-  included: boolean;
+  type: FeatureType;
 }
 
 export function PricingSection() {
   const { t } = useTranslation();
-  const freeFeatures = t('pricing.free.features', { returnObjects: true }) as FeatureItem[];
-  const proFeatures = t('pricing.pro.features', { returnObjects: true }) as FeatureItem[];
+  const githubFeatures = t('pricing.github.features', { returnObjects: true }) as FeatureItem[];
+  const desktopFeatures = t('pricing.desktop.features', { returnObjects: true }) as FeatureItem[];
+
+  const getIcon = (type: FeatureType) => {
+    switch (type) {
+      case 'included':
+        return <CheckIcon />;
+      case 'excluded':
+        return <CrossIcon />;
+      case 'premium':
+        return <DiamondIcon />;
+    }
+  };
 
   return (
     <section className={styles.pricing} id="pricing">
@@ -32,24 +51,23 @@ export function PricingSection() {
         <h2 className={styles.title}>{t('pricing.title')}</h2>
 
         <div className={styles.grid}>
-          {/* Free Plan - LEFT */}
+          {/* GitHub Edition - LEFT */}
           <Card className={styles.card}>
             <div className={styles.header}>
-              <h3>{t('pricing.free.title')}</h3>
-              <span className={styles.openSourceBadge}>Open Source</span>
+              <h3>{t('pricing.github.title')}</h3>
             </div>
 
             <div className={styles.priceSection}>
               <div className={styles.price}>
-                <span className={styles.amount}>{t('pricing.free.price')}</span>
-                <span className={styles.period}>{t('pricing.free.priceLabel')}</span>
+                <span className={styles.amount}>{t('pricing.github.price')}</span>
               </div>
+              <p className={styles.subtitle}>{t('pricing.github.subtitle')}</p>
             </div>
 
             <ul className={styles.features}>
-              {freeFeatures.map((feature, index) => (
-                <li key={index} className={feature.included ? styles.included : styles.excluded}>
-                  {feature.included ? <CheckIcon /> : <CrossIcon />}
+              {githubFeatures.map((feature, index) => (
+                <li key={index} className={styles[feature.type]}>
+                  {getIcon(feature.type)}
                   {feature.text}
                 </li>
               ))}
@@ -57,32 +75,32 @@ export function PricingSection() {
 
             <Button
               href="https://github.com/calabr93/one-prompt"
-              variant="secondary"
+              variant="ghost"
               size="large"
               className={styles.cta}
             >
-              {t('pricing.free.cta')}
+              {t('pricing.github.cta')}
             </Button>
           </Card>
 
-          {/* PRO Plan - RIGHT (Highlighted) */}
-          <Card variant="highlighted" className={`${styles.card} ${styles.proCard}`}>
+          {/* OnePrompt Desktop - RIGHT (Highlighted) */}
+          <Card variant="highlighted" className={`${styles.card} ${styles.desktopCard}`}>
+            <div className={styles.recommendedBadge}>{t('pricing.desktop.recommendedBadge')}</div>
             <div className={styles.header}>
-              <h3>{t('pricing.pro.title')}</h3>
-              <span className={styles.noBadge}>{t('pricing.pro.badge')}</span>
+              <h3>{t('pricing.desktop.title')}</h3>
             </div>
 
             <div className={styles.priceSection}>
               <div className={styles.price}>
-                <span className={styles.startingFrom}>{t('pricing.pro.startingFrom')}</span>
-                <span className={styles.amount}>{t('pricing.pro.price')}</span>
+                <span className={styles.amountFree}>{t('pricing.desktop.price')}</span>
               </div>
+              <p className={styles.subtitle}>{t('pricing.desktop.subtitle')}</p>
             </div>
 
             <ul className={styles.features}>
-              {proFeatures.map((feature, index) => (
-                <li key={index} className={styles.included}>
-                  <CheckIcon />
+              {desktopFeatures.map((feature, index) => (
+                <li key={index} className={styles[feature.type]}>
+                  {getIcon(feature.type)}
                   {feature.text}
                 </li>
               ))}
@@ -91,9 +109,9 @@ export function PricingSection() {
             <Button
               href="#download"
               size="large"
-              className={styles.cta}
+              className={styles.ctaPrimary}
             >
-              {t('pricing.pro.cta')}
+              {t('pricing.desktop.cta')}
             </Button>
           </Card>
         </div>

@@ -31,7 +31,6 @@ export function CTASection() {
       <Container>
         <div className={styles.content}>
           <h2>{t('cta.title')}</h2>
-          <p>{t('cta.subtitle')}</p>
 
           <div className={styles.downloadButtons}>
             {/* macOS Downloads */}
@@ -86,15 +85,6 @@ export function CTASection() {
               </div>
             </div>
           </div>
-
-          <a
-            href="https://github.com/calabr93/one-prompt"
-            className={styles.github}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {t('cta.github')}
-          </a>
         </div>
       </Container>
     </section>

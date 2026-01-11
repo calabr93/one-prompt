@@ -13,6 +13,18 @@
   gap: var(--spacing-lg);
 }
 
+.grid>div {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(0, 122, 255, 0.03) 100%);
+  border: 1px solid rgba(0, 122, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.grid>div:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.12);
+  border-color: rgba(0, 122, 255, 0.25);
+}
+
 .icon {
   display: flex;
   align-items: center;
@@ -20,7 +32,7 @@
   width: 64px;
   height: 64px;
   margin: 0 auto var(--spacing-md);
-  background: rgba(0, 122, 255, 0.1);
+  background: linear-gradient(135deg, rgba(0, 122, 255, 0.15) 0%, rgba(0, 212, 255, 0.1) 100%);
   border-radius: 16px;
   color: var(--accent-color);
 }

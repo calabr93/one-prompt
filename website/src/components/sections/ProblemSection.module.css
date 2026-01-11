@@ -12,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   margin-bottom: var(--spacing-3xl);
-  max-width: 800px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -31,24 +31,45 @@
   gap: var(--spacing-md);
   padding: var(--spacing-lg);
   flex: 1;
-  max-width: 320px;
+  max-width: 340px;
   opacity: 0;
   animation: fadeIn 0.5s ease-out forwards;
+  background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(0, 122, 255, 0.05) 100%);
+  border: 1px solid rgba(0, 122, 255, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.step1 { animation-delay: 0s; }
-.step2 { animation-delay: 0.3s; }
-.step3 { animation-delay: 0.6s; }
-.step4 { animation-delay: 0.9s; }
+.step:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.15);
+}
+
+.step1 {
+  animation-delay: 0s;
+}
+
+.step2 {
+  animation-delay: 0.3s;
+}
+
+.step3 {
+  animation-delay: 0.6s;
+}
+
+.step4 {
+  animation-delay: 0.9s;
+}
+
+
 
 @keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
-    transform: translateY(0);
   }
 }
 
@@ -62,36 +83,39 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 32px;
-  height: 32px;
-  background: var(--accent-color);
+  min-width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--accent-color) 0%, #00d4ff 100%);
   color: white;
   border-radius: 50%;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 1rem;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
 }
 
-/* Horizontal connector */
+/* Horizontal connector with curve effect */
 .connectorHorizontal {
   display: flex;
   align-items: center;
-  width: 60px;
+  width: 80px;
   flex-shrink: 0;
+  position: relative;
 }
 
 .connectorHorizontal .line {
   flex: 1;
   height: 2px;
-  background: var(--border-color);
+  background: linear-gradient(90deg, var(--accent-color) 0%, rgba(0, 212, 255, 0.5) 50%, var(--accent-color) 100%);
 }
 
 .connectorHorizontal .dot {
-  width: 8px;
-  height: 8px;
-  background: var(--accent-color);
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, var(--accent-color) 0%, #00d4ff 100%);
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.4);
 }
 
 /* Vertical connector */
@@ -99,23 +123,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 40px;
+  height: 50px;
   margin-left: auto;
-  margin-right: calc(160px + 30px); /* half of max-width + half of connector */
+  margin-right: calc(170px + 40px);
 }
 
 .connectorVertical .line {
   flex: 1;
   width: 2px;
-  background: var(--border-color);
+  background: linear-gradient(180deg, var(--accent-color) 0%, rgba(0, 212, 255, 0.5) 50%, var(--accent-color) 100%);
 }
 
 .connectorVertical .dot {
-  width: 8px;
-  height: 8px;
-  background: var(--accent-color);
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, var(--accent-color) 0%, #00d4ff 100%);
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(0, 122, 255, 0.4);
 }
 
 .closing {
@@ -139,6 +164,7 @@
 
   .step {
     max-width: 100%;
+    transform: rotate(0deg) !important;
   }
 
   .connectorHorizontal {
@@ -161,8 +187,19 @@
     flex-direction: column-reverse;
   }
 
-  .step1 { animation-delay: 0s; }
-  .step2 { animation-delay: 0.2s; }
-  .step3 { animation-delay: 0.4s; }
-  .step4 { animation-delay: 0.6s; }
+  .step1 {
+    animation-delay: 0s;
+  }
+
+  .step2 {
+    animation-delay: 0.2s;
+  }
+
+  .step3 {
+    animation-delay: 0.4s;
+  }
+
+  .step4 {
+    animation-delay: 0.6s;
+  }
 }

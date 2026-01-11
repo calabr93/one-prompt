@@ -2,30 +2,30 @@
   "nav": {
     "features": "Features",
     "pricing": "Pricing",
-    "download": "Download Free",
+    "download": "Download free",
     "github": "GitHub"
   },
   "hero": {
-    "badge": "Open Source - Free - BYOK",
-    "headline": "One Prompt, All AIs",
-    "subheadline": "Stop copy-pasting the same prompt into 5 different services. Write once, compare responses from ChatGPT, Claude, Gemini and more - all in one window.",
+    "badge": "Open source · No subscription",
+    "headline": "Compare AIs in an instant",
+    "subheadline": "Stop copy-pasting the same prompt into 5 different services. Write once, compare responses from ChatGPT, Claude, Gemini and more. All in one window.",
     "cta": {
-      "download": "Download Free"
+      "download": "Download free"
     },
-    "github": "View on GitHub"
+    "github": "Or view on GitHub"
   },
   "problem": {
-    "title": "The problem you know too well",
+    "title": "How many times has this happened to you?",
     "steps": [
       "Open ChatGPT, paste the prompt, wait for the response...",
       "Then open Claude, paste, wait...",
       "Then Gemini, then Perplexity...",
       "5 tabs open, 5 times the same work"
     ],
-    "closing": "Every day, thousands of developers and creators waste precious time switching between AI services. There's a better way."
+    "closing": "Every day, people who work with AI waste precious time switching between services. There's a better way."
   },
   "solution": {
-    "title": "The Solution: Write Once, Compare Instantly",
+    "title": "The solution: write once, compare instantly",
     "description": "OnePrompt is a desktop app that sends your prompt to all the AI services you want, simultaneously. See responses side-by-side and choose the best one.",
     "features": [
       "Single input for all services",
@@ -36,102 +36,96 @@
   },
   "features": {
     "title": "Features",
+    "openSourceSuffix": "on GitHub. Inspect, modify, contribute.",
     "items": [
       {
-        "title": "One Prompt, Everywhere",
+        "title": "One prompt, everywhere",
         "description": "Write once, send to ChatGPT, Claude, Gemini and more simultaneously."
       },
       {
-        "title": "Side-by-Side Comparison",
+        "title": "Side-by-side comparison",
         "description": "See all responses in an adaptive grid for instant comparison."
       },
       {
-        "title": "Two Modes",
+        "title": "Two modes",
         "description": "API Mode (fast, reliable) or Injection Mode (use web interfaces)."
       },
       {
-        "title": "Privacy First",
+        "title": "Privacy first",
         "description": "Your API keys and data stay on your device."
       },
       {
-        "title": "Multiple Sessions",
+        "title": "Multiple sessions",
         "description": "Organize your work in separate tabs, like a browser."
-      },
-      {
-        "title": "Open Source",
-        "description": "Open code on GitHub. Inspect, modify, contribute."
       }
     ]
   },
   "pricing": {
-    "title": "Choose Your Mode",
-    "free": {
-      "title": "FREE",
-      "price": "$0",
-      "priceLabel": "forever",
+    "title": "Choose how to start",
+    "github": {
+      "title": "GitHub Edition",
+      "price": "Open source",
+      "subtitle": "For developers",
       "features": [
-        { "text": "Injection Mode: free unlimited", "included": true },
-        { "text": "Total Privacy (local data)", "included": true },
-        { "text": "API Mode: manual configuration", "included": false },
-        { "text": "No credits included", "included": false }
+        { "text": "Injection Mode: free unlimited", "type": "included" },
+        { "text": "Total privacy (local data)", "type": "included" },
+        { "text": "API Mode: manual configuration", "type": "excluded" },
+        { "text": "No credits included", "type": "excluded" }
       ],
-      "cta": "Download from GitHub"
+      "cta": "View on GitHub"
     },
-    "pro": {
-      "title": "PRO",
-      "badge": "No subscription",
-      "startingFrom": "credits starting from",
-      "price": "$4.99",
+    "desktop": {
+      "title": "OnePrompt Desktop",
+      "price": "Free",
+      "recommendedBadge": "Recommended",
+      "subtitle": "Instant download for Mac/Windows",
       "features": [
-        { "text": "Injection Mode: free unlimited", "included": true },
-        { "text": "API Mode: ready to use", "included": true },
-        { "text": "50 credits included instantly", "included": true },
-        { "text": "Total Privacy (local data)", "included": true }
+        { "text": "Injection Mode: free unlimited", "type": "included" },
+        { "text": "Total privacy (local data)", "type": "included" },
+        { "text": "API Mode: ready to use", "type": "included" },
+        { "text": "50 credits included instantly", "type": "included" },
+        { "text": "Automatic updates", "type": "included" },
+        { "text": "No subscription", "type": "included" },
+        { "text": "API Mode: optional credits from $4.99", "type": "premium" }
       ],
-      "cta": "Download for free"
+      "cta": "Download free"
     }
   },
   "platforms": {
-    "title": "Supported Platforms",
+    "title": "Supported platforms",
     "api": "API Mode",
     "injection": "Injection Mode",
-    "comingSoon": "Coming Soon"
+    "comingSoon": "Coming soon"
   },
   "faq": {
-    "title": "Frequently Asked Questions",
+    "title": "Frequently asked questions",
     "items": [
       {
         "question": "Is OnePrompt really free?",
-        "answer": "Yes, the open source desktop version is completely free. Use your own API keys and pay nothing."
+        "answer": "Yes, the app installs free on Mac and Windows. It includes unlimited Injection Mode and 50 credits for API Mode. The open source version on GitHub lets you configure your own API keys."
       },
       {
         "question": "Is my data safe?",
         "answer": "Absolutely. Your prompts and responses never leave your device. API keys are stored locally."
       },
       {
-        "question": "What does BYOK mean?",
-        "answer": "\"Bring Your Own Key\" - you bring your own API keys from various services (OpenAI, Anthropic, Google) and use them directly in the app."
-      },
-      {
         "question": "What's the difference between API Mode and Injection Mode?",
-        "answer": "API Mode uses official APIs. Injection Mode uses web interfaces."
+        "answer": "API Mode uses the official APIs of AI services. Injection Mode uses web interfaces."
       }
     ]
   },
   "cta": {
-    "title": "Compare AIs in one click",
-    "subtitle": "Download OnePrompt PRO and start comparing AIs in seconds.",
-    "github": "Or download Free version from GitHub"
+    "title": "Compare AIs in one click"
   },
   "footer": {
-    "tagline": "One prompt, all AIs.",
-    "reportBug": "Report Bug",
-    "support": "Support the Project",
+    "tagline": "Compare AIs in an instant.",
+    "reportBug": "Report bug",
+    "support": "Support the project",
     "copyright": "© 2026 Fabio Calabretta. All rights reserved.",
-    "license": "The source code is available under the MIT License. OnePrompt PRO features are proprietary.",
+    "license": "The source code is available under the MIT License. OnePrompt Desktop features are proprietary.",
     "builtIn": "",
-    "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "privacyPolicy": "Privacy policy",
+    "termsOfService": "Terms of service"
   },
   "privacy": {
     "lastUpdated": "Last updated: January 2026",
@@ -140,79 +134,79 @@
       "text": "Fabio Calabretta (\"we\", \"us\", or \"our\") operates OnePrompt. This Privacy Policy explains how we collect, use, and protect your information when you use our desktop application."
     },
     "dataCollection": {
-      "title": "Data We Collect",
+      "title": "Data we collect",
       "text": "OnePrompt is designed with privacy as a core principle. The data we may collect depends on how you use the application:",
-      "item1": "Local Data: Your prompts, AI responses, and settings are stored locally on your device and never transmitted to our servers.",
-      "item2": "API Keys: If you use BYOK (Bring Your Own Key) mode, your API keys are stored locally and encrypted on your device.",
-      "item3": "OnePrompt PRO: If you use OnePrompt PRO features, we process minimal data necessary to provide the service (authentication tokens, usage metrics for billing)."
+      "item1": "Local data: your prompts, AI responses, and settings are stored locally on your device and never transmitted to our servers.",
+      "item2": "API keys: if you use your own API keys, they are stored locally and encrypted on your device.",
+      "item3": "OnePrompt Desktop: if you use OnePrompt Desktop features, we process minimal data necessary to provide the service (authentication tokens, usage metrics for billing)."
     },
     "dataStorage": {
-      "title": "Data Storage and Security",
+      "title": "Data storage and security",
       "text": "All local data is stored on your device using industry-standard encryption. We do not have access to your locally stored data, including your prompts, responses, or API keys."
     },
     "thirdParty": {
-      "title": "Third-Party Services",
+      "title": "Third-party services",
       "text": "When you use OnePrompt to interact with AI services (ChatGPT, Claude, Gemini, etc.), your prompts are sent directly to those services. Each service has its own privacy policy that governs how they handle your data. We recommend reviewing the privacy policies of the AI services you use."
     },
     "apiKeys": {
-      "title": "API Keys",
+      "title": "API keys",
       "text": "Your API keys are stored locally on your device and are never transmitted to our servers. They are used exclusively to authenticate requests to the respective AI services on your behalf."
     },
     "proFeatures": {
-      "title": "OnePrompt PRO Features",
-      "text": "If you subscribe to OnePrompt PRO, we collect minimal information necessary to provide the service: your email for account management, payment information processed securely through Stripe, and usage data for billing purposes. We do not store or access your prompts or AI responses."
+      "title": "OnePrompt Desktop features",
+      "text": "If you use OnePrompt Desktop credits, we collect minimal information necessary to provide the service: your email for account management, payment information processed securely through Stripe, and usage data for billing purposes. We do not store or access your prompts or AI responses."
     },
     "rights": {
-      "title": "Your Rights",
-      "text": "Under GDPR and applicable data protection laws, you have the right to access, correct, or delete your personal data. Since most data is stored locally on your device, you have direct control over it. For any data related to OnePrompt PRO subscriptions, contact us at the address below."
+      "title": "Your rights",
+      "text": "Under GDPR and applicable data protection laws, you have the right to access, correct, or delete your personal data. Since most data is stored locally on your device, you have direct control over it. For any data related to OnePrompt Desktop purchases, contact us at the address below."
     },
     "contact": {
-      "title": "Contact Us",
+      "title": "Contact us",
       "text": "For any questions about this Privacy Policy, please contact: Fabio Calabretta, P.IVA: 13010040965, Milan, Italy."
     }
   },
   "terms": {
     "lastUpdated": "Last updated: January 2026",
     "acceptance": {
-      "title": "Acceptance of Terms",
+      "title": "Acceptance of terms",
       "text": "By downloading, installing, or using OnePrompt, you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the application."
     },
     "license": {
       "title": "License",
       "text": "OnePrompt is distributed under a dual licensing model:",
       "item1": "The core application source code is available under the MIT License, allowing you to use, modify, and distribute it freely.",
-      "item2": "OnePrompt PRO features are proprietary and require a valid subscription to use."
+      "item2": "OnePrompt Desktop features are proprietary and require the purchase of credits to use."
     },
     "proFeatures": {
-      "title": "OnePrompt PRO",
-      "text": "OnePrompt PRO features are available through a subscription. Subscriptions are billed as indicated at the time of purchase. You may cancel your subscription at any time, and you will continue to have access until the end of your billing period. Refunds are handled on a case-by-case basis."
+      "title": "OnePrompt Desktop",
+      "text": "OnePrompt Desktop features are available through the purchase of credits. Credits are billed as indicated at the time of purchase. Refunds are handled on a case-by-case basis."
     },
     "usage": {
-      "title": "Acceptable Use",
+      "title": "Acceptable use",
       "text": "You agree to use OnePrompt in compliance with all applicable laws and regulations. You may not:",
       "item1": "Use the application for any illegal purpose or to violate any laws",
       "item2": "Attempt to reverse engineer, decompile, or extract the source code of proprietary components",
-      "item3": "Redistribute OnePrompt PRO features without authorization",
+      "item3": "Redistribute OnePrompt Desktop features without authorization",
       "item4": "Use the application to harass, abuse, or harm others"
     },
     "thirdParty": {
-      "title": "Third-Party Services",
+      "title": "Third-party services",
       "text": "OnePrompt integrates with third-party AI services (OpenAI, Anthropic, Google, etc.). Your use of these services is subject to their respective terms of service. You are responsible for complying with the terms of each AI service you use through OnePrompt."
     },
     "disclaimer": {
-      "title": "Disclaimer of Warranties",
+      "title": "Disclaimer of warranties",
       "text": "OnePrompt is provided \"as is\" without warranty of any kind, express or implied. We do not guarantee that the application will be error-free, secure, or available at all times. We are not responsible for the content, accuracy, or reliability of responses from third-party AI services."
     },
     "limitation": {
-      "title": "Limitation of Liability",
+      "title": "Limitation of liability",
       "text": "To the maximum extent permitted by law, Fabio Calabretta shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from your use of OnePrompt."
     },
     "changes": {
-      "title": "Changes to Terms",
+      "title": "Changes to terms",
       "text": "We reserve the right to modify these terms at any time. We will notify users of significant changes through the application or our website. Your continued use of OnePrompt after changes constitutes acceptance of the new terms."
     },
     "governing": {
-      "title": "Governing Law",
+      "title": "Governing law",
       "text": "These terms are governed by and construed in accordance with the laws of Italy. Any disputes arising from these terms will be subject to the exclusive jurisdiction of the courts of Milan, Italy."
     },
     "contact": {

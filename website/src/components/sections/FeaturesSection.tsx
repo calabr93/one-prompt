@@ -49,13 +49,19 @@ export function FeaturesSection() {
         <h2 className={styles.title}>{t('features.title')}</h2>
 
         <div className={styles.grid}>
-          {features.map((feature, index) => (
+          {features.slice(0, 5).map((feature, index) => (
             <Card key={index} variant="feature">
               <div className={styles.icon}>{icons[index]}</div>
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
             </Card>
           ))}
+          {/* Open source card - static text */}
+          <Card variant="feature">
+            <div className={styles.icon}>{icons[5]}</div>
+            <h3>Open source</h3>
+            <p>Open source {t('features.openSourceSuffix')}</p>
+          </Card>
         </div>
       </Container>
     </section>

@@ -37,7 +37,7 @@ export function HeroSection() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            {t('hero.github')} →
+            {t('hero.github')}
           </a>
         </div>
 
