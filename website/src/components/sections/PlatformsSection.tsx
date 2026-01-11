@@ -13,8 +13,8 @@ const injectionPlatforms = [
   { name: 'ChatGPT', logo: 'chatgpt.png' },
   { name: 'Claude', logo: 'claude.png' },
   { name: 'Gemini', logo: 'gemini.png' },
-  { name: 'DeepSeek', logo: 'deepseek.png' },
   { name: 'Grok', logo: 'grok.png' },
+  { name: 'DeepSeek', logo: 'deepseek.png' },
   { name: 'Perplexity', logo: 'perplexity.png' },
 ];
 

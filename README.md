@@ -140,20 +140,16 @@ git push origin v1.0.0
 
 GitHub Actions will automatically compile the application for macOS and Windows and create a release with the binaries.
 
-### How Updates Work (for users)
+### How Updates Work
 
-OnePrompt **automatically checks for updates** when you open the app:
+The update process differs depending on the version you are using:
 
-1. **On app launch**, OnePrompt silently contacts the update server (takes ~1 second)
-2. If a **new version is available**, a system notification appears
-3. **Click "Install"** in the notification to download the update in the background
-4. When download completes, **click "Restart"** to install and relaunch the app
+- **OnePrompt (GitHub Edition)**: Updates are manual. You can check for new versions by visiting the [Releases page](https://github.com/calabr93/one-prompt/releases) or by checking the application console on launch.
+- **OnePrompt Desktop App**: Features a fully automatic update system with visual in-app notifications for a seamless experience.
 
-**No manual downloads needed!** The app keeps itself up-to-date.
+**No manual downloads needed for the Desktop version!** It keeps itself up-to-date automatically.
 
-> **Note**: Currently, update notifications appear in the console (for v0.1.0). A visual in-app notification UI will be added in a future release.
-
-**Privacy note**: Update checks are anonymous (see [Privacy & Data Collection](#-privacy--data-collection) section).
+> **Note**: For the GitHub version, update notifications currently appear only in the console. Visual UI for updates is reserved for the Desktop App.
 
 ## How It Works
 

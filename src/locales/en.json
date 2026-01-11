@@ -41,5 +41,6 @@
   "settings.crosscheck": "Cross Check",
   "settings.crosscheck.customPrompt": "Custom Prompt",
   "settings.crosscheck.hint": "Use {{ORIGINAL_PROMPT}} for the original prompt and {{OTHER_RESPONSES}} for other AI responses.",
-  "settings.crosscheck.reset": "Reset to default"
+  "settings.crosscheck.reset": "Reset to default",
+  "error.maxTabs": "Maximum 20 tabs allowed"
 }
