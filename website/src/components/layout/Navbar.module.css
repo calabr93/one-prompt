@@ -65,8 +65,14 @@
   gap: var(--spacing-md);
 }
 
-.mobileToggle {
+.mobileControls {
   display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobileToggle {
+  display: flex;
   flex-direction: column;
   gap: 4px;
   padding: 8px;
@@ -83,9 +89,13 @@
 }
 
 @media (max-width: 768px) {
-  .mobileToggle {
+  .mobileControls {
     display: flex;
   }
+
+  /* Hide the extra language toggle in mobile controls if needed, 
+     but we want it visible. We need to hide the one in .actions 
+     which is already hidden by .actions { display: none } */
 
   .nav {
     position: fixed;

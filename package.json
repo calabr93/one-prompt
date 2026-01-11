@@ -81,8 +81,7 @@
     "files": [
       "src/**/*",
       "assets/**/*",
-      "package.json",
-      ".env"
+      "package.json"
     ],
     "directories": {
       "buildResources": "assets",
@@ -90,8 +89,6 @@
     }
   },
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "electron-updater": "^6.6.2",
-    "posthog-node": "^5.18.1"
+    "electron-updater": "^6.6.2"
   }
 }

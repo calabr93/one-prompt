@@ -25,15 +25,18 @@ export function Navbar() {
           <span>OnePrompt</span>
         </a>
 
-        <button
-          className={styles.mobileToggle}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+        <div className={styles.mobileControls}>
+          <LanguageToggle />
+          <button
+            className={styles.mobileToggle}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
 
         <div className={`${styles.nav} ${mobileMenuOpen ? styles.open : ''}`}>
           <a href="#features" className={styles.link} onClick={() => setMobileMenuOpen(false)}>

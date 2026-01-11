@@ -2,17 +2,6 @@ const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
-const { PostHog } = require('posthog-node');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
-
-// Initialize PostHog
-let posthog = null;
-if (process.env.POSTHOG_API_KEY) {
-  posthog = new PostHog(
-    process.env.POSTHOG_API_KEY,
-    { host: process.env.POSTHOG_HOST || 'https://eu.i.posthog.com' }
-  );
-}
 
 let mainWindow;
 
@@ -193,26 +182,6 @@ app.whenReady().then(() => {
     return AI_CONFIGS;
   });
 
-  // Analytics handlers
-  ipcMain.handle('update-analytics-consent', (event, allowed) => {
-    if (allowed && posthog) {
-      try {
-        posthog.capture({
-          distinctId: 'user_' + require('os').hostname(),
-          event: 'app_opened',
-          properties: {
-            version: app.getVersion(),
-            platform: process.platform,
-            arch: process.arch
-          }
-        });
-        posthog.flush();
-      } catch (error) {
-        console.error('PostHog tracking error:', error);
-      }
-    }
-  });
-
   // Check for updates on app start (from GitHub Releases)
   if (!process.argv.includes('--dev')) {
     setTimeout(() => {
@@ -268,35 +237,6 @@ app.whenReady().then(() => {
     }
   });
 
-  // Check if PostHog is configured
-  ipcMain.handle('is-posthog-configured', () => {
-    return !!posthog;
-  });
-
-  // Submit feedback
-  ipcMain.handle('submit-feedback', async (event, feedback) => {
-    if (!posthog) return { success: false, error: 'PostHog not configured' };
-
-    try {
-      posthog.capture({
-        distinctId: 'user_' + require('os').hostname(),
-        event: 'feedback_submitted',
-        properties: {
-          type: feedback.type,
-          message: feedback.message,
-          email: feedback.email,
-          app_version: app.getVersion(),
-          platform: process.platform
-        }
-      });
-      await posthog.flush();
-      return { success: true };
-    } catch (error) {
-      console.error('PostHog feedback error:', error);
-      return { success: false, error: error.message };
-    }
-  });
-
   // Get App Version
   ipcMain.handle('get-app-version', () => {
     return app.getVersion();
@@ -323,11 +263,5 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
-  }
-});
-
-app.on('before-quit', () => {
-  if (posthog) {
-    posthog.shutdown();
   }
 });

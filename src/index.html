@@ -267,64 +267,6 @@
     </div>
   </div>
 
-  <!-- Modale Feedback -->
-  <div class="modal-overlay" id="feedbackModal" style="display: none;">
-    <div class="modal-container">
-      <div class="modal-header">
-        <h2 data-i18n="feedback.title">Invia Feedback</h2>
-        <button class="modal-close" id="closeFeedbackModal">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-      <div class="modal-content">
-        <div class="feedback-form" id="feedbackForm">
-          <div class="form-group">
-            <label class="form-label" data-i18n="feedback.type">Tipo</label>
-            <select id="feedbackType" class="form-select">
-              <option value="bug" data-i18n="feedback.type.bug">Segnala un Bug</option>
-              <option value="feature" data-i18n="feedback.type.feature">Richiedi Funzionalità</option>
-              <option value="other" data-i18n="feedback.type.other">Altro</option>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label" data-i18n="feedback.message">Messaggio</label>
-            <textarea id="feedbackMessage" class="form-textarea" rows="5"></textarea>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" data-i18n="feedback.email">Email (opzionale)</label>
-            <input type="email" id="feedbackEmail" class="form-input" data-i18n-placeholder="feedback.email.placeholder" placeholder="name@example.com">
-          </div>
-
-          <div class="form-actions">
-            <button id="submitFeedbackBtn" class="btn-primary" data-i18n="feedback.submit">Invia</button>
-          </div>
-        </div>
-
-        <div class="feedback-success" id="feedbackSuccess" style="display: none;">
-          <img src="../assets/logo/logo.png" alt="OnePrompt" class="feedback-logo">
-          <h3 data-i18n="feedback.success">Grazie per il tuo feedback!</h3>
-          <button id="closeFeedbackSuccessBtn" class="btn-primary" data-i18n="close">Chiudi</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Analytics Consent Banner -->
-  <div id="analyticsBanner" class="analytics-banner" style="display: none;">
-    <div class="analytics-content">
-      <p class="analytics-text" data-i18n="analytics.text">Mi aiuti a capire se OnePrompt è utile? Conto solo quante volte l'app viene aperta, in forma totalmente anonima. Nessun altro dato viene toccato.</p>
-      <div class="analytics-buttons">
-        <button id="analyticsDecline" class="analytics-btn secondary" data-i18n="analytics.decline">Preferisco di no</button>
-        <button id="analyticsAccept" class="analytics-btn primary" data-i18n="analytics.accept">Nessun problema</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Update Notification Banner -->
   <div id="updateBanner" class="analytics-banner" style="display: none; background-color: #2563eb;">
     <div class="analytics-content">

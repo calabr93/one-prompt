@@ -46,11 +46,6 @@ async function updateUILanguage() {
     promptInput.placeholder = t('prompt.placeholder');
   }
 
-  const feedbackMessage = document.getElementById('feedbackMessage');
-  if (feedbackMessage) {
-    feedbackMessage.placeholder = t('feedback.placeholder');
-  }
-
   // Update placeholders with data-i18n-placeholder
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     const key = el.getAttribute('data-i18n-placeholder');
@@ -613,62 +608,6 @@ function openSettingsModal() {
 // Chiudi modale impostazioni
 function closeSettingsModalFn() {
   settingsModal.style.display = 'none';
-}
-
-// === MODALE FEEDBACK ===
-
-function openFeedbackModal() {
-  const modal = document.getElementById('feedbackModal');
-  if (modal) {
-    modal.style.display = 'flex';
-    // Reset view
-    document.getElementById('feedbackForm').style.display = 'flex';
-    document.getElementById('feedbackSuccess').style.display = 'none';
-  }
-}
-
-function closeFeedbackModalFn() {
-  const modal = document.getElementById('feedbackModal');
-  if (modal) modal.style.display = 'none';
-  
-  // Reset form
-  document.getElementById('feedbackMessage').value = '';
-  document.getElementById('feedbackEmail').value = '';
-  document.getElementById('feedbackType').value = 'bug';
-}
-
-async function submitFeedback() {
-  const type = document.getElementById('feedbackType').value;
-  const message = document.getElementById('feedbackMessage').value.trim();
-  const email = document.getElementById('feedbackEmail').value.trim();
-  const submitBtn = document.getElementById('submitFeedbackBtn');
-
-  if (!message) {
-    alert(t('feedback.message') + ' required');
-    return;
-  }
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = '...';
-
-  try {
-    const result = await window.electronAPI.submitFeedback({ type, message, email });
-    
-    if (result.success) {
-      // Show success view
-      document.getElementById('feedbackForm').style.display = 'none';
-      document.getElementById('feedbackSuccess').style.display = 'flex';
-    } else {
-      alert(t('feedback.error'));
-      console.error('Feedback error:', result.error);
-    }
-  } catch (error) {
-    console.error('Feedback error:', error);
-    alert(t('feedback.error'));
-  } finally {
-    submitBtn.disabled = false;
-    submitBtn.textContent = t('feedback.submit');
-  }
 }
 
 // Render griglia servizi
@@ -1364,41 +1303,10 @@ function setupEventListeners() {
     themeLightBtn.addEventListener('click', () => applyTheme('light'));
   }
 
-  // Report Bug button
-  reportBugBtn.addEventListener('click', async () => {
-    const isConfigured = await window.electronAPI.isPostHogConfigured();
-    if (isConfigured) {
-      openFeedbackModal();
-    } else {
-      window.electronAPI.openExternal('https://github.com/calabr93/one-prompt/issues/new/choose');
-    }
+  // Report Bug button - always open GitHub Issues
+  reportBugBtn.addEventListener('click', () => {
+    window.electronAPI.openExternal('https://github.com/calabr93/one-prompt/issues/new/choose');
   });
-
-  // Feedback Modal Listeners
-  const closeFeedbackModalBtn = document.getElementById('closeFeedbackModal');
-  const feedbackModal = document.getElementById('feedbackModal');
-  const submitFeedbackBtn = document.getElementById('submitFeedbackBtn');
-  const closeFeedbackSuccessBtn = document.getElementById('closeFeedbackSuccessBtn');
-
-  if (closeFeedbackModalBtn) {
-    closeFeedbackModalBtn.addEventListener('click', closeFeedbackModalFn);
-  }
-
-  if (closeFeedbackSuccessBtn) {
-    closeFeedbackSuccessBtn.addEventListener('click', closeFeedbackModalFn);
-  }
-
-  if (feedbackModal) {
-    feedbackModal.addEventListener('click', (e) => {
-      if (e.target === feedbackModal) {
-        closeFeedbackModalFn();
-      }
-    });
-  }
-
-  if (submitFeedbackBtn) {
-    submitFeedbackBtn.addEventListener('click', submitFeedback);
-  }
 }
 
 // Update send button state
@@ -1507,36 +1415,6 @@ if (document.readyState === 'loading') {
 } else {
   init();
 }
-
-// Analytics Consent Logic
-function checkAnalyticsConsent() {
-  const consent = localStorage.getItem('oneprompt-analytics-consent');
-  
-  if (consent === null) {
-    // Show banner if no choice made yet
-    const banner = document.getElementById('analyticsBanner');
-    if (banner) banner.style.display = 'block';
-  } else {
-    // Send current status to main process
-    window.electronAPI.updateAnalyticsConsent(consent === 'true');
-  }
-}
-
-// Setup Analytics Listeners
-document.getElementById('analyticsAccept')?.addEventListener('click', () => {
-  localStorage.setItem('oneprompt-analytics-consent', 'true');
-  document.getElementById('analyticsBanner').style.display = 'none';
-  window.electronAPI.updateAnalyticsConsent(true);
-});
-
-document.getElementById('analyticsDecline')?.addEventListener('click', () => {
-  localStorage.setItem('oneprompt-analytics-consent', 'false');
-  document.getElementById('analyticsBanner').style.display = 'none';
-  window.electronAPI.updateAnalyticsConsent(false);
-});
-
-// Call check on init
-checkAnalyticsConsent();
 
 // Salva gli URL delle chat quando l'app viene chiusa
 window.addEventListener('beforeunload', () => {
