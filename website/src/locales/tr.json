@@ -213,5 +213,10 @@
       "title": "İletişim",
       "text": "Bu Hizmet Şartları ile ilgili sorularınız için lütfen şu adrese başvurun: Fabio Calabretta, P.IVA: 13010040965, Milano, İtalya."
     }
+  },
+  "cookie": {
+    "message": "Trafiği analiz etmek ve deneyiminizi geliştirmek için çerezler kullanıyoruz.",
+    "accept": "Kabul Et",
+    "deny": "Reddet"
   }
 }

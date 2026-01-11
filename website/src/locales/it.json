@@ -213,5 +213,10 @@
       "title": "Contatti",
       "text": "Per qualsiasi domanda su questi Termini di Servizio, contatta: Fabio Calabretta, P.IVA: 13010040965, Milano, Italia."
     }
+  },
+  "cookie": {
+    "message": "Utilizziamo i cookie per analizzare il traffico e migliorare la tua esperienza.",
+    "accept": "Accetta",
+    "deny": "Rifiuta"
   }
 }

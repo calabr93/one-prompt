@@ -213,5 +213,10 @@
       "title": "Kontakt",
       "text": "Bei Fragen zu diesen Nutzungsbedingungen wenden Sie sich bitte an: Fabio Calabretta, P.IVA: 13010040965, Mailand, Italien."
     }
+  },
+  "cookie": {
+    "message": "Wir verwenden Cookies, um den Verkehr zu analysieren und Ihre Erfahrung zu verbessern.",
+    "accept": "Akzeptieren",
+    "deny": "Ablehnen"
   }
 }

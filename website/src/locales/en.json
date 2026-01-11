@@ -213,5 +213,10 @@
       "title": "Contact",
       "text": "For any questions about these Terms of Service, please contact: Fabio Calabretta, P.IVA: 13010040965, Milan, Italy."
     }
+  },
+  "cookie": {
+    "message": "We use cookies to analyze traffic and improve your experience.",
+    "accept": "Accept",
+    "deny": "Deny"
   }
 }

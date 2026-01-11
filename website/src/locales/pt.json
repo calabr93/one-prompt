@@ -213,5 +213,10 @@
       "title": "Contato",
       "text": "Para quaisquer dúvidas sobre estes Termos de Serviço, entre em contato: Fabio Calabretta, P.IVA: 13010040965, Milão, Itália."
     }
+  },
+  "cookie": {
+    "message": "Usamos cookies para analisar o tráfego e melhorar sua experiência.",
+    "accept": "Aceitar",
+    "deny": "Recusar"
   }
 }
