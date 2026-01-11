@@ -37,6 +37,7 @@ export function Button({
         className={classNames}
         target={href.startsWith('http') ? '_blank' : undefined}
         rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+        onClick={onClick}
       >
         {icon && <span className={styles.icon}>{icon}</span>}
         {children}

@@ -2,6 +2,15 @@ import { useTranslation } from 'react-i18next';
 import { Container } from '../layout/Container';
 import { Button } from '../ui/Button';
 import styles from './CTASection.module.css';
+import '../../types/posthog.d';
+
+const trackDownload = (platform: string, variant: string) => {
+  window.posthog?.capture('download_clicked', {
+    platform,
+    variant,
+    section: 'cta'
+  });
+};
 
 const AppleIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
@@ -45,6 +54,7 @@ export function CTASection() {
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
+                  onClick={() => trackDownload('macos', 'arm64')}
                 >
                   Apple Silicon
                 </Button>
@@ -53,6 +63,7 @@ export function CTASection() {
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
+                  onClick={() => trackDownload('macos', 'x64')}
                 >
                   Intel
                 </Button>
@@ -71,6 +82,7 @@ export function CTASection() {
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
+                  onClick={() => trackDownload('windows', 'installer')}
                 >
                   Installer
                 </Button>
@@ -79,6 +91,7 @@ export function CTASection() {
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
+                  onClick={() => trackDownload('windows', 'portable')}
                 >
                   Portable
                 </Button>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './CookieBanner.module.css';
+import '../../types/posthog.d';
 
 export function CookieBanner() {
   const { t } = useTranslation();
@@ -16,9 +17,28 @@ export function CookieBanner() {
     }
   }, []);
 
+  const initPostHog = () => {
+    if (window.posthog && !window.posthog.__loaded) {
+      window.posthog.init('phc_tYyONxWoNV8wWVe3APlqoohb2hJNlAyyyIkd6MmDca8', {
+        api_host: 'https://eu.i.posthog.com',
+        person_profiles: 'identified_only',
+        capture_pageview: true,
+        capture_pageleave: true,
+        autocapture: true,
+        enable_heatmaps: true,
+        persistence: 'localStorage+cookie',
+        loaded: (posthog: typeof window.posthog) => {
+          posthog?.register({ source: 'website' });
+        }
+      });
+    }
+  };
+
   const handleAccept = () => {
     localStorage.setItem('cookieConsent', 'true');
     setIsVisible(false);
+    // Initialize PostHog after consent
+    initPostHog();
   };
 
   const handleDeny = () => {
