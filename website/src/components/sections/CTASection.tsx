@@ -112,7 +112,7 @@ export function CTASection() {
               </div>
               <div className={styles.buttonGroup}>
                 <Button
-                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-x64.AppImage"
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-x86_64.AppImage"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
@@ -121,7 +121,7 @@ export function CTASection() {
                   AppImage
                 </Button>
                 <Button
-                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-x64.deb"
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-amd64.deb"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
