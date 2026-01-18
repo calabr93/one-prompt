@@ -2149,7 +2149,7 @@ input:checked+.toggle-slider:before {
 }
 
 .language-selection-subtitle {
-  text-align: center;
+  text-align: left;
   color: var(--text-secondary);
   margin-bottom: 24px;
   font-size: 0.95rem;

@@ -447,7 +447,7 @@ function loadSessionsFromStorage() {
 
   // Inizializza con una sessione di default se non esistono sessioni
   if (sessions.length === 0) {
-    // Default services for first run
+    // Default services for first run - always start with web mode as example
     const defaultServices = new Set(['chatgpt', 'perplexity']);
     const defaultSession = createNewSession(null, defaultServices, 'web');
     sessions.push(defaultSession);
@@ -951,6 +951,19 @@ function showLanguageSelectionModal() {
   languageSelectionModal.style.display = 'flex';
 }
 
+// Close language modal button
+const closeLanguageModalBtn = document.getElementById('closeLanguageModal');
+if (closeLanguageModalBtn) {
+  closeLanguageModalBtn.addEventListener('click', () => {
+    // Default to English if user closes without selecting
+    if (!currentLanguage) {
+      selectLanguage('en');
+    } else {
+      languageSelectionModal.style.display = 'none';
+    }
+  });
+}
+
 // Apri modale impostazioni
 function openSettingsModal() {
   settingsModal.style.display = 'flex';
@@ -1143,25 +1156,8 @@ async function renderWebviews() {
     // Logic moved to createNewSession to avoid changing mode of existing sessions
     // when settings change.
 
-    // Default to Web if no mode is set and no default preference
-    // This is a fallback for very old sessions or edge cases
-    const defaultMode = localStorage.getItem('oneprompt-default-mode');
-    if (!mode && !defaultMode) {
-      if (currentSession) {
-        currentSession.mode = 'web';
-        saveSessionsToStorage();
-        renderWebviews();
-        return;
-      }
-    }
-    if (!mode && !defaultMode) {
-      if (currentSession) {
-        currentSession.mode = 'web';
-        saveSessionsToStorage();
-        renderWebviews();
-        return;
-      }
-    }
+    // Note: If no mode is set and defaultMode is not set or is 'ask', 
+    // we show the mode selection screen (handled below in the !mode check)
 
     // Helper to sanitize translations for usage in HTML strings
     const safeT = (key) => {

@@ -3,7 +3,7 @@
   "settings.title": "Configuración",
   "settings.language": "Idioma del Sistema y Chat API",
   "settings.theme": "Tema",
-  "language.selection.title": "Selecciona Tu Idioma",
+  "language.selection.title": "Selecciona tu idioma",
   "language.selection.subtitle": "Elige tu idioma preferido para la interfaz de la aplicación y las conversaciones con IA",
   "settings.theme.dark": "Oscuro",
   "settings.theme.light": "Claro",
