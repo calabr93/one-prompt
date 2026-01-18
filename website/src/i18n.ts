@@ -38,4 +38,12 @@ i18n
     },
   });
 
+// Update HTML lang attribute when language changes
+i18n.on('languageChanged', (lng) => {
+  document.documentElement.setAttribute('lang', lng);
+});
+
+// Set initial lang attribute
+document.documentElement.setAttribute('lang', i18n.language);
+
 export default i18n;
