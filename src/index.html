@@ -367,7 +367,22 @@
     </div>
   </div>
 
-
+  <!-- Language Selection Modal -->
+  <div class="modal-overlay" id="languageSelectionModal" style="display: none;">
+    <div class="modal-container language-modal-container">
+      <div class="modal-header">
+        <h2 data-i18n="language.selection.title">Select Your Language</h2>
+      </div>
+      <div class="modal-content">
+        <p class="language-selection-subtitle" data-i18n="language.selection.subtitle">
+          Choose your preferred language for the app interface and AI conversations
+        </p>
+        <div class="languages-grid" id="languagesGrid">
+          <!-- Language cards will be generated dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Markdown parser and sanitizer (local files for offline use) -->
   <script src="./libs/marked.min.js"></script>

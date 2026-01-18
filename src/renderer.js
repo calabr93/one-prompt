@@ -177,7 +177,7 @@ function detectLanguage() {
     return navLang;
   }
 
-  return 'en'; // Fallback
+  return null; // Return null to trigger language selection modal
 }
 
 let currentLanguage = detectLanguage();
@@ -539,9 +539,17 @@ async function init() {
     logger.log('Webviews rendered');
 
     // Imposta la lingua iniziale
-    languageSelect.value = currentLanguage;
-    await loadTranslations(currentLanguage);
-    updateUILanguage();
+    if (currentLanguage === null) {
+      // No language detected or stored - show selection modal
+      currentLanguage = 'en'; // Temporary fallback for modal UI
+      await loadTranslations(currentLanguage);
+      updateUILanguage();
+      showLanguageSelectionModal();
+    } else {
+      languageSelect.value = currentLanguage;
+      await loadTranslations(currentLanguage);
+      updateUILanguage();
+    }
 
     // Setup event listeners
     setupEventListeners();
@@ -883,6 +891,64 @@ function openServicesModal() {
 // Chiudi modale servizi
 function closeServicesModalFn() {
   servicesModal.style.display = 'none';
+}
+
+// === LANGUAGE SELECTION MODAL ===
+
+const languageSelectionModal = document.getElementById('languageSelectionModal');
+const languagesGrid = document.getElementById('languagesGrid');
+
+const languageConfig = [
+  { code: 'en', name: 'English' },
+  { code: 'es', name: 'Español' },
+  { code: 'it', name: 'Italiano' },
+  { code: 'fr', name: 'Français' },
+  { code: 'de', name: 'Deutsch' },
+  { code: 'pt', name: 'Português' },
+  { code: 'tr', name: 'Türkçe' }
+];
+
+function renderLanguageSelectionModal() {
+  languagesGrid.innerHTML = '';
+
+  languageConfig.forEach(lang => {
+    const card = document.createElement('div');
+    card.className = 'language-card';
+    card.dataset.lang = lang.code;
+
+    card.innerHTML = `
+      <div class="language-name">${lang.name}</div>
+    `;
+
+    card.addEventListener('click', async () => {
+      await selectLanguage(lang.code);
+    });
+
+    languagesGrid.appendChild(card);
+  });
+}
+
+async function selectLanguage(langCode) {
+  // Save selected language
+  currentLanguage = langCode;
+  localStorage.setItem('oneprompt-language', langCode);
+
+  // Load translations and update UI
+  await loadTranslations(langCode);
+  updateUILanguage();
+
+  // Update language selector in settings
+  languageSelect.value = langCode;
+
+  // Close modal
+  languageSelectionModal.style.display = 'none';
+
+  logger.log(`Language selected: ${langCode}`);
+}
+
+function showLanguageSelectionModal() {
+  renderLanguageSelectionModal();
+  languageSelectionModal.style.display = 'flex';
 }
 
 // Apri modale impostazioni
@@ -1958,7 +2024,7 @@ function initSettings() {
   // Init radio buttons
   let currentDefaultMode = localStorage.getItem('oneprompt-default-mode');
   if (!currentDefaultMode) {
-    currentDefaultMode = 'web'; // Default to web if not set
+    currentDefaultMode = 'ask'; // Default to always ask if not set
   }
 
   defaultModeRadios.forEach(radio => {

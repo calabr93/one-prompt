@@ -1,8 +1,10 @@
 {
   "services.title": "Mevcut Hizmetler",
   "settings.title": "Ayarlar",
-  "settings.language": "Dil",
+  "settings.language": "Sistem ve API Sohbet Dili",
   "settings.theme": "Tema",
+  "language.selection.title": "Dilinizi Seçin",
+  "language.selection.subtitle": "Uygulama arayüzü ve AI sohbetleri için tercih ettiğiniz dili seçin",
   "settings.theme.dark": "Koyu",
   "settings.theme.light": "Açık",
   "placeholder.title": "Yan çubuktan en az bir hizmet seçin",

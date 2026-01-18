@@ -1,8 +1,10 @@
 {
   "services.title": "Services Disponibles",
   "settings.title": "Paramètres",
-  "settings.language": "Langue",
+  "settings.language": "Langue Système et Chat API",
   "settings.theme": "Thème",
+  "language.selection.title": "Sélectionnez Votre Langue",
+  "language.selection.subtitle": "Choisissez votre langue préférée pour l'interface de l'application et les conversations IA",
   "settings.theme.dark": "Sombre",
   "settings.theme.light": "Clair",
   "placeholder.title": "Sélectionnez au moins un service dans la barre latérale",

@@ -1,8 +1,10 @@
 {
   "services.title": "Verfügbare Dienste",
   "settings.title": "Einstellungen",
-  "settings.language": "Sprache",
+  "settings.language": "System- & API-Chat-Sprache",
   "settings.theme": "Thema",
+  "language.selection.title": "Wählen Sie Ihre Sprache",
+  "language.selection.subtitle": "Wählen Sie Ihre bevorzugte Sprache für die App-Oberfläche und KI-Gespräche",
   "settings.theme.dark": "Dunkel",
   "settings.theme.light": "Hell",
   "placeholder.title": "Wählen Sie mindestens einen Dienst aus der Seitenleiste",

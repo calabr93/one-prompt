@@ -56,7 +56,7 @@ export function CTASection() {
               </div>
               <div className={styles.buttonGroup}>
                 <Button
-                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-arm64.dmg"
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-arm64.dmg"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
@@ -65,7 +65,7 @@ export function CTASection() {
                   Apple Silicon
                 </Button>
                 <Button
-                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-x64.dmg"
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-x64.dmg"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
@@ -84,7 +84,7 @@ export function CTASection() {
               </div>
               <div className={styles.buttonGroup}>
                 <Button
-                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-Setup.exe"
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Setup.exe"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
@@ -93,7 +93,7 @@ export function CTASection() {
                   Installer
                 </Button>
                 <Button
-                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-Portable.exe"
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Portable.exe"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
@@ -112,7 +112,7 @@ export function CTASection() {
               </div>
               <div className={styles.buttonGroup}>
                 <Button
-                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-x86_64.AppImage"
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-x86_64.AppImage"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
@@ -121,7 +121,7 @@ export function CTASection() {
                   AppImage
                 </Button>
                 <Button
-                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Pro-amd64.deb"
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-amd64.deb"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
