@@ -22,7 +22,7 @@
     "Gemini",
     "Electron"
   ],
-  "author": "Fabio Calabretta",
+  "author": "Fabio Calabretta <info@one-prompt.app>",
   "license": "MIT",
   "devDependencies": {
     "electron": "^39.2.7",
