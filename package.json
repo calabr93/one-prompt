@@ -92,7 +92,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
       "artifactName": "${productName}-Setup.${ext}"
     },
     "portable": {
