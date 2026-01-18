@@ -1,4 +1,9 @@
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
+
+// IMPORTANT: Set app name BEFORE any other requires that might use app.getPath()
+// This determines the userData folder name in %APPDATA% (Windows) or ~/Library/Application Support/ (Mac)
+app.setName('OnePrompt');
+
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
