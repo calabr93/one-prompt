@@ -1,0 +1,114 @@
+{
+  "name": "oneprompt",
+  "version": "0.1.6",
+  "description": "Un'applicazione per gestire più AI chat in un unico posto - inserisci un prompt e invialo a tutte le tue AI preferite",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux",
+    "pack": "electron-builder --dir",
+    "clean": "rm -rf \"$HOME/Library/Application Support/OnePrompt\" && rm -rf \"$HOME/Library/Preferences/com.oneprompt.app.plist\"",
+    "publish": "node scripts/release.js",
+    "deploy:website": "cd website && npm install && npm run deploy"
+  },
+  "keywords": [
+    "AI",
+    "chat",
+    "ChatGPT",
+    "Claude",
+    "Gemini",
+    "Electron"
+  ],
+  "author": "Fabio Calabretta",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^39.2.7",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.oneprompt.app",
+    "productName": "OnePrompt",
+    "publish": null,
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/logo/logo.icns",
+      "artifactName": "${productName}-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/logo/logo.ico",
+      "artifactName": "${productName}-Setup.${ext}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Utility",
+      "icon": "assets/logo/logo.png",
+      "artifactName": "${productName}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "${productName}-Setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable.${ext}"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  }
+}
