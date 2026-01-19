@@ -54,5 +54,7 @@
   "settings.crosscheck.moreTemplates": "Cerchi altri template di prompt? Vedi qui →",
   "settings.crosscheck.reset": "Ripristina default",
   "settings.crosscheck.error.missingPlaceholders": "Placeholder {{OTHER_RESPONSES}} obbligatorio",
-  "error.maxTabs": "Massimo 20 tab consentite"
+  "error.maxTabs": "Massimo 20 tab consentite",
+  "api.panel.title": "{service} (Modalità API)",
+  "api.panel.waiting": "In attesa del prompt..."
 }

@@ -54,5 +54,7 @@
   "settings.crosscheck.moreTemplates": "Looking for more prompt templates? See here →",
   "settings.crosscheck.reset": "Reset to default",
   "settings.crosscheck.error.missingPlaceholders": "{{OTHER_RESPONSES}} placeholder required",
-  "error.maxTabs": "Maximum 20 tabs allowed"
+  "error.maxTabs": "Maximum 20 tabs allowed",
+  "api.panel.title": "{service} (API Mode)",
+  "api.panel.waiting": "Waiting for prompt..."
 }

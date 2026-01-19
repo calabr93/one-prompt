@@ -53,5 +53,7 @@
   "settings.crosscheck.moreTemplates": "Vous cherchez d'autres modèles de prompts ? Voir ici →",
   "settings.crosscheck.reset": "Réinitialiser par défaut",
   "settings.crosscheck.error.missingPlaceholders": "Espace réservé {{OTHER_RESPONSES}} requis",
-  "error.maxTabs": "Maximum 20 onglets autorisés"
+  "error.maxTabs": "Maximum 20 onglets autorisés",
+  "api.panel.title": "{service} (Mode API)",
+  "api.panel.waiting": "En attente du prompt..."
 }

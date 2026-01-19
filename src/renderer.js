@@ -234,7 +234,9 @@ async function updateUILanguage() {
   // Update all elements with data-i18n attribute
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    el.textContent = t(key);
+    const optionsAttr = el.getAttribute('data-i18n-options');
+    const options = optionsAttr ? JSON.parse(optionsAttr) : {};
+    el.textContent = t(key, options);
   });
 
   // Update titles (tooltips) with data-i18n-title attribute
@@ -2341,9 +2343,16 @@ function createApiPanel(aiKey) {
       <div style="font-size: 3rem; margin-bottom: 1rem; display: flex; justify-content: center;">
         ${config.logo ? `<img src="../assets/${config.logo}" style="width: 48px; height: 48px; object-fit: contain;">` : config.icon}
       </div>
-      <h3>${config.name} (API Mode)</h3>
-      <p>Waiting for prompt...</p>
+      <h3 data-i18n="api.panel.title" data-i18n-options='{"service": "${config.name}"}'>${config.name} (API Mode)</h3>
+      <p data-i18n="api.panel.waiting">Waiting for prompt...</p>
   `;
+  // Translate welcome elements
+  welcome.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const optionsAttr = el.getAttribute('data-i18n-options');
+    const options = optionsAttr ? JSON.parse(optionsAttr) : {};
+    el.textContent = t(key, options);
+  });
   chatContainer.appendChild(welcome);
 
   panel.appendChild(chatContainer);

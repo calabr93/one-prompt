@@ -53,5 +53,7 @@
   "settings.crosscheck.moreTemplates": "Auf der Suche nach mehr Prompt-Vorlagen? Hier klicken →",
   "settings.crosscheck.reset": "Auf Standard zurücksetzen",
   "settings.crosscheck.error.missingPlaceholders": "Platzhalter {{OTHER_RESPONSES}} erforderlich",
-  "error.maxTabs": "Maximal 20 Tabs erlaubt"
+  "error.maxTabs": "Maximal 20 Tabs erlaubt",
+  "api.panel.title": "{service} (API-Modus)",
+  "api.panel.waiting": "Warten auf Prompt..."
 }

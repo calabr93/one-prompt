@@ -53,5 +53,7 @@
   "settings.crosscheck.moreTemplates": "Daha fazla prompt şablonu mu arıyorsunuz? Buraya bakın →",
   "settings.crosscheck.reset": "Varsayılana sıfırla",
   "settings.crosscheck.error.missingPlaceholders": "{{OTHER_RESPONSES}} yer tutucusu gerekli",
-  "error.maxTabs": "Maksimum 20 sekmeye izin verilir"
+  "error.maxTabs": "Maksimum 20 sekmeye izin verilir",
+  "api.panel.title": "{service} (API Modu)",
+  "api.panel.waiting": "Prompt bekleniyor..."
 }

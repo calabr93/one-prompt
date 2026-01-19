@@ -53,5 +53,7 @@
   "settings.crosscheck.moreTemplates": "Procurando mais modelos de prompts? Veja aqui →",
   "settings.crosscheck.reset": "Redefinir para o padrão",
   "settings.crosscheck.error.missingPlaceholders": "Espaço reservado {{OTHER_RESPONSES}} obrigatório",
-  "error.maxTabs": "Máximo de 20 abas permitidas"
+  "error.maxTabs": "Máximo de 20 abas permitidas",
+  "api.panel.title": "{service} (Modo API)",
+  "api.panel.waiting": "Aguardando prompt..."
 }

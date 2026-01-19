@@ -53,5 +53,7 @@
   "settings.crosscheck.moreTemplates": "¿Buscas más plantillas de prompts? Ver aquí →",
   "settings.crosscheck.reset": "Restablecer valores predeterminados",
   "settings.crosscheck.error.missingPlaceholders": "Se requiere el marcador {{OTHER_RESPONSES}}",
-  "error.maxTabs": "Máximo 20 pestañas permitidas"
+  "error.maxTabs": "Máximo 20 pestañas permitidas",
+  "api.panel.title": "{service} (Modo API)",
+  "api.panel.waiting": "Esperando el prompt..."
 }
