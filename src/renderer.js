@@ -342,13 +342,28 @@ if (ThemeModule) {
   applyTheme(currentTheme);
 }
 
-// Session/Tab management
+// =====================================================
+// SESSION MANAGEMENT (module + fallback)
+// =====================================================
+const SessionsModule = window.OnePromptCore?.sessions;
+
+// Session/Tab management - use module state if available
 let sessions = [];
 let currentSessionId = null;
 let sessionCounter = 0;
 
 // Helper functions for sessions
 function createNewSession(name = null, selectedAIsSet = null, mode = null) {
+  // Use module if available
+  if (SessionsModule) {
+    // Sync module state with local state first
+    SessionsModule.setSessions(sessions);
+    const session = SessionsModule.createSession(name, selectedAIsSet, mode);
+    sessionCounter = SessionsModule.getSessionCounter();
+    return session;
+  }
+  
+  // Fallback: inline implementation
   sessionCounter++;
 
   // Calcola il numero di sessione più basso disponibile (gap finding)
@@ -369,13 +384,13 @@ function createNewSession(name = null, selectedAIsSet = null, mode = null) {
 
   return {
     id: `session-${Date.now()}-${sessionCounter}`,
-    name: name || null, // null significa usa il nome di default tradotto
-    sessionNumber: nextNumber, // Usa il numero calcolato
+    name: name || null,
+    sessionNumber: nextNumber,
     selectedAIs: selectedAIsSet ? Array.from(selectedAIsSet) : [],
-    mode: initialMode || null, // 'web' or 'api' or null
-    chatUrls: {}, // Mappa aiKey -> URL della conversazione
-    apiChatHistory: {}, // Mappa aiKey -> Array di {role, content} per API mode
-    promptDraft: '', // Draft content of the prompt textarea
+    mode: initialMode || null,
+    chatUrls: {},
+    apiChatHistory: {},
+    promptDraft: '',
     createdAt: Date.now()
   };
 }
@@ -424,6 +439,16 @@ function captureCurrentUrls() {
 }
 
 function saveSessionsToStorage() {
+  // Use module if available
+  if (SessionsModule) {
+    // Sync module state with local state
+    SessionsModule.setSessions(sessions);
+    SessionsModule.setCurrentSessionId(currentSessionId);
+    SessionsModule.saveSessionsToStorage(captureCurrentUrls);
+    return;
+  }
+  
+  // Fallback: inline implementation
   try {
     // Cattura gli URL correnti prima di salvare
     captureCurrentUrls();
@@ -465,6 +490,24 @@ function saveSessionsToStorage() {
 }
 
 function loadSessionsFromStorage() {
+  // Use module if available
+  if (SessionsModule) {
+    const result = SessionsModule.loadSessionsFromStorage({
+      defaultServices: ['chatgpt', 'perplexity'],
+      defaultMode: 'web'
+    });
+    sessions = result.sessions;
+    currentSessionId = result.currentSessionId;
+    sessionCounter = result.sessionCounter;
+    logger.log('[loadSessionsFromStorage] Loaded via module:', {
+      count: sessions.length,
+      currentSessionId,
+      sessionCounter
+    });
+    return;
+  }
+  
+  // Fallback: inline implementation
   const storedSessions = localStorage.getItem('oneprompt-sessions');
   if (storedSessions) {
     try {
@@ -1064,7 +1107,7 @@ function createServiceCard(aiKey, config, mode = 'web') {
   icon.className = 'service-icon';
 
   if (config.logo) {
-    icon.innerHTML = `<img src="../assets/${config.logo}" alt="${config.name}">`;
+    icon.innerHTML = `<img src="${config.logo}" alt="${config.name}">`;
   } else {
     icon.textContent = config.icon;
   }
@@ -1317,7 +1360,7 @@ async function renderWebviews() {
       header.className = 'webview-header';
       header.innerHTML = `
         <div class="webview-header-title">
-          ${config.logo ? `<img src="../assets/${config.logo}" style="width: 16px; height: 16px; object-fit: contain;">` : config.icon}
+          ${config.logo ? `<img src="${config.logo}" style="width: 16px; height: 16px; object-fit: contain;">` : config.icon}
           ${config.name}
         </div>
         <div class="webview-header-close">
@@ -1677,7 +1720,7 @@ function createSidebarButton(key, config) {
   }
 
   const iconHtml = config.logo
-    ? `<img src="../assets/${config.logo}" alt="${config.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${config.icon}';">`
+    ? `<img src="${config.logo}" alt="${config.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${config.icon}';">`
     : config.icon;
 
   button.innerHTML = `
@@ -2361,7 +2404,7 @@ function createApiPanel(aiKey) {
   welcome.style.marginBottom = 'auto';
   welcome.innerHTML = `
       <div style="font-size: 3rem; margin-bottom: 1rem; display: flex; justify-content: center;">
-        ${config.logo ? `<img src="../assets/${config.logo}" style="width: 48px; height: 48px; object-fit: contain;">` : config.icon}
+        ${config.logo ? `<img src="${config.logo}" style="width: 48px; height: 48px; object-fit: contain;">` : config.icon}
       </div>
       <h3 data-i18n="api.panel.title" data-i18n-options='{"service": "${config.name}"}'>${config.name} (API Mode)</h3>
       <p data-i18n="api.panel.waiting">Waiting for prompt...</p>
