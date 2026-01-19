@@ -1,9 +1,70 @@
 import { defineConfig } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { copyFileSync, mkdirSync, readdirSync } from 'fs';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+/**
+ * Copy directory recursively
+ */
+function copyDir(src, dest) {
+  mkdirSync(dest, { recursive: true });
+  for (const entry of readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      copyFileSync(srcPath, destPath);
+    }
+  }
+}
+
+/**
+ * Plugin to copy static files that aren't bundled
+ */
+function copyStaticFiles() {
+  return {
+    name: 'copy-static-files',
+    closeBundle() {
+      const distDir = path.resolve(__dirname, 'dist/renderer');
+
+      // Copy libs (marked, purify)
+      copyDir(
+        path.resolve(__dirname, 'src/libs'),
+        path.resolve(distDir, 'libs')
+      );
+
+      // Copy utils (logger-renderer.js)
+      copyDir(
+        path.resolve(__dirname, 'src/utils'),
+        path.resolve(distDir, 'utils')
+      );
+
+      // Copy locales
+      copyDir(
+        path.resolve(__dirname, 'src/locales'),
+        path.resolve(distDir, 'locales')
+      );
+
+      // Copy core-bridge.js
+      copyFileSync(
+        path.resolve(__dirname, 'src/core-bridge.js'),
+        path.resolve(distDir, 'core-bridge.js')
+      );
+
+      // Copy renderer.js (main app logic, will be migrated eventually)
+      copyFileSync(
+        path.resolve(__dirname, 'src/renderer.js'),
+        path.resolve(distDir, 'renderer.js')
+      );
+
+      console.log('Static files copied to dist/renderer');
+    }
+  };
+}
 
 /**
  * Vite configuration for one-prompt (Open Source base)
@@ -23,6 +84,8 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
   root: 'src',
   base: './',
+
+  plugins: [copyStaticFiles()],
 
   resolve: {
     alias: {
@@ -57,8 +120,15 @@ export default defineConfig({
   // Development server config
   server: {
     port: 5173,
-    strictPort: true
+    strictPort: true,
+    // Allow serving files from assets folder (outside root)
+    fs: {
+      allow: ['..']
+    }
   },
+
+  // Public directory for static assets
+  publicDir: '../assets',
 
   // Optimize deps
   optimizeDeps: {

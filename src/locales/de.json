@@ -38,6 +38,7 @@
   "send": "Senden",
   "copy": "Prompt in die Zwischenablage kopieren",
   "crosscheck.tooltip": "Vergleichsprompt mit allen KI-Antworten generieren",
+  "crosscheck.noResponses": "Keine KI-Antworten zum Vergleichen gefunden",
   "copy.success": "✓ Prompt in die Zwischenablage kopiert!",
   "copy.crosscheck.success": "✓ Prompt generiert und in die Zwischenablage kopiert!",
   "crosscheck.generated": "✓ Prompt generiert!",

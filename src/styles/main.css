@@ -2141,6 +2141,12 @@ input:checked+.toggle-slider:before {
   border-color: #dc2626;
 }
 
+.notification.notification-warning {
+  background: #f59e0b !important;
+  color: white !important;
+  border-color: #d97706 !important;
+}
+
 /* Language Selection Modal */
 .language-modal-container {
   max-width: 600px;

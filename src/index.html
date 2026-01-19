@@ -246,7 +246,7 @@
 
               <div class="api-service-card">
                 <div class="api-service-header">
-                  <img src="../assets/ai-services/chatgpt.png" alt="OpenAI"
+                  <img src="ai-services/chatgpt.png" alt="OpenAI"
                     style="width: 24px; height: 24px; object-fit: contain;">
                   <span>OpenAI</span>
                 </div>
@@ -267,7 +267,7 @@
 
               <div class="api-service-card">
                 <div class="api-service-header">
-                  <img src="../assets/ai-services/claude.png" alt="Anthropic"
+                  <img src="ai-services/claude.png" alt="Anthropic"
                     style="width: 24px; height: 24px; object-fit: contain;">
                   <span>Anthropic</span>
                 </div>
@@ -288,7 +288,7 @@
 
               <div class="api-service-card">
                 <div class="api-service-header">
-                  <img src="../assets/ai-services/gemini.png" alt="Google"
+                  <img src="ai-services/gemini.png" alt="Google"
                     style="width: 24px; height: 24px; object-fit: contain;">
                   <span>Google Gemini</span>
                 </div>
@@ -381,12 +381,14 @@
   <script src="./utils/logger-renderer.js"></script>
   <!-- Core Bridge - layer di astrazione per servizi esterni (puo essere overridden nel private) -->
   <script src="core-bridge.js"></script>
-  <!-- Core Modules - moduli estratti da renderer.js -->
-  <script src="./core/markdown.js"></script>
-  <script src="./core/i18n.js"></script>
-  <script src="./core/theme.js"></script>
-  <!-- UI Modules -->
-  <script src="./ui/notifications.js"></script>
+
+  <!--
+    In development: renderer.js uses its own inline code
+    In production (Vite build): renderer-entry.js bundles ES6 modules
+
+    The ES6 modules in core/, ui/, services/ are used by Vite during build.
+    renderer.js has fallback code that works without the modules.
+  -->
   <script src="renderer.js"></script>
 </body>
 

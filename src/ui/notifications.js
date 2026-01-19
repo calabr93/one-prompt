@@ -1,48 +1,40 @@
 /**
  * OnePrompt Notifications Module
- * 
+ *
  * Handles toast notifications display.
- * Uses IIFE pattern to avoid global scope pollution.
- * 
- * Exposes: window.OnePromptUI.notifications
+ *
+ * @module @ui/notifications
  */
-(function() {
-  'use strict';
 
-  /**
-   * Show a toast notification
-   * @param {string} message - The message to display
-   * @param {string} type - Notification type: 'info', 'success', 'error', 'warning'
-   */
-  function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
+/**
+ * Show a toast notification
+ * @param {string} message - The message to display
+ * @param {string} type - Notification type: 'info', 'success', 'error', 'warning'
+ */
+export function showNotification(message, type = 'info') {
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
 
-    // Trigger animation
-    setTimeout(() => {
-      notification.classList.add('show');
-    }, 10);
+  document.body.appendChild(notification);
 
-    // Auto-remove after 2 seconds
-    setTimeout(() => {
-      notification.classList.remove('show');
-      setTimeout(() => notification.remove(), 300);
-    }, 2000);
-  }
+  // Trigger animation
+  setTimeout(() => {
+    notification.classList.add('show');
+  }, 10);
 
-  // =====================================================
-  // EXPOSE MODULE VIA GLOBAL OBJECT
-  // =====================================================
+  // Auto-remove after 2 seconds
+  setTimeout(() => {
+    notification.classList.remove('show');
+    setTimeout(() => notification.remove(), 300);
+  }, 2000);
+}
 
-  // Ensure namespace exists
-  window.OnePromptUI = window.OnePromptUI || {};
+// Alias for backward compatibility
+export const show = showNotification;
 
-  // Expose notifications module
-  window.OnePromptUI.notifications = {
-    show: showNotification
-  };
-
-})();
+// Export as default object for backward compatibility
+export default {
+  show: showNotification,
+  showNotification
+};

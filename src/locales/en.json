@@ -39,6 +39,7 @@
   "send": "Send",
   "copy": "Copy prompt to clipboard",
   "crosscheck.tooltip": "Generate comparison prompt with all AI responses",
+  "crosscheck.noResponses": "No AI responses found to compare",
   "copy.success": "✓ Prompt copied to clipboard!",
   "copy.crosscheck.success": "✓ Prompt generated and copied to clipboard!",
   "crosscheck.generated": "✓ Prompt generated!",

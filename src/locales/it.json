@@ -39,6 +39,7 @@
   "send": "Invia",
   "copy": "Copia prompt negli appunti",
   "crosscheck.tooltip": "Genera prompt di confronto con tutte le risposte AI",
+  "crosscheck.noResponses": "Nessuna risposta AI trovata da confrontare",
   "copy.success": "✓ Prompt copiato negli appunti!",
   "copy.crosscheck.success": "✓ Prompt generato e copiato negli appunti!",
   "crosscheck.generated": "✓ Prompt generato!",

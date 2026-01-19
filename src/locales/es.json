@@ -38,6 +38,7 @@
   "send": "Enviar",
   "copy": "Copiar prompt al portapapeles",
   "crosscheck.tooltip": "Generar prompt de comparación con todas las respuestas IA",
+  "crosscheck.noResponses": "No se encontraron respuestas IA para comparar",
   "copy.success": "✓ Prompt copiado al portapapeles!",
   "copy.crosscheck.success": "✓ Prompt generado y copiado al portapapeles!",
   "crosscheck.generated": "✓ Prompt generado!",

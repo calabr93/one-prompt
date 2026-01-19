@@ -5,11 +5,14 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "dev": "electron . --dev",
-    "build:mac": "electron-builder --mac",
-    "build:win": "electron-builder --win",
-    "build:linux": "electron-builder --linux",
-    "pack": "electron-builder --dir",
+    "dev": "concurrently \"vite --config vite.config.js\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron . --dev\"",
+    "dev:electron": "electron . --dev",
+    "dev:vite": "vite --config vite.config.js",
+    "build": "vite build --config vite.config.js",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:win": "npm run build && electron-builder --win",
+    "build:linux": "npm run build && electron-builder --linux",
+    "pack": "npm run build && electron-builder --dir",
     "clean": "rm -rf \"$HOME/Library/Application Support/OnePrompt\" && rm -rf \"$HOME/Library/Preferences/com.oneprompt.app.plist\"",
     "publish": "node scripts/release.js",
     "deploy:website": "cd website && npm install && npm run deploy"
@@ -25,9 +28,12 @@
   "author": "Fabio Calabretta <info@one-prompt.app>",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^39.2.7",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^28.3.0",
     "electron-builder": "^24.9.1",
-    "vite": "^7.3.1"
+    "vite": "^5.4.0",
+    "wait-on": "^8.0.3"
   },
   "build": {
     "appId": "com.oneprompt.app",
@@ -101,7 +107,10 @@
       "artifactName": "${productName}-Portable.${ext}"
     },
     "files": [
-      "src/**/*",
+      "src/main.js",
+      "src/preload.js",
+      "src/webview-preload.js",
+      "dist/renderer/**/*",
       "assets/**/*",
       "package.json"
     ],

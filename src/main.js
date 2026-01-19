@@ -129,7 +129,21 @@ function createMainWindow() {
     }
   });
 
-  mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  // In development with Vite, load from dev server
+  // In production, load from bundled files
+  const isDev = !app.isPackaged || process.argv.includes('--dev');
+  const useViteDevServer = isDev && process.env.VITE_DEV_SERVER_URL;
+
+  if (useViteDevServer) {
+    mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL || 'http://localhost:5173');
+    logger.log('Loading from Vite dev server');
+  } else if (app.isPackaged) {
+    // Production: load from dist/renderer
+    mainWindow.loadFile(path.join(__dirname, '../dist/renderer/index.html'));
+  } else {
+    // Development without Vite: load source directly
+    mainWindow.loadFile(path.join(__dirname, 'index.html'));
+  }
 
   // DevTools: Open in dev mode, block keyboard shortcut in production
   if (!app.isPackaged || process.argv.includes('--dev')) {

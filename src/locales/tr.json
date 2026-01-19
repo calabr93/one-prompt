@@ -38,6 +38,7 @@
   "send": "Gönder",
   "copy": "Panoya kopyala",
   "crosscheck.tooltip": "Tüm yapay zeka yanıtlarıyla karşılaştırma istemi oluştur",
+  "crosscheck.noResponses": "Karşılaştırılacak yapay zeka yanıtı bulunamadı",
   "copy.success": "✓ İstem panoya kopyalandı!",
   "copy.crosscheck.success": "✓ İstem oluşturuldu ve panoya kopyalandı!",
   "crosscheck.generated": "✓ İstem oluşturuldu!",
