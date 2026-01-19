@@ -306,10 +306,20 @@ async function updateUILanguage() {
   renderTabs();
 }
 
-// Theme management
-let currentTheme = localStorage.getItem('oneprompt-theme') || 'dark';
+// =====================================================
+// THEME MANAGEMENT (module + fallback)
+// =====================================================
+const ThemeModule = window.OnePromptCore?.theme;
+
+let currentTheme = ThemeModule ? ThemeModule.getCurrentTheme() : (localStorage.getItem('oneprompt-theme') || 'dark');
 
 function applyTheme(theme) {
+  if (ThemeModule) {
+    ThemeModule.applyTheme(theme);
+    currentTheme = ThemeModule.getCurrentTheme();
+    return;
+  }
+  // Fallback inline
   document.body.setAttribute('data-theme', theme);
   currentTheme = theme;
   localStorage.setItem('oneprompt-theme', theme);
@@ -325,7 +335,12 @@ function applyTheme(theme) {
 }
 
 // Apply theme on startup
-applyTheme(currentTheme);
+if (ThemeModule) {
+  ThemeModule.init();
+  currentTheme = ThemeModule.getCurrentTheme();
+} else {
+  applyTheme(currentTheme);
+}
 
 // Session/Tab management
 let sessions = [];
