@@ -1,6 +1,10 @@
 // Logger alias (loaded from utils/logger-renderer.js, disables logs in production)
 const logger = window.OnePromptLogger || console;
 
+// Markdown module alias (loaded from core/markdown.js)
+// Falls back to local functions if module not loaded
+const MarkdownModule = (window.OnePromptCore && window.OnePromptCore.markdown) || null;
+
 // Clean AI response artifacts (citation markers, function call XML, etc.)
 function cleanAIResponseText(text) {
   if (!text) return '';
@@ -39,8 +43,8 @@ function cleanAIResponseText(text) {
   // Remove citation markers like [1], [2], etc. - optional, keep if links work
   // cleaned = cleaned.replace(/\[\d+\]/g, '');
 
-  // Clean up any double spaces left behind
-  cleaned = cleaned.replace(/\s{2,}/g, ' ');
+  // Clean up multiple consecutive spaces (but NOT newlines - preserve markdown formatting)
+  cleaned = cleaned.replace(/[^\S\n]{2,}/g, ' ');
 
   // Clean up any trailing dots from removed citations
   cleaned = cleaned.replace(/\.\s*\./g, '.');
@@ -84,17 +88,16 @@ function renderMarkdown(text) {
   // First, clean AI-specific artifacts
   let cleanedText = cleanAIResponseText(text);
 
-  // Fix Gemini formatting issues:
-  // 1. Add newline before inline headings (e.g., "...text. ### Heading" → "...text.\n\n### Heading")
+  // Fix Gemini/Grok formatting issues:
+  // 1. Insert newline before ANY heading # that doesn't have one (Grok issue)
+  cleanedText = cleanedText.replace(/([^\n])(#{1,6}\s+[A-Z0-9])/g, '$1\n\n$2');
+  // 2. Insert newline after punctuation before headings
   cleanedText = cleanedText.replace(/([.!?])\s*(#{1,6}\s)/g, '$1\n\n$2');
-  
-  // 2. Add newline before inline bold titles (e.g., "...text. **Title:** " → "...text.\n\n**Title:** ")
+  // 3. Insert newline after punctuation before bold titles
   cleanedText = cleanedText.replace(/([.!?])\s*(\*\*[^*]+:\*\*)/g, '$1\n\n$2');
-  
-  // 3. Bold text followed by single newline should have double newline
+  // 4. Bold text followed by single newline should have double newline
   cleanedText = cleanedText.replace(/(\*\*[^*]+\*\*)\n(?!\n)/g, '$1\n\n');
-  
-  // 4. Headings followed by single newline should have double newline
+  // 5. Headings followed by single newline should have double newline
   cleanedText = cleanedText.replace(/(#{1,6}\s+[^\n]+)\n(?!\n)/g, '$1\n\n');
 
   // Check if marked is available
@@ -128,8 +131,8 @@ let loadedWebviews = new Set();
 let webviewInstances = {}; // Map sessionId → { aiKey → webview element }
 // Default to ChatGPT and Perplexity for fresh installations
 let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["chatgpt", "perplexity"]'));
-// Default to ChatGPT, Gemini, Claude, and Grok for API mode
-let configuredApiAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-api-services') || '["chatgpt", "gemini", "claude", "grok"]'));
+// Default to ChatGPT, Gemini, and Claude for API mode
+let configuredApiAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-api-services') || '["chatgpt", "gemini", "claude"]'));
 
 // API History limit (sliding window: 6 user/assistant exchanges = 12 messages)
 const API_HISTORY_LIMIT = 12;
@@ -988,7 +991,7 @@ function closeSettingsModalFn() {
 // Render griglia servizi
 function renderServicesGrid(mode = 'web') {
   servicesGrid.innerHTML = '';
-  const apiServices = ['chatgpt', 'gemini', 'claude', 'grok'];
+  const apiServices = ['chatgpt', 'gemini', 'claude'];
 
   Object.entries(aiConfigs).forEach(([aiKey, config]) => {
     if (mode === 'api' && !apiServices.includes(aiKey)) {
@@ -1423,7 +1426,12 @@ async function renderWebviews() {
   }
 
   // Re-clean any existing API messages that might have citation artifacts
-  reCleanApiMessages();
+  // Use module if available, fallback to local function
+  if (MarkdownModule) {
+    MarkdownModule.reCleanApiMessages();
+  } else {
+    reCleanApiMessages();
+  }
 }
 
 // Create webview
@@ -1524,7 +1532,7 @@ function renderSidebar() {
 
   const currentSession = getCurrentSession();
   const mode = currentSession ? currentSession.mode : 'web';
-  const apiServices = ['chatgpt', 'gemini', 'claude', 'grok'];
+  const apiServices = ['chatgpt', 'gemini', 'claude'];
 
   // Mostra solo i servizi configurati nella sidebar
   Object.entries(aiConfigs).forEach(([key, config]) => {
@@ -1964,7 +1972,7 @@ window.selectMode = function (mode) {
       selectedAIs.clear();
       // Do NOT auto-select services. User must add them manually.
       // Just ensure they are configured so they appear in sidebar.
-      const apiServices = ['chatgpt', 'gemini', 'claude', 'grok'];
+      const apiServices = ['chatgpt', 'gemini', 'claude'];
       apiServices.forEach(key => {
         if (!configuredApiAIs.has(key)) {
           configuredApiAIs.add(key);
@@ -2034,50 +2042,50 @@ function initSettings() {
     });
   });
 
+  // API Key and Model settings - use OnePromptCore bridge
+  // In private repos, BYOK section can be hidden and replaced with managed keys
+
+  // Only show BYOK settings if the bridge says so
+  const byokSection = document.querySelector('.settings-tab-content#apiSettings');
+  if (byokSection && !window.OnePromptCore.shouldShowBYOKSettings()) {
+    // Hide BYOK section in private version (managed API keys)
+    byokSection.style.display = 'none';
+  }
+
+  // OpenAI
   if (apiKeyOpenAI) {
-    apiKeyOpenAI.value = localStorage.getItem('oneprompt-api-openai') || '';
-    apiKeyOpenAI.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-openai', e.target.value));
+    apiKeyOpenAI.value = window.OnePromptCore.getApiKey('chatgpt') || '';
+    apiKeyOpenAI.addEventListener('input', (e) => window.OnePromptCore.setApiKey('chatgpt', e.target.value));
   }
 
   const modelOpenAI = document.getElementById('modelOpenAI');
   if (modelOpenAI) {
-    modelOpenAI.value = localStorage.getItem('oneprompt-model-openai') || 'gpt-4o';
-    modelOpenAI.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-openai', e.target.value));
+    modelOpenAI.value = window.OnePromptCore.getSelectedModel('chatgpt') || 'gpt-4o';
+    modelOpenAI.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel('chatgpt', e.target.value));
   }
 
+  // Anthropic
   if (apiKeyAnthropic) {
-    apiKeyAnthropic.value = localStorage.getItem('oneprompt-api-anthropic') || '';
-    apiKeyAnthropic.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-anthropic', e.target.value));
+    apiKeyAnthropic.value = window.OnePromptCore.getApiKey('claude') || '';
+    apiKeyAnthropic.addEventListener('input', (e) => window.OnePromptCore.setApiKey('claude', e.target.value));
   }
 
   const modelAnthropic = document.getElementById('modelAnthropic');
   if (modelAnthropic) {
-    modelAnthropic.value = localStorage.getItem('oneprompt-model-anthropic') || 'claude-sonnet-4-5';
-    modelAnthropic.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-anthropic', e.target.value));
+    modelAnthropic.value = window.OnePromptCore.getSelectedModel('claude') || 'claude-sonnet-4-5';
+    modelAnthropic.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel('claude', e.target.value));
   }
 
+  // Google Gemini
   if (apiKeyGemini) {
-    apiKeyGemini.value = localStorage.getItem('oneprompt-api-gemini') || '';
-    apiKeyGemini.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-gemini', e.target.value));
+    apiKeyGemini.value = window.OnePromptCore.getApiKey('gemini') || '';
+    apiKeyGemini.addEventListener('input', (e) => window.OnePromptCore.setApiKey('gemini', e.target.value));
   }
 
   const modelGemini = document.getElementById('modelGemini');
   if (modelGemini) {
-    modelGemini.value = localStorage.getItem('oneprompt-model-gemini') || 'gemini-2.5-flash';
-    modelGemini.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-gemini', e.target.value));
-  }
-
-  // xAI (Grok) Settings
-  const apiKeyXAI = document.getElementById('apiKeyXAI');
-  if (apiKeyXAI) {
-    apiKeyXAI.value = localStorage.getItem('oneprompt-api-xai') || '';
-    apiKeyXAI.addEventListener('input', (e) => localStorage.setItem('oneprompt-api-xai', e.target.value));
-  }
-
-  const modelXAI = document.getElementById('modelXAI');
-  if (modelXAI) {
-    modelXAI.value = localStorage.getItem('oneprompt-model-xai') || 'grok-4-1-fast';
-    modelXAI.addEventListener('change', (e) => localStorage.setItem('oneprompt-model-xai', e.target.value));
+    modelGemini.value = window.OnePromptCore.getSelectedModel('gemini') || 'gemini-2.5-flash';
+    modelGemini.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel('gemini', e.target.value));
   }
 }
 
@@ -2392,8 +2400,8 @@ function appendApiMessage(panel, role, text, save = true) {
   if (role === 'system') {
     bubble.innerHTML = text;
   } else if (role === 'assistant') {
-    // Render Markdown
-    bubble.innerHTML = renderMarkdown(text);
+    // Render Markdown - use module if available, fallback to local function
+    bubble.innerHTML = MarkdownModule ? MarkdownModule.renderMarkdown(text) : renderMarkdown(text);
     bubble.classList.add('markdown-content');
 
     // Intercept link clicks to open in system browser
@@ -2462,20 +2470,16 @@ function getSystemPromptWithLanguage() {
   return `You are a helpful AI assistant. Always respond in ${languageName} unless the user explicitly asks for a different language.`;
 }
 
-// Handle API Chat Logic (original - fire and forget)
+// Handle API Chat Logic - uses OnePromptCore bridge for API calls
+// The bridge can be overridden in private repos to add credit checking, managed API keys, etc.
 async function handleApiChat(aiKey, prompt, panel) {
   // 1. Show User Message immediately (already saved in sendPromptToSelectedAIs)
   appendApiMessage(panel, 'user', prompt, false);
 
-  // 2. Get API Key
-  let apiKey = '';
-  if (aiKey === 'chatgpt') apiKey = localStorage.getItem('oneprompt-api-openai');
-  else if (aiKey === 'claude') apiKey = localStorage.getItem('oneprompt-api-anthropic');
-  else if (aiKey === 'gemini') apiKey = localStorage.getItem('oneprompt-api-gemini');
-  else if (aiKey === 'grok') apiKey = localStorage.getItem('oneprompt-api-xai');
-
-  if (!apiKey) {
-    appendApiMessage(panel, 'system', t('error.apiKeyMissing'));
+  // 2. Check if can proceed (API key in open, credits in private)
+  const check = await window.OnePromptCore.checkCanMakeRequest(aiKey);
+  if (!check.canProceed) {
+    appendApiMessage(panel, 'system', check.error || t('error.apiKeyMissing'));
     updateWebviewStatus(aiKey, 'error');
     return;
   }
@@ -2495,181 +2499,10 @@ async function handleApiChat(aiKey, prompt, panel) {
   const messages = existingHistory;
 
   try {
-    let responseText = '';
-
-    if (aiKey === 'chatgpt') {
-      const model = localStorage.getItem('oneprompt-model-openai') || 'gpt-4o';
-      // Use Responses API for web search support
-      // Format: convert messages array to Responses API format
-      const systemPrompt = getSystemPromptWithLanguage();
-      const inputMessages = [
-        { role: 'system', content: systemPrompt },
-        ...messages.map(msg => ({
-          role: msg.role,
-          content: msg.content
-        }))
-      ];
-
-      const res = await fetch('https://api.openai.com/v1/responses', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: model,
-          input: inputMessages,
-          tools: [{ type: "web_search" }]
-        })
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error.message);
-      // Responses API returns output_text directly or in output array
-      if (data.output_text) {
-        responseText = data.output_text;
-      } else if (data.output && Array.isArray(data.output)) {
-        const messageOutput = data.output.find(item => item.type === 'message');
-        if (messageOutput && messageOutput.content && messageOutput.content[0]) {
-          responseText = messageOutput.content[0].text;
-        } else {
-          throw new Error('Invalid response structure from OpenAI Responses API');
-        }
-      } else {
-        throw new Error('Invalid response from OpenAI');
-      }
-    }
-    else if (aiKey === 'claude') {
-      const model = localStorage.getItem('oneprompt-model-anthropic') || 'claude-sonnet-4-5';
-      const systemPrompt = getSystemPromptWithLanguage();
-      logger.log('[Claude API] System prompt:', systemPrompt);
-      logger.log('[Claude API] Model:', model);
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          model: model,
-          max_tokens: 8192,
-          system: systemPrompt,
-          messages: messages,
-          tools: [{
-            type: "web_search_20250305",
-            name: "web_search",
-            max_uses: 5
-          }]
-        })
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error.message);
-      // With web search, response may have multiple content blocks
-      if (data.content && data.content.length > 0) {
-        const textBlocks = data.content.filter(block => block.type === 'text');
-        if (textBlocks.length > 0) {
-          responseText = textBlocks.map(b => b.text).join('\n');
-        } else {
-          throw new Error('No text content in Anthropic response');
-        }
-      } else {
-        throw new Error('Invalid response from Anthropic');
-      }
-    }
-    else if (aiKey === 'gemini') {
-      const model = localStorage.getItem('oneprompt-model-gemini') || 'gemini-2.5-flash';
-      const systemPrompt = getSystemPromptWithLanguage();
-      logger.log('[Gemini API] System prompt:', systemPrompt);
-      logger.log('[Gemini API] Model:', model);
-      // Convert to Gemini format (user/model roles)
-      const geminiContents = messages.map(msg => ({
-        role: msg.role === 'assistant' ? 'model' : 'user',
-        parts: [{ text: msg.content }]
-      }));
-      // Use v1beta for google_search tool support
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          contents: geminiContents,
-          systemInstruction: { parts: [{ text: systemPrompt }] },
-          tools: [{ google_search: {} }]
-        })
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error.message);
-      if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
-        throw new Error('Invalid response from Gemini');
-      }
-      responseText = data.candidates[0].content.parts[0].text;
-      logger.log('[Gemini API] Response text (first 500 chars):', responseText.substring(0, 500));
-    }
-    else if (aiKey === 'grok') {
-      const model = localStorage.getItem('oneprompt-model-xai') || 'grok-4-1-fast';
-      const systemPrompt = getSystemPromptWithLanguage();
-
-      // xAI uses OpenAI-compatible format but with specific function names for tools
-      const messagesWithSystem = [
-        { role: 'system', content: systemPrompt },
-        ...messages
-      ];
-      const res = await fetch('https://api.x.ai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: model,
-          messages: messagesWithSystem,
-          stream: false
-        })
-      });
-
-      const contentType = res.headers.get('content-type');
-      let data;
-
-      if (contentType && contentType.includes('application/json')) {
-        data = await res.json();
-      } else {
-        const text = await res.text();
-        throw new Error(`xAI API Error: ${text.substring(0, 200)}`);
-      }
-
-      if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-
-      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-        throw new Error('Invalid response from xAI: ' + JSON.stringify(data));
-      }
-
-      // Handle case where content is null (tool calls may return null content)
-      const message = data.choices[0].message;
-      logger.log('[Grok API Response]:', JSON.stringify(data, null, 2));
-
-      if (message.content) {
-        // Clean function call XML that reasoning models may output
-        const cleanedContent = cleanAIResponseText(message.content);
-        if (cleanedContent) {
-          responseText = cleanedContent;
-        } else {
-          // Content was only function calls - reasoning model needs web search
-          responseText = 'Grok ha bisogno di effettuare una ricerca web per rispondere a questa domanda, ma questa funzionalità non è ancora supportata nella modalità API diretta. Prova a riformulare la domanda o usa un modello non-reasoning.';
-          logger.warn('[Grok] Response was only function call XML, no actual content');
-        }
-      } else if (message.tool_calls && message.tool_calls.length > 0) {
-        // If there are tool calls but no content, the model is using tools
-        responseText = 'Grok ha bisogno di effettuare una ricerca web per rispondere a questa domanda. Questa funzionalità non è supportata nella modalità API diretta.';
-        logger.warn('[Grok] Tool calls present but no content:', message.tool_calls);
-      } else {
-        responseText = '[Empty response from Grok]';
-        logger.warn('[Grok] Empty content and no tool calls');
-      }
-    }
-    else {
-      responseText = "API support for this service is not yet implemented.";
-    }
+    // 4. Use the bridge to make the API request
+    // This is the main extension point - private repos can override makeAIRequest
+    // to add credit deduction, use managed API keys, route through proxy, etc.
+    const responseText = await window.OnePromptCore.makeAIRequest(aiKey, messages);
 
     // Remove loader
     loader.remove();

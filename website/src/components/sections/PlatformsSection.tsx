@@ -6,7 +6,6 @@ const apiPlatforms = [
   { name: 'ChatGPT', logo: 'chatgpt.png', url: 'https://platform.openai.com/api-keys' },
   { name: 'Claude', logo: 'claude.png', url: 'https://console.anthropic.com/settings/keys' },
   { name: 'Gemini', logo: 'gemini.png', url: 'https://aistudio.google.com/apikey' },
-  { name: 'Grok', logo: 'grok.png', url: 'https://console.x.ai/' },
 ];
 
 const webPlatforms = [

@@ -306,24 +306,7 @@
                 </div>
               </div>
 
-              <div class="api-service-card">
-                <div class="api-service-header">
-                  <img src="../assets/ai-services/grok.png" alt="xAI"
-                    style="width: 24px; height: 24px; object-fit: contain;">
-                  <span>xAI (Grok)</span>
-                </div>
-                <div class="api-key-input-group">
-                  <label class="api-key-label" data-i18n="settings.apiKeys.xai">xAI API Key</label>
-                  <input type="password" id="apiKeyXAI" class="api-key-input" placeholder="xai-...">
-                  <div style="margin-top: 0.5rem;">
-                    <label class="api-key-label" style="font-size: 0.8rem;" data-i18n="settings.model">Modello</label>
-                    <select id="modelXAI" class="settings-select" style="width: 100%; margin-top: 0.25rem;">
-                      <option value="grok-4-1-fast">Grok 4.1 Fast</option>
-                      <option value="grok-4">Grok 4</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
+
             </div>
 
             <!-- Cross Check Section -->
@@ -396,6 +379,10 @@
   <script src="./libs/purify.min.js"></script>
   <!-- Logger utility (disables console in production) -->
   <script src="./utils/logger-renderer.js"></script>
+  <!-- Core Bridge - layer di astrazione per servizi esterni (puo essere overridden nel private) -->
+  <script src="core-bridge.js"></script>
+  <!-- Core Modules - moduli estratti da renderer.js -->
+  <script src="./core/markdown.js"></script>
   <script src="renderer.js"></script>
 </body>
 

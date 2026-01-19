@@ -71,7 +71,6 @@ Different AIs have different strengths. When you need the best answer, comparing
 - ChatGPT (OpenAI)
 - Claude (Anthropic)
 - Gemini (Google)
-- Grok (xAI)
 
 ### Web Mode (Web Interface)
 - ChatGPT (OpenAI)
