@@ -47,7 +47,6 @@
   "comingSoon": "Coming Soon",
   "close": "Close",
   "webSearch": "Web Search",
-  "settings.apiKeys.xai": "xAI API Key",
   "settings.crosscheck": "Cross Check",
   "settings.crosscheck.description": "Cross Check allows you to compare multiple AI responses on the same topic, showing each AI the responses from the others.",
   "settings.crosscheck.customPrompt": "Custom Prompt",

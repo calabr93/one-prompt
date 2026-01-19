@@ -24,7 +24,6 @@
   "settings.apiKeys.openai": "Clé API OpenAI",
   "settings.apiKeys.anthropic": "Clé API Anthropic",
   "settings.apiKeys.gemini": "Clé API Google Gemini",
-  "settings.apiKeys.xai": "Clé API xAI",
   "settings.model": "Modèle",
   "error.apiKeyMissing": "Erreur : Clé API non configurée. Veuillez aller dans <a href='#' onclick='openSettingsModal(); return false;' style='text-decoration: underline; color: inherit; cursor: pointer;'>Paramètres</a>.",
   "services.title.api": "Services Disponibles (API)",

@@ -194,6 +194,7 @@ let translations = {};
 
 async function loadTranslations(lang) {
   if (I18nModule) {
+    I18nModule.setCurrentLanguage(lang);
     await I18nModule.loadTranslations(lang);
     return;
   }

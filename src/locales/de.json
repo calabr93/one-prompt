@@ -24,7 +24,6 @@
   "settings.apiKeys.openai": "OpenAI API-Schlüssel",
   "settings.apiKeys.anthropic": "Anthropic API-Schlüssel",
   "settings.apiKeys.gemini": "Google Gemini API-Schlüssel",
-  "settings.apiKeys.xai": "xAI API-Schlüssel",
   "settings.model": "Modell",
   "error.apiKeyMissing": "Fehler: API-Schlüssel nicht konfiguriert. Bitte gehen Sie zu <a href='#' onclick='openSettingsModal(); return false;' style='text-decoration: underline; color: inherit; cursor: pointer;'>Einstellungen</a>.",
   "services.title.api": "Verfügbare Dienste (API)",
