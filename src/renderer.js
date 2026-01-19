@@ -167,8 +167,14 @@ const AI_DISPLAY_NAMES = {
   deepseek: 'DeepSeek'
 };
 
-// i18n - Internazionalizzazione
+// i18n Module alias (loaded from core/i18n.js)
+// Falls back to local functions if module not loaded
+const I18nModule = (window.OnePromptCore && window.OnePromptCore.i18n) || null;
+
+// i18n - Internazionalizzazione (fallback if module not loaded)
 function detectLanguage() {
+  if (I18nModule) return I18nModule.detectLanguage();
+  
   const stored = localStorage.getItem('oneprompt-language');
   if (stored) return stored;
 
@@ -187,6 +193,11 @@ let currentLanguage = detectLanguage();
 let translations = {};
 
 async function loadTranslations(lang) {
+  if (I18nModule) {
+    await I18nModule.loadTranslations(lang);
+    return;
+  }
+  
   try {
     const response = await fetch(`./locales/${lang}.json`);
     if (!response.ok) throw new Error(`Failed to load ${lang} translations`);
@@ -199,6 +210,8 @@ async function loadTranslations(lang) {
 }
 
 function t(key, params = {}) {
+  if (I18nModule) return I18nModule.t(key, params);
+  
   let text = (translations[currentLanguage] && translations[currentLanguage][key]) || key;
   // Replace placeholders like {service} with actual values
   Object.keys(params).forEach(paramKey => {
@@ -209,7 +222,11 @@ function t(key, params = {}) {
 
 async function updateUILanguage() {
   // Ensure translations are loaded
-  if (!translations[currentLanguage]) {
+  if (I18nModule) {
+    if (!I18nModule.hasTranslations(currentLanguage)) {
+      await I18nModule.loadTranslations(currentLanguage);
+    }
+  } else if (!translations[currentLanguage]) {
     await loadTranslations(currentLanguage);
   }
 
@@ -545,6 +562,7 @@ async function init() {
     if (currentLanguage === null) {
       // No language detected or stored - show selection modal
       currentLanguage = 'en'; // Temporary fallback for modal UI
+      if (I18nModule) I18nModule.setCurrentLanguage('en');
       await loadTranslations(currentLanguage);
       updateUILanguage();
       showLanguageSelectionModal();
@@ -934,6 +952,7 @@ function renderLanguageSelectionModal() {
 async function selectLanguage(langCode) {
   // Save selected language
   currentLanguage = langCode;
+  if (I18nModule) I18nModule.setCurrentLanguage(langCode);
   localStorage.setItem('oneprompt-language', langCode);
 
   // Load translations and update UI
@@ -1739,6 +1758,7 @@ function setupEventListeners() {
   // Language select change
   languageSelect.addEventListener('change', async (e) => {
     currentLanguage = e.target.value;
+    if (I18nModule) I18nModule.setCurrentLanguage(currentLanguage);
     localStorage.setItem('oneprompt-language', currentLanguage);
     await loadTranslations(currentLanguage);
     updateUILanguage();
