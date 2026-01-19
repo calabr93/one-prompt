@@ -1,36 +1,48 @@
 /**
- * Notifications module
- *
+ * OnePrompt Notifications Module
+ * 
  * Handles toast notifications display.
- *
- * @module @ui/notifications
+ * Uses IIFE pattern to avoid global scope pollution.
+ * 
+ * Exposes: window.OnePromptUI.notifications
  */
+(function() {
+  'use strict';
 
-/**
- * Show a toast notification
- * @param {string} message - The message to display
- * @param {string} type - Notification type: 'info', 'success', 'error', 'warning'
- */
-export function showNotification(message, type = 'info') {
-  // Remove existing notification if any
-  const existing = document.querySelector('.notification-toast');
-  if (existing) {
-    existing.remove();
+  /**
+   * Show a toast notification
+   * @param {string} message - The message to display
+   * @param {string} type - Notification type: 'info', 'success', 'error', 'warning'
+   */
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+
+    // Trigger animation
+    setTimeout(() => {
+      notification.classList.add('show');
+    }, 10);
+
+    // Auto-remove after 2 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+      setTimeout(() => notification.remove(), 300);
+    }, 2000);
   }
 
-  const toast = document.createElement('div');
-  toast.className = `notification-toast ${type}`;
-  toast.textContent = message;
-  document.body.appendChild(toast);
+  // =====================================================
+  // EXPOSE MODULE VIA GLOBAL OBJECT
+  // =====================================================
 
-  // Trigger animation
-  requestAnimationFrame(() => {
-    toast.classList.add('show');
-  });
+  // Ensure namespace exists
+  window.OnePromptUI = window.OnePromptUI || {};
 
-  // Auto-remove after 3 seconds
-  setTimeout(() => {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 300);
-  }, 3000);
-}
+  // Expose notifications module
+  window.OnePromptUI.notifications = {
+    show: showNotification
+  };
+
+})();

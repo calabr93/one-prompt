@@ -1846,22 +1846,27 @@ async function copyPromptToClipboard() {
   }
 }
 
-// Show notification message
+// =====================================================
+// NOTIFICATIONS (module + fallback)
+// =====================================================
+const NotificationsModule = window.OnePromptUI?.notifications;
+
 function showNotification(message, type = 'info') {
-  // Create notification element
+  if (NotificationsModule) {
+    NotificationsModule.show(message, type);
+    return;
+  }
+  // Fallback inline
   const notification = document.createElement('div');
   notification.className = `notification notification-${type}`;
   notification.textContent = message;
 
-  // Add to document
   document.body.appendChild(notification);
 
-  // Show with animation
   setTimeout(() => {
     notification.classList.add('show');
   }, 10);
 
-  // Remove after 2 seconds
   setTimeout(() => {
     notification.classList.remove('show');
     setTimeout(() => {
