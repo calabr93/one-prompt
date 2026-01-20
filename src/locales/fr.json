@@ -11,7 +11,7 @@
   "mode.web.title": "Mode Web",
   "mode.web.desc": "Utiliser les interfaces web originales",
   "mode.api.title": "Mode API",
-  "mode.api.desc": "Utilisez vos propres clés API (BYOK)",
+  "mode.api.desc": "Utilisez vos propres clés API",
   "mode.remember": "Se souvenir de ce choix",
   "settings.general": "Général",
   "settings.apiMode": "API",

@@ -279,8 +279,8 @@ export function switchToSession(sessionId) {
   // Restore prompt draft and placeholder for the new session
   if (promptInput) {
     promptInput.value = session.promptDraft || '';
-    const isApiMode = session && session.mode === 'api';
-    promptInput.placeholder = t(isApiMode ? 'prompt.placeholder.api' : 'prompt.placeholder');
+    // Note: placeholder is now updated in callbacks.updatePromptButtons()
+    // to allow repo-specific logic (one-prompt-auto always uses 'api' placeholder)
   }
   callbacks.updatePromptButtons();
 }

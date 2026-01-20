@@ -11,7 +11,7 @@
   "mode.web.title": "Web Modu",
   "mode.web.desc": "Orijinal web arayüzlerini kullan",
   "mode.api.title": "API Modu",
-  "mode.api.desc": "Kendi API anahtarlarını kullan (BYOK)",
+  "mode.api.desc": "Kendi API anahtarlarını kullan",
   "mode.remember": "Bu seçimi hatırla",
   "settings.general": "Genel",
   "settings.apiMode": "API",

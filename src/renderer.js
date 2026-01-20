@@ -416,6 +416,9 @@ function createNewSession(name = null, selectedAIsSet = null, mode = null) {
 }
 
 function getCurrentSession() {
+  // Use module state first (correct during module callbacks), fallback to local
+  const moduleSession = SessionsModule.getCurrentSession();
+  if (moduleSession) return moduleSession;
   return sessions.find(s => s.id === currentSessionId) || sessions[0];
 }
 
@@ -554,6 +557,14 @@ function loadSessionsFromStorage() {
     sessions.push(defaultSession);
     currentSessionId = defaultSession.id;
     saveSessionsToStorage();
+  } else {
+    // Ensure currentSessionId points to a valid session
+    const validSession = sessions.find(s => s.id === currentSessionId);
+    if (!validSession) {
+      // currentSessionId is invalid or null, set to first session
+      currentSessionId = sessions[0].id;
+      logger.log('[loadSessionsFromStorage] Fixed invalid currentSessionId, now:', currentSessionId);
+    }
   }
 
   // Aggiungi sessionNumber alle sessioni esistenti che non ce l'hanno
@@ -566,6 +577,10 @@ function loadSessionsFromStorage() {
 
 // Carica le sessioni all'avvio
 loadSessionsFromStorage();
+
+// Sync module state with local state after loading
+SessionsModule.setSessions(sessions);
+SessionsModule.setCurrentSessionId(currentSessionId);
 
 // Carica le AI selezionate dalla sessione corrente
 let selectedAIs = new Set(getCurrentSession()?.selectedAIs || []);
@@ -752,8 +767,9 @@ async function init() {
 
     // Restore prompt draft from saved session
     const currentSession = getCurrentSession();
-    if (currentSession && currentSession.promptDraft && promptInput) {
-      promptInput.value = currentSession.promptDraft;
+    if (currentSession && promptInput) {
+      // Always restore promptDraft, even if empty (to clear the field)
+      promptInput.value = currentSession.promptDraft || '';
       updatePromptButtons(); // Update buttons after restoring text
     }
 
@@ -1532,6 +1548,45 @@ async function renderWebviews() {
       // Update order without moving in DOM (prevents reload)
       wrapper.style.order = index;
 
+      // Check if content matches current mode - if not, recreate it
+      const existingApiPanel = wrapper.querySelector('.api-panel');
+      const existingWebview = wrapper.querySelector('webview');
+      const sessionWebviews = getCurrentSessionWebviews();
+      
+      if (mode === 'api' && !existingApiPanel) {
+        // Need API panel but have webview - recreate
+        if (existingWebview) {
+          existingWebview.remove();
+        }
+        const textareaContainer = wrapper.querySelector('.ai-response-container');
+        if (textareaContainer) {
+          textareaContainer.style.display = 'none';
+        }
+        const apiPanel = createApiPanel(aiKey);
+        // Insert after header
+        const header = wrapper.querySelector('.webview-header');
+        if (header && header.nextSibling) {
+          wrapper.insertBefore(apiPanel, header.nextSibling);
+        } else {
+          wrapper.appendChild(apiPanel);
+        }
+        sessionWebviews[aiKey] = apiPanel;
+      } else if (mode === 'web' && !existingWebview) {
+        // Need webview but have API panel - recreate
+        if (existingApiPanel) {
+          existingApiPanel.remove();
+        }
+        const webview = await createWebview(aiKey);
+        // Insert after header
+        const header = wrapper.querySelector('.webview-header');
+        if (header && header.nextSibling) {
+          wrapper.insertBefore(webview, header.nextSibling);
+        } else {
+          wrapper.appendChild(webview);
+        }
+        sessionWebviews[aiKey] = webview;
+      }
+
       // Handle ai-response-container visibility based on mode
       let textareaContainer = wrapper.querySelector('.ai-response-container');
       if (mode === 'web') {
@@ -1968,6 +2023,10 @@ function updatePromptButtons() {
   const currentSession = getCurrentSession();
   const isApiMode = currentSession && currentSession.mode === 'api';
 
+  // Update placeholder based on mode
+  // Web Mode: copy-paste only, API Mode: write and send
+  promptInput.placeholder = t(isApiMode ? 'prompt.placeholder.api' : 'prompt.placeholder');
+
   if (isApiMode) {
     // API Mode: show sendBtn, hide copyBtn
     copyBtn.style.display = 'none';
@@ -2126,11 +2185,15 @@ if (document.readyState === 'loading') {
 
 // Salva gli URL delle chat e i testi delle textarea quando l'app viene chiusa
 window.addEventListener('beforeunload', () => {
+  // Sync local state with module state before saving
+  sessions = SessionsModule.getSessions();
+  currentSessionId = SessionsModule.getCurrentSessionId();
+  
   // Save textarea contents to current session
   const currentSession = getCurrentSession();
   if (currentSession) {
-    // Save promptInput value
-    if (promptInput && promptInput.value.trim()) {
+    // Save promptInput value (always save, even empty to clear previous text)
+    if (promptInput) {
       currentSession.promptDraft = promptInput.value;
     }
     
@@ -2142,8 +2205,9 @@ window.addEventListener('beforeunload', () => {
       }
       document.querySelectorAll(`.webview-wrapper[data-session-id="${currentSessionId}"] .ai-response-textarea`).forEach(textarea => {
         const wrapper = textarea.closest('.webview-wrapper');
-        if (wrapper && textarea.value.trim()) {
+        if (wrapper) {
           const aiKey = wrapper.dataset.aiKey;
+          // Always save, even empty to clear previous text
           currentSession.responseTexts[aiKey] = textarea.value;
         }
       });

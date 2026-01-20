@@ -214,6 +214,14 @@ export function loadSessionsFromStorage(options = {}) {
     sessions.push(defaultSession);
     currentSessionId = defaultSession.id;
     saveSessionsToStorage();
+  } else {
+    // Ensure currentSessionId points to a valid session
+    const validSession = sessions.find(s => s.id === currentSessionId);
+    if (!validSession) {
+      // currentSessionId is invalid or null, set to first session
+      currentSessionId = sessions[0].id;
+      logger.log('[loadSessionsFromStorage] Fixed invalid currentSessionId, now:', currentSessionId);
+    }
   }
 
   // Add sessionNumber to existing sessions that don't have it
