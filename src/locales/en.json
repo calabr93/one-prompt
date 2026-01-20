@@ -57,5 +57,6 @@
   "settings.crosscheck.error.missingPlaceholders": "{{OTHER_RESPONSES}} placeholder required",
   "error.maxTabs": "Maximum 20 tabs allowed",
   "api.panel.title": "{service} (API Mode)",
-  "api.panel.waiting": "Waiting for prompt..."
+  "api.panel.waiting": "Waiting for prompt...",
+  "common.done": "Done"
 }

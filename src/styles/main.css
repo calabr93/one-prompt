@@ -1087,6 +1087,15 @@ body {
   height: 20px;
 }
 
+.modal-footer {
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+}
+
+.modal-footer .btn-primary {
+  width: 100%;
+}
+
 .modal-content {
   flex: 1;
   overflow-y: auto;

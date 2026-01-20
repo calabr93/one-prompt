@@ -5,6 +5,9 @@ const logger = window.OnePromptLogger || console;
 // Falls back to local functions if module not loaded
 const MarkdownModule = (window.OnePromptCore && window.OnePromptCore.markdown) || null;
 
+// AI Services module alias (loaded from core/ai-services.js)
+const AIServicesModule = (window.OnePromptCore && window.OnePromptCore.aiServices) || null;
+
 // Clean AI response artifacts (citation markers, function call XML, etc.)
 function cleanAIResponseText(text) {
   if (!text) return '';
@@ -347,6 +350,11 @@ if (ThemeModule) {
 // =====================================================
 const SessionsModule = window.OnePromptCore?.sessions;
 
+// =====================================================
+// TABS MODULE
+// =====================================================
+const TabsModule = window.OnePromptCore?.tabs;
+
 // Session/Tab management - use module state if available
 let sessions = [];
 let currentSessionId = null;
@@ -607,6 +615,24 @@ async function init() {
     });
     localStorage.setItem('oneprompt-configured-services', JSON.stringify([...configuredAIs]));
 
+    // Initialize tabs module if available
+    if (TabsModule) {
+      TabsModule.initTabs({
+        tabList: tabList,
+        tabBar: tabBar,
+        callbacks: {
+          renderSidebar: () => renderSidebar(),
+          renderWebviews: () => renderWebviews(),
+          updateCopyButton: () => updateCopyButton(),
+          updateCrossCheckVisibility: () => updateCrossCheckButtonVisibility(),
+          updatePromptButtons: () => updatePromptButtons(),
+          getSelectedAIs: () => selectedAIs,
+          setSelectedAIs: (newSet) => { selectedAIs = newSet; }
+        }
+      });
+      logger.log('[init] Tabs module initialized');
+    }
+
     // Renderizza le tab
     renderTabs();
     logger.log('Tabs rendered');
@@ -668,6 +694,18 @@ function saveSelectedAIs() {
 
 // Render tabs
 function renderTabs() {
+  // Use module if available and initialized
+  if (TabsModule && tabList && tabBar) {
+    // Sync module state with local state
+    if (SessionsModule) {
+      SessionsModule.setSessions(sessions);
+      SessionsModule.setCurrentSessionId(currentSessionId);
+    }
+    TabsModule.renderTabs();
+    return;
+  }
+
+  // Fallback: inline implementation
   tabList.innerHTML = '';
 
   // Mostra sempre la tab bar (stile Chrome)
@@ -845,6 +883,18 @@ function startRenameTab(tabNameElement, session) {
 
 // Switch a una sessione diversa
 function switchToSession(sessionId) {
+  // Use module if available
+  if (TabsModule && SessionsModule) {
+    // Sync state before calling module
+    SessionsModule.setSessions(sessions);
+    SessionsModule.setCurrentSessionId(currentSessionId);
+    TabsModule.switchToSession(sessionId);
+    // Sync local state after module call
+    currentSessionId = SessionsModule.getCurrentSessionId();
+    return;
+  }
+
+  // Fallback: inline implementation
   if (sessionId === currentSessionId) return;
 
   // Save current session's prompt draft before switching
@@ -897,6 +947,19 @@ function updateSidebarState() {
 
 // Chiudi sessione
 function closeSession(sessionId) {
+  // Use module if available
+  if (TabsModule && SessionsModule) {
+    // Sync state before calling module
+    SessionsModule.setSessions(sessions);
+    SessionsModule.setCurrentSessionId(currentSessionId);
+    TabsModule.closeSession(sessionId);
+    // Sync local state after module call
+    sessions = SessionsModule.getSessions();
+    currentSessionId = SessionsModule.getCurrentSessionId();
+    return;
+  }
+
+  // Fallback: inline implementation
   const sessionIndex = sessions.findIndex(s => s.id === sessionId);
   if (sessionIndex === -1) return;
 
@@ -927,6 +990,19 @@ function closeSession(sessionId) {
 
 // Crea nuova sessione
 function createNewSessionAndSwitch() {
+  // Use module if available
+  if (TabsModule && SessionsModule) {
+    // Sync state before calling module
+    SessionsModule.setSessions(sessions);
+    SessionsModule.setCurrentSessionId(currentSessionId);
+    TabsModule.createNewSessionAndSwitch();
+    // Sync local state after module call
+    sessions = SessionsModule.getSessions();
+    currentSessionId = SessionsModule.getCurrentSessionId();
+    return;
+  }
+
+  // Fallback: inline implementation
   // Limite massimo di 20 tab
   if (sessions.length >= 20) {
     alert(t('error.maxTabs') || 'Massimo 20 tab consentite');
@@ -1071,7 +1147,7 @@ function closeSettingsModalFn() {
 // Render griglia servizi
 function renderServicesGrid(mode = 'web') {
   servicesGrid.innerHTML = '';
-  const apiServices = ['chatgpt', 'gemini', 'claude'];
+  const apiServices = AIServicesModule ? AIServicesModule.getApiServices() : ['chatgpt', 'gemini', 'claude'];
 
   Object.entries(aiConfigs).forEach(([aiKey, config]) => {
     if (mode === 'api' && !apiServices.includes(aiKey)) {
@@ -1167,9 +1243,6 @@ function toggleServiceEnabled(aiKey, cardElement, mode = 'web') {
 
     // Re-render sidebar per aggiungere lo status
     renderSidebar();
-
-    // Chiudi modale
-    closeServicesModalFn();
 
     // Crea/mostra webview per questo servizio
     // Prima aggiungi alla selezione se non c'è già
@@ -1612,7 +1685,7 @@ function renderSidebar() {
 
   const currentSession = getCurrentSession();
   const mode = currentSession ? currentSession.mode : 'web';
-  const apiServices = ['chatgpt', 'gemini', 'claude'];
+  const apiServices = AIServicesModule ? AIServicesModule.getApiServices() : ['chatgpt', 'gemini', 'claude'];
 
   // Mostra solo i servizi configurati nella sidebar
   Object.entries(aiConfigs).forEach(([key, config]) => {
@@ -1781,8 +1854,14 @@ function setupEventListeners() {
   // Add service button - apri modale
   addServiceBtn.addEventListener('click', openServicesModal);
 
-  // Close modal button
+  // Close modal button (X icon)
   closeServicesModal.addEventListener('click', closeServicesModalFn);
+
+  // Close modal button (Done button in footer)
+  const closeServicesModalDone = document.getElementById('closeServicesModalDone');
+  if (closeServicesModalDone) {
+    closeServicesModalDone.addEventListener('click', closeServicesModalFn);
+  }
 
   // Close modal on overlay click
   servicesModal.addEventListener('click', (e) => {
@@ -2058,7 +2137,7 @@ window.selectMode = function (mode) {
       selectedAIs.clear();
       // Do NOT auto-select services. User must add them manually.
       // Just ensure they are configured so they appear in sidebar.
-      const apiServices = ['chatgpt', 'gemini', 'claude'];
+      const apiServices = AIServicesModule ? AIServicesModule.getApiServices() : ['chatgpt', 'gemini', 'claude'];
       apiServices.forEach(key => {
         if (!configuredApiAIs.has(key)) {
           configuredApiAIs.add(key);

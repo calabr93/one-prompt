@@ -56,5 +56,6 @@
   "settings.crosscheck.error.missingPlaceholders": "Espaço reservado {{OTHER_RESPONSES}} obrigatório",
   "error.maxTabs": "Máximo de 20 abas permitidas",
   "api.panel.title": "{service} (Modo API)",
-  "api.panel.waiting": "Aguardando prompt..."
+  "api.panel.waiting": "Aguardando prompt...",
+  "common.done": "Concluído"
 }

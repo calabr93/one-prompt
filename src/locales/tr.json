@@ -56,5 +56,6 @@
   "settings.crosscheck.error.missingPlaceholders": "{{OTHER_RESPONSES}} yer tutucusu gerekli",
   "error.maxTabs": "Maksimum 20 sekmeye izin verilir",
   "api.panel.title": "{service} (API Modu)",
-  "api.panel.waiting": "Prompt bekleniyor..."
+  "api.panel.waiting": "Prompt bekleniyor...",
+  "common.done": "Tamam"
 }

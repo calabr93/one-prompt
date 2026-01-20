@@ -56,5 +56,6 @@
   "settings.crosscheck.error.missingPlaceholders": "Se requiere el marcador {{OTHER_RESPONSES}}",
   "error.maxTabs": "Máximo 20 pestañas permitidas",
   "api.panel.title": "{service} (Modo API)",
-  "api.panel.waiting": "Esperando el prompt..."
+  "api.panel.waiting": "Esperando el prompt...",
+  "common.done": "Hecho"
 }

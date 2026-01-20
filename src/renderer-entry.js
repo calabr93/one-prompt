@@ -15,6 +15,8 @@ import * as markdown from './core/markdown.js';
 import * as theme from './core/theme.js';
 import * as state from './core/state.js';
 import * as sessions from './core/sessions.js';
+import * as tabs from './core/tabs.js';
+import * as aiServices from './core/ai-services.js';
 
 // Import UI modules
 import * as notifications from './ui/notifications.js';
@@ -39,6 +41,8 @@ window.OnePromptCore.i18n = i18n;
 window.OnePromptCore.theme = theme;
 window.OnePromptCore.state = state;
 window.OnePromptCore.sessions = sessions;
+window.OnePromptCore.tabs = tabs;
+window.OnePromptCore.aiServices = aiServices;
 
 // Expose UI modules
 window.OnePromptUI.notifications = notifications;

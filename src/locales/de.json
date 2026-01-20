@@ -56,5 +56,6 @@
   "settings.crosscheck.error.missingPlaceholders": "Platzhalter {{OTHER_RESPONSES}} erforderlich",
   "error.maxTabs": "Maximal 20 Tabs erlaubt",
   "api.panel.title": "{service} (API-Modus)",
-  "api.panel.waiting": "Warten auf Prompt..."
+  "api.panel.waiting": "Warten auf Prompt...",
+  "common.done": "Fertig"
 }
