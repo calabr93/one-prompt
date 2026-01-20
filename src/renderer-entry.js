@@ -17,11 +17,13 @@ import * as state from './core/state.js';
 import * as sessions from './core/sessions.js';
 import * as tabs from './core/tabs.js';
 import * as aiServices from './core/ai-services.js';
+import * as modeSelection from './core/mode-selection.js';
 
 // Import UI modules
 import * as notifications from './ui/notifications.js';
 import * as webviewFactory from './ui/webview-factory.js';
 import * as sidebar from './ui/sidebar.js';
+import * as servicesModal from './ui/services-modal.js';
 
 // Import services
 import * as aiApi from './services/ai-api.js';
@@ -45,11 +47,13 @@ window.OnePromptCore.state = state;
 window.OnePromptCore.sessions = sessions;
 window.OnePromptCore.tabs = tabs;
 window.OnePromptCore.aiServices = aiServices;
+window.OnePromptCore.modeSelection = modeSelection;
 
 // Expose UI modules
 window.OnePromptUI.notifications = notifications;
 window.OnePromptUI.webviewFactory = webviewFactory;
 window.OnePromptUI.sidebar = sidebar;
+window.OnePromptUI.servicesModal = servicesModal;
 
 // Expose services
 window.OnePromptServices.aiApi = aiApi;

@@ -14,6 +14,12 @@ const WebviewFactoryModule = (window.OnePromptUI && window.OnePromptUI.webviewFa
 // Sidebar module alias (loaded from ui/sidebar.js)
 const SidebarModule = (window.OnePromptUI && window.OnePromptUI.sidebar) || null;
 
+// Services Modal module alias (loaded from ui/services-modal.js)
+const ServicesModalModule = (window.OnePromptUI && window.OnePromptUI.servicesModal) || null;
+
+// Mode Selection module alias (loaded from core/mode-selection.js)
+const ModeSelectionModule = (window.OnePromptCore && window.OnePromptCore.modeSelection) || null;
+
 // Clean AI response artifacts (citation markers, function call XML, etc.)
 function cleanAIResponseText(text) {
   if (!text) return '';
@@ -666,6 +672,47 @@ async function init() {
       logger.log('[init] Sidebar module initialized');
     }
 
+    // Initialize services modal module if available
+    if (ServicesModalModule) {
+      ServicesModalModule.initServicesModal({
+        servicesModal: servicesModal,
+        servicesGrid: servicesGrid,
+        aiConfigs: aiConfigs,
+        getSelectedAIs: () => selectedAIs,
+        getConfiguredAIs: () => configuredAIs,
+        getConfiguredApiAIs: () => configuredApiAIs,
+        getCurrentSession: getCurrentSession,
+        saveSelectedAIs: saveSelectedAIs,
+        updateSidebarState: updateSidebarState,
+        renderWebviews: renderWebviews,
+        updateCopyButton: updateCopyButton,
+        renderSidebar: renderSidebar,
+        updateSidebarButtonState: updateSidebarButtonState,
+        updateCrossCheckVisibility: updateCrossCheckButtonVisibility,
+        aiServicesModule: AIServicesModule,
+        i18nModule: I18nModule
+      });
+      logger.log('[init] ServicesModal module initialized');
+    }
+
+    // Initialize mode selection module if available
+    if (ModeSelectionModule) {
+      ModeSelectionModule.initModeSelection({
+        getSelectedAIs: () => selectedAIs,
+        getConfiguredApiAIs: () => configuredApiAIs,
+        getCurrentSession: getCurrentSession,
+        saveSelectedAIs: saveSelectedAIs,
+        saveSessionsToStorage: saveSessionsToStorage,
+        renderSidebar: renderSidebar,
+        renderWebviews: renderWebviews,
+        updatePromptButtons: updatePromptButtons,
+        updateCrossCheckVisibility: updateCrossCheckButtonVisibility,
+        aiServicesModule: AIServicesModule,
+        i18nModule: I18nModule
+      });
+      logger.log('[init] ModeSelection module initialized');
+    }
+
     // Renderizza le tab
     renderTabs();
     logger.log('Tabs rendered');
@@ -1092,25 +1139,18 @@ function createNewSessionAndSwitch() {
 
 // === MODALE SERVIZI ===
 
-// Apri modale servizi
+// Apri modale servizi - delegates to module
 function openServicesModal() {
-  const currentSession = getCurrentSession();
-  const mode = currentSession ? currentSession.mode : 'web';
-
-  const modalTitle = document.querySelector('#servicesModal h2');
-  if (mode === 'api') {
-    modalTitle.textContent = t('services.title.api') || 'Servizi disponibili (API)';
-  } else {
-    modalTitle.textContent = t('services.title') || 'Servizi disponibili';
+  if (ServicesModalModule) {
+    ServicesModalModule.openServicesModal();
   }
-
-  renderServicesGrid(mode);
-  servicesModal.style.display = 'flex';
 }
 
-// Chiudi modale servizi
+// Chiudi modale servizi - delegates to module
 function closeServicesModalFn() {
-  servicesModal.style.display = 'none';
+  if (ServicesModalModule) {
+    ServicesModalModule.closeServicesModal();
+  }
 }
 
 // === LANGUAGE SELECTION MODAL ===
@@ -1206,140 +1246,25 @@ function closeSettingsModalFn() {
   settingsModal.style.display = 'none';
 }
 
-// Render griglia servizi
+// Render griglia servizi - delegates to module
 function renderServicesGrid(mode = 'web') {
-  servicesGrid.innerHTML = '';
-  const apiServices = AIServicesModule ? AIServicesModule.getApiServices() : ['chatgpt', 'gemini', 'claude'];
-
-  Object.entries(aiConfigs).forEach(([aiKey, config]) => {
-    if (mode === 'api' && !apiServices.includes(aiKey)) {
-      return;
-    }
-    const card = createServiceCard(aiKey, config, mode);
-    servicesGrid.appendChild(card);
-  });
+  if (ServicesModalModule) {
+    ServicesModalModule.renderServicesGrid(mode);
+  }
 }
 
-// Crea card servizio
-function createServiceCard(aiKey, config, mode = 'web') {
-  const card = document.createElement('div');
-  card.className = 'service-card';
-  card.dataset.aiKey = aiKey;
-
-  let isConfigured = false;
-  if (mode === 'api') {
-    if (configuredApiAIs.has(aiKey)) isConfigured = true;
-  } else {
-    if (configuredAIs.has(aiKey)) isConfigured = true;
-  }
-
-  // Aggiungi classe 'coming-soon' se il servizio non è ancora disponibile
-  if (config.comingSoon) {
-    card.classList.add('coming-soon');
-  } else if (isConfigured) {
-    // Aggiungi classe 'enabled' se il servizio è abilitato
-    card.classList.add('enabled');
-  }
-
-  const icon = document.createElement('div');
-  icon.className = 'service-icon';
-
-  if (config.logo) {
-    icon.innerHTML = `<img src="${config.logo}" alt="${config.name}">`;
-  } else {
-    icon.textContent = config.icon;
-  }
-
-  const name = document.createElement('div');
-  name.className = 'service-name';
-  name.textContent = config.name;
-
-  card.appendChild(icon);
-  card.appendChild(name);
-
-  // Aggiungi badge "Prossimamente" se coming soon
-  if (config.comingSoon) {
-    const badge = document.createElement('div');
-    badge.className = 'coming-soon-badge';
-    badge.textContent = t('comingSoon');
-    card.appendChild(badge);
-  }
-
-  // Click sul card per abilitare/disabilitare (solo se non è coming soon)
-  if (!config.comingSoon) {
-    card.addEventListener('click', () => {
-      toggleServiceEnabled(aiKey, card, mode);
-    });
-  }
-
-  return card;
-}
-
-// Toggle servizio abilitato/disabilitato
+// Toggle servizio abilitato/disabilitato - delegates to module
 function toggleServiceEnabled(aiKey, cardElement, mode = 'web') {
-  let targetSet = mode === 'api' ? configuredApiAIs : configuredAIs;
-  const storageKey = mode === 'api' ? 'oneprompt-configured-api-services' : 'oneprompt-configured-services';
-
-  if (targetSet.has(aiKey)) {
-    // Disabilita servizio
-    targetSet.delete(aiKey);
-    cardElement.classList.remove('enabled');
-    localStorage.setItem(storageKey, JSON.stringify([...targetSet]));
-
-    // Se il servizio è anche selezionato nella sessione corrente, rimuovilo
-    if (selectedAIs.has(aiKey)) {
-      selectedAIs.delete(aiKey);
-      saveSelectedAIs();
-      updateSidebarState();
-      renderWebviews();
-      updateCopyButton();
-    }
-
-    // Re-render sidebar per rimuovere lo status
-    renderSidebar();
-  } else {
-    // Abilita servizio e apri URL
-    targetSet.add(aiKey);
-    cardElement.classList.add('enabled');
-    localStorage.setItem(storageKey, JSON.stringify([...targetSet]));
-
-    // Re-render sidebar per aggiungere lo status
-    renderSidebar();
-
-    // Crea/mostra webview per questo servizio
-    // Prima aggiungi alla selezione se non c'è già
-    if (!selectedAIs.has(aiKey)) {
-      selectedAIs.add(aiKey);
-      saveSelectedAIs();
-      updateSidebarState();
-      renderWebviews();
-      updateCopyButton();
-    }
+  if (ServicesModalModule) {
+    ServicesModalModule.toggleServiceEnabled(aiKey, cardElement, mode);
   }
 }
 
-// Toggle AI selection
+// Toggle AI selection - delegates to module
 function toggleAISelection(aiKey) {
-  if (selectedAIs.has(aiKey)) {
-    selectedAIs.delete(aiKey);
-  } else {
-    selectedAIs.add(aiKey);
+  if (ServicesModalModule) {
+    ServicesModalModule.toggleAISelection(aiKey);
   }
-
-  // Salva lo stato
-  saveSelectedAIs();
-
-  // Update sidebar button state
-  updateSidebarButtonState(aiKey);
-
-  // Re-render webviews
-  renderWebviews();
-
-  // Update copy button
-  updateCopyButton();
-
-  // Update cross-check button visibility
-  updateCrossCheckButtonVisibility();
 }
 
 // Render webviews (solo quelle selezionate)
@@ -2253,49 +2178,10 @@ function setupUpdateHandlers() {
 
 // === MODE SELECTION & SETTINGS ===
 
+// Select mode - delegates to module
 window.selectMode = function (mode) {
-  const rememberToggle = document.getElementById('rememberModeToggle');
-  const remember = rememberToggle ? rememberToggle.checked : false;
-
-  if (remember) {
-    localStorage.setItem('oneprompt-default-mode', mode);
-    // Update settings UI if open
-    const radio = document.querySelector(`input[name="defaultMode"][value="${mode}"]`);
-    if (radio) {
-      radio.checked = true;
-    }
-  }
-
-  const currentSession = getCurrentSession();
-  if (currentSession) {
-    currentSession.mode = mode;
-
-    // If switching to API mode, set default API services
-    if (mode === 'api') {
-      selectedAIs.clear();
-      // Do NOT auto-select services. User must add them manually.
-      // Just ensure they are configured so they appear in sidebar.
-      const apiServices = AIServicesModule ? AIServicesModule.getApiServices() : ['chatgpt', 'gemini', 'claude'];
-      apiServices.forEach(key => {
-        if (!configuredApiAIs.has(key)) {
-          configuredApiAIs.add(key);
-        }
-      });
-      localStorage.setItem('oneprompt-configured-api-services', JSON.stringify([...configuredApiAIs]));
-      saveSelectedAIs();
-    }
-
-    saveSessionsToStorage();
-    renderSidebar(); // Update sidebar for new mode
-    renderWebviews();
-    updatePromptButtons(); // Update button visibility for mode
-    updateCrossCheckButtonVisibility();
-
-    // Update prompt placeholder for mode
-    const promptInput = document.getElementById('promptInput');
-    if (promptInput) {
-      promptInput.placeholder = t(mode === 'api' ? 'prompt.placeholder.api' : 'prompt.placeholder');
-    }
+  if (ModeSelectionModule) {
+    ModeSelectionModule.selectMode(mode);
   }
 };
 

@@ -386,12 +386,11 @@
   <script defer src="core-bridge.js"></script>
 
   <!--
-    In development: renderer.js uses its own inline code
-    In production (Vite build): renderer-entry.js bundles ES6 modules
-
-    The ES6 modules in core/, ui/, services/ are used by Vite during build.
-    renderer.js has fallback code that works without the modules.
+    renderer-entry.js loads ES6 modules and exposes them on window.
+    renderer.js then uses these modules via window.OnePromptCore etc.
   -->
+  <script type="module" src="renderer-entry.js"></script>
+
   <script defer src="renderer.js"></script>
 </body>
 
