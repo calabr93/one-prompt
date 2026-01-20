@@ -8,6 +8,12 @@ const MarkdownModule = (window.OnePromptCore && window.OnePromptCore.markdown) |
 // AI Services module alias (loaded from core/ai-services.js)
 const AIServicesModule = (window.OnePromptCore && window.OnePromptCore.aiServices) || null;
 
+// Webview Factory module alias (loaded from ui/webview-factory.js)
+const WebviewFactoryModule = (window.OnePromptUI && window.OnePromptUI.webviewFactory) || null;
+
+// Sidebar module alias (loaded from ui/sidebar.js)
+const SidebarModule = (window.OnePromptUI && window.OnePromptUI.sidebar) || null;
+
 // Clean AI response artifacts (citation markers, function call XML, etc.)
 function cleanAIResponseText(text) {
   if (!text) return '';
@@ -633,6 +639,33 @@ async function init() {
       logger.log('[init] Tabs module initialized');
     }
 
+    // Initialize webview factory module if available
+    if (WebviewFactoryModule) {
+      WebviewFactoryModule.initWebviewFactory({
+        webviewZoomLevels: webviewZoomLevels,
+        loadedWebviews: loadedWebviews,
+        getCurrentSession: getCurrentSession,
+        getCurrentSessionId: () => currentSessionId,
+        aiConfigs: aiConfigs
+      });
+      logger.log('[init] WebviewFactory module initialized');
+    }
+
+    // Initialize sidebar module if available
+    if (SidebarModule) {
+      SidebarModule.initSidebar({
+        sidebarNav: sidebarNav,
+        aiConfigs: aiConfigs,
+        getSelectedAIs: () => selectedAIs,
+        getConfiguredAIs: () => configuredAIs,
+        getConfiguredApiAIs: () => configuredApiAIs,
+        getCurrentSession: getCurrentSession,
+        toggleAISelection: toggleAISelection,
+        aiServicesModule: AIServicesModule
+      });
+      logger.log('[init] Sidebar module initialized');
+    }
+
     // Renderizza le tab
     renderTabs();
     logger.log('Tabs rendered');
@@ -669,6 +702,13 @@ async function init() {
 
     // Update prompt button visibility based on mode
     updatePromptButtons();
+
+    // Restore prompt draft from saved session
+    const currentSession = getCurrentSession();
+    if (currentSession && currentSession.promptDraft && promptInput) {
+      promptInput.value = currentSession.promptDraft;
+      updatePromptButtons(); // Update buttons after restoring text
+    }
 
     // Set version in settings
     const version = await window.electronAPI.getAppVersion();
@@ -897,11 +937,25 @@ function switchToSession(sessionId) {
   // Fallback: inline implementation
   if (sessionId === currentSessionId) return;
 
-  // Save current session's prompt draft before switching
+  // Save current session's prompt draft and response texts before switching
   const currentSession = getCurrentSession();
   const promptInput = document.getElementById('promptInput');
   if (currentSession && promptInput) {
     currentSession.promptDraft = promptInput.value;
+  }
+  
+  // Save ai-response-textarea values for current session before switching
+  if (currentSession && currentSession.mode === 'web') {
+    if (!currentSession.responseTexts) {
+      currentSession.responseTexts = {};
+    }
+    document.querySelectorAll(`.webview-wrapper[data-session-id="${currentSessionId}"] .ai-response-textarea`).forEach(textarea => {
+      const wrapper = textarea.closest('.webview-wrapper');
+      if (wrapper && textarea.value.trim()) {
+        const aiKey = wrapper.dataset.aiKey;
+        currentSession.responseTexts[aiKey] = textarea.value;
+      }
+    });
   }
 
   // Salva lo stato della sessione corrente PRIMA di cambiare
@@ -933,6 +987,14 @@ function switchToSession(sessionId) {
 
 // Aggiorna lo stato della sidebar in base alla sessione corrente
 function updateSidebarState() {
+  // Use module if available
+  if (SidebarModule) {
+    SidebarModule.syncState({ selectedAIs: selectedAIs });
+    SidebarModule.updateSidebarState();
+    return;
+  }
+  
+  // Fallback: inline implementation
   // Aggiorna quali bottoni AI sono attivi
   const allButtons = document.querySelectorAll('.sidebar-item[data-ai-key]');
   allButtons.forEach(button => {
@@ -1585,10 +1647,29 @@ async function renderWebviews() {
   } else {
     reCleanApiMessages();
   }
+  
+  // Restore saved textarea contents for this session
+  if (currentSession && currentSession.responseTexts && mode === 'web') {
+    Object.keys(currentSession.responseTexts).forEach(aiKey => {
+      const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${currentSessionId}"][data-ai-key="${aiKey}"]`);
+      if (wrapper) {
+        const textarea = wrapper.querySelector('.ai-response-textarea');
+        if (textarea && !textarea.value) {
+          textarea.value = currentSession.responseTexts[aiKey];
+        }
+      }
+    });
+  }
 }
 
-// Create webview
+// Create webview - uses module if available, fallback to inline
 async function createWebview(aiKey) {
+  // Use module if available
+  if (WebviewFactoryModule) {
+    return WebviewFactoryModule.createWebview(aiKey);
+  }
+  
+  // Fallback: inline implementation
   const config = aiConfigs[aiKey];
   const webview = document.createElement('webview');
 
@@ -1648,11 +1729,6 @@ async function createWebview(aiKey) {
     logger.log(`${config.name} - caricamento completato`);
     loadedWebviews.add(aiKey);
     updateWebviewStatus(aiKey, 'ready');
-
-    // Open DevTools for debugging
-    // if (aiKey === 'grok') {
-    //   webview.openDevTools();
-    // }
   });
 
   webview.addEventListener('did-fail-load', (e) => {
@@ -1662,9 +1738,15 @@ async function createWebview(aiKey) {
   return webview;
 }
 
-// Update webview status in header
+// Update webview status in header - uses module if available
 function updateWebviewStatus(aiKey, status) {
-  // Lo status ID ora include il sessionId
+  // Use module if available
+  if (WebviewFactoryModule) {
+    WebviewFactoryModule.updateWebviewStatus(aiKey, status, currentSessionId);
+    return;
+  }
+  
+  // Fallback: inline implementation
   const statusEl = document.getElementById(`status-${currentSessionId}-${aiKey}`);
   if (!statusEl) return;
 
@@ -1679,8 +1761,21 @@ function updateWebviewStatus(aiKey, status) {
   statusEl.style.color = statusInfo.color;
 }
 
-// Render sidebar buttons
+// Render sidebar buttons - uses module if available, fallback to inline
 function renderSidebar() {
+  // Use module if available
+  if (SidebarModule) {
+    SidebarModule.syncState({
+      selectedAIs: selectedAIs,
+      configuredAIs: configuredAIs,
+      configuredApiAIs: configuredApiAIs,
+      aiConfigs: aiConfigs
+    });
+    SidebarModule.renderSidebar();
+    return;
+  }
+  
+  // Fallback: inline implementation
   sidebarNav.innerHTML = '';
 
   const currentSession = getCurrentSession();
@@ -1712,8 +1807,14 @@ function renderSidebar() {
   updateScrollIndicators();
 }
 
-// Gestione indicatori di scroll
+// Gestione indicatori di scroll - uses module if available
 function updateScrollIndicators() {
+  if (SidebarModule) {
+    SidebarModule.updateScrollIndicators();
+    return;
+  }
+  
+  // Fallback: inline implementation
   const scrollUpBtn = document.getElementById('scrollUpBtn');
   const scrollDownBtn = document.getElementById('scrollDownBtn');
 
@@ -1741,8 +1842,14 @@ function updateScrollIndicators() {
   }
 }
 
-// Setup scroll listeners
+// Setup scroll listeners - uses module if available
 function setupScrollListeners() {
+  if (SidebarModule) {
+    SidebarModule.setupScrollListeners();
+    return;
+  }
+  
+  // Fallback: inline implementation
   const scrollUpBtn = document.getElementById('scrollUpBtn');
   const scrollDownBtn = document.getElementById('scrollDownBtn');
 
@@ -1765,7 +1872,7 @@ function setupScrollListeners() {
   }
 }
 
-// Create sidebar button
+// Create sidebar button - inline only (module uses internal function)
 function createSidebarButton(key, config) {
   const button = document.createElement('button');
   button.className = 'sidebar-item';
@@ -1809,8 +1916,15 @@ function createSidebarButton(key, config) {
   return button;
 }
 
-// Update sidebar button state
+// Update sidebar button state - uses module if available
 function updateSidebarButtonState(aiKey) {
+  if (SidebarModule) {
+    SidebarModule.syncState({ selectedAIs: selectedAIs });
+    SidebarModule.updateSidebarButtonState(aiKey);
+    return;
+  }
+  
+  // Fallback: inline implementation
   const button = document.querySelector(`.sidebar-item[data-ai-key="${aiKey}"]`);
   if (!button) return;
 
@@ -2085,8 +2199,32 @@ if (document.readyState === 'loading') {
   init();
 }
 
-// Salva gli URL delle chat quando l'app viene chiusa
+// Salva gli URL delle chat e i testi delle textarea quando l'app viene chiusa
 window.addEventListener('beforeunload', () => {
+  // Save textarea contents to current session
+  const currentSession = getCurrentSession();
+  if (currentSession) {
+    // Save promptInput value
+    if (promptInput && promptInput.value.trim()) {
+      currentSession.promptDraft = promptInput.value;
+    }
+    
+    // Save ai-response-textarea values (only in web mode for one-prompt/private)
+    // Filter by session-id to avoid mixing between tabs
+    if (currentSession.mode === 'web') {
+      if (!currentSession.responseTexts) {
+        currentSession.responseTexts = {};
+      }
+      document.querySelectorAll(`.webview-wrapper[data-session-id="${currentSessionId}"] .ai-response-textarea`).forEach(textarea => {
+        const wrapper = textarea.closest('.webview-wrapper');
+        if (wrapper && textarea.value.trim()) {
+          const aiKey = wrapper.dataset.aiKey;
+          currentSession.responseTexts[aiKey] = textarea.value;
+        }
+      });
+    }
+  }
+  
   saveSessionsToStorage();
 });
 

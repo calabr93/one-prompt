@@ -20,6 +20,8 @@ import * as aiServices from './core/ai-services.js';
 
 // Import UI modules
 import * as notifications from './ui/notifications.js';
+import * as webviewFactory from './ui/webview-factory.js';
+import * as sidebar from './ui/sidebar.js';
 
 // Import services
 import * as aiApi from './services/ai-api.js';
@@ -46,6 +48,8 @@ window.OnePromptCore.aiServices = aiServices;
 
 // Expose UI modules
 window.OnePromptUI.notifications = notifications;
+window.OnePromptUI.webviewFactory = webviewFactory;
+window.OnePromptUI.sidebar = sidebar;
 
 // Expose services
 window.OnePromptServices.aiApi = aiApi;

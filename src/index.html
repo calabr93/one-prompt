@@ -380,10 +380,10 @@
   <!-- Markdown parser and sanitizer (local files for offline use) -->
   <script src="./libs/marked.min.js"></script>
   <script src="./libs/purify.min.js"></script>
-  <!-- Logger utility (disables console in production) -->
-  <script src="./utils/logger-renderer.js"></script>
+  <!-- Logger utility (disables console in production) - loaded as module for ES6 export compatibility -->
+  <script type="module" src="./utils/logger-renderer.js"></script>
   <!-- Core Bridge - layer di astrazione per servizi esterni (puo essere overridden nel private) -->
-  <script src="core-bridge.js"></script>
+  <script defer src="core-bridge.js"></script>
 
   <!--
     In development: renderer.js uses its own inline code
@@ -392,7 +392,7 @@
     The ES6 modules in core/, ui/, services/ are used by Vite during build.
     renderer.js has fallback code that works without the modules.
   -->
-  <script src="renderer.js"></script>
+  <script defer src="renderer.js"></script>
 </body>
 
 </html>
