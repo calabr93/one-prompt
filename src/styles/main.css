@@ -619,6 +619,10 @@ body {
   grid-auto-columns: 1fr;
 }
 
+[data-theme="light"] .webview-grid {
+  background: var(--bg-secondary) !important;
+}
+
 /* Singola webview dentro la griglia */
 .webview-grid webview {
   width: 100%;
@@ -1556,6 +1560,10 @@ body {
   transition: all 0.2s ease;
 }
 
+[data-theme="light"] .mode-card {
+  background: var(--bg-primary) !important;
+}
+
 .mode-card:hover {
   transform: translateY(-4px);
   border-color: var(--accent-color);
@@ -1703,6 +1711,10 @@ input:checked+.toggle-slider:before {
   font-size: 0.8rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="light"] .settings-mode-info {
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .settings-mode-info svg {
