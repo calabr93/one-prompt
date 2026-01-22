@@ -358,6 +358,11 @@ if (ThemeModule) {
 }
 
 // =====================================================
+// LAYOUT MODE (module)
+// =====================================================
+const LayoutModule = window.OnePromptCore?.layout;
+
+// =====================================================
 // SESSION MANAGEMENT (module + fallback)
 // =====================================================
 const SessionsModule = window.OnePromptCore?.sessions;
@@ -758,6 +763,11 @@ async function init() {
     setupEventListeners();
     setupScrollListeners();
     setupUpdateHandlers();
+
+    // Initialize layout mode
+    if (LayoutModule) {
+      LayoutModule.initLayoutMode();
+    }
 
     // Update cross-check button visibility
     updateCrossCheckButtonVisibility();
@@ -1287,6 +1297,11 @@ function toggleAISelection(aiKey) {
 async function renderWebviews() {
   // Reset classe grid
   webviewGrid.className = 'webview-grid';
+  
+  // Re-apply layout mode after reset
+  if (LayoutModule) {
+    LayoutModule.applyLayoutMode(LayoutModule.getLayoutMode());
+  }
 
   // Check session mode
   const currentSession = getCurrentSession();

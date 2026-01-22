@@ -18,6 +18,7 @@ import * as sessions from './core/sessions.js';
 import * as tabs from './core/tabs.js';
 import * as aiServices from './core/ai-services.js';
 import * as modeSelection from './core/mode-selection.js';
+import * as layout from './core/layout.js';
 
 // Import UI modules
 import * as notifications from './ui/notifications.js';
@@ -48,6 +49,7 @@ window.OnePromptCore.sessions = sessions;
 window.OnePromptCore.tabs = tabs;
 window.OnePromptCore.aiServices = aiServices;
 window.OnePromptCore.modeSelection = modeSelection;
+window.OnePromptCore.layout = layout;
 
 // Expose UI modules
 window.OnePromptUI.notifications = notifications;

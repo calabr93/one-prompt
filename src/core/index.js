@@ -13,3 +13,4 @@ export * from './i18n.js';
 export * from './markdown.js';
 export * from './theme.js';
 export * from './sessions.js';
+export * from './layout.js';
