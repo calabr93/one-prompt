@@ -49,6 +49,12 @@ function copyStaticFiles() {
         path.resolve(distDir, 'locales')
       );
 
+      // Copy styles
+      copyDir(
+        path.resolve(__dirname, 'src/styles'),
+        path.resolve(distDir, 'styles')
+      );
+
       // Copy core-bridge.js
       copyFileSync(
         path.resolve(__dirname, 'src/core-bridge.js'),

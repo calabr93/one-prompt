@@ -422,8 +422,10 @@ function createNewSession(name = null, selectedAIsSet = null, mode = null) {
 
 function getCurrentSession() {
   // Use module state first (correct during module callbacks), fallback to local
-  const moduleSession = SessionsModule.getCurrentSession();
-  if (moduleSession) return moduleSession;
+  if (SessionsModule) {
+    const moduleSession = SessionsModule.getCurrentSession();
+    if (moduleSession) return moduleSession;
+  }
   return sessions.find(s => s.id === currentSessionId) || sessions[0];
 }
 
@@ -584,8 +586,10 @@ function loadSessionsFromStorage() {
 loadSessionsFromStorage();
 
 // Sync module state with local state after loading
-SessionsModule.setSessions(sessions);
-SessionsModule.setCurrentSessionId(currentSessionId);
+if (SessionsModule) {
+  SessionsModule.setSessions(sessions);
+  SessionsModule.setCurrentSessionId(currentSessionId);
+}
 
 // Carica le AI selezionate dalla sessione corrente
 let selectedAIs = new Set(getCurrentSession()?.selectedAIs || []);

@@ -133,13 +133,15 @@ function createMainWindow() {
   // In production, load from bundled files
   const isDev = !app.isPackaged || process.argv.includes('--dev');
   const useViteDevServer = isDev && process.env.VITE_DEV_SERVER_URL;
+  const forceProd = process.argv.includes('--prod'); // Force loading from dist/renderer
 
-  if (useViteDevServer) {
+  if (useViteDevServer && !forceProd) {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL || 'http://localhost:5173');
     logger.log('Loading from Vite dev server');
-  } else if (app.isPackaged) {
+  } else if (app.isPackaged || forceProd) {
     // Production: load from dist/renderer
     mainWindow.loadFile(path.join(__dirname, '../dist/renderer/index.html'));
+    logger.log('Loading from dist/renderer (production build)');
   } else {
     // Development without Vite: load source directly
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
