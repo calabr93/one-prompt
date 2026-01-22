@@ -20,6 +20,16 @@ const ServicesModalModule = (window.OnePromptUI && window.OnePromptUI.servicesMo
 // Mode Selection module alias (loaded from core/mode-selection.js)
 const ModeSelectionModule = (window.OnePromptCore && window.OnePromptCore.modeSelection) || null;
 
+// CRITICAL: Define window.selectMode early so that onclick handlers in mode-cards work
+// This must be defined BEFORE init() is called, which renders the mode selection screen
+window.selectMode = function (mode) {
+  if (ModeSelectionModule) {
+    ModeSelectionModule.selectMode(mode);
+  } else {
+    logger.error('ModeSelectionModule not loaded when selectMode called');
+  }
+};
+
 // Clean AI response artifacts (citation markers, function call XML, etc.)
 function cleanAIResponseText(text) {
   if (!text) return '';
@@ -471,9 +481,9 @@ function captureCurrentUrls() {
 function saveSessionsToStorage() {
   // Use module if available
   if (SessionsModule) {
-    // Sync module state with local state
-    SessionsModule.setSessions(sessions);
-    SessionsModule.setCurrentSessionId(currentSessionId);
+    // Sync module state from module instead of pushing stale local state
+    // sessions = SessionsModule.getSessions();
+    // currentSessionId = SessionsModule.getCurrentSessionId();
     SessionsModule.saveSessionsToStorage(captureCurrentUrls);
     return;
   }
@@ -1310,6 +1320,7 @@ async function renderWebviews() {
   // Check session mode
   const currentSession = getCurrentSession();
   const mode = currentSession ? currentSession.mode : null;
+  console.log('[DEBUG renderWebviews] Mode:', mode, 'Session ID:', currentSession?.id, 'Selected AIs:', selectedAIs.size);
 
   if (selectedAIs.size === 0) {
     // Nascondi tutte le webview di tutte le sessioni
@@ -2261,12 +2272,8 @@ function setupUpdateHandlers() {
 
 // === MODE SELECTION & SETTINGS ===
 
-// Select mode - delegates to module
-window.selectMode = function (mode) {
-  if (ModeSelectionModule) {
-    ModeSelectionModule.selectMode(mode);
-  }
-};
+// Note: window.selectMode is defined at the top of the file (after ModeSelectionModule)
+// to ensure it's available when mode-cards are rendered in init()
 
 // Settings Elements & Logic
 function initSettings() {

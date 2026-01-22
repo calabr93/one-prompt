@@ -491,7 +491,9 @@ const OnePromptCore = {
   }
 };
 
-// Esponi globalmente
-window.OnePromptCore = OnePromptCore;
+// Esponi globalmente (Safe Merge)
+// Se window.OnePromptCore esiste già (creato da renderer-entry.js), lo estendiamo
+// altrimenti lo creiamo nuovo.
+window.OnePromptCore = Object.assign(window.OnePromptCore || {}, OnePromptCore);
 
 })(); // Fine IIFE

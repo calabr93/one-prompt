@@ -106,8 +106,10 @@ export function selectMode(mode) {
   }
 
   const currentSession = getCurrentSessionFn ? getCurrentSessionFn() : null;
+  console.log('[ModeSelection] selectMode called:', mode, 'Current Session:', currentSession);
   if (currentSession) {
     currentSession.mode = mode;
+    console.log('[ModeSelection] Mode set to:', currentSession.mode);
 
     // If switching to API mode, set default API services
     if (mode === 'api') {
