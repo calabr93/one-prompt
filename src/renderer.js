@@ -1320,7 +1320,6 @@ async function renderWebviews() {
   // Check session mode
   const currentSession = getCurrentSession();
   const mode = currentSession ? currentSession.mode : null;
-  console.log('[DEBUG renderWebviews] Mode:', mode, 'Session ID:', currentSession?.id, 'Selected AIs:', selectedAIs.size);
 
   if (selectedAIs.size === 0) {
     // Nascondi tutte le webview di tutte le sessioni
