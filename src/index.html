@@ -405,11 +405,9 @@
 
   <!--
     renderer-entry.js loads ES6 modules and exposes them on window.
-    renderer.js then uses these modules via window.OnePromptCore etc.
+    It then dynamically imports renderer.js to ensure proper load order.
   -->
   <script type="module" src="renderer-entry.js"></script>
-
-  <script defer src="renderer.js"></script>
 </body>
 
 </html>

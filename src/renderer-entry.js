@@ -85,6 +85,14 @@ console.log('[OnePrompt] Vite entry point loaded, modules available on window');
 // For now, it still uses window.OnePromptCore etc.
 // ============================================================
 
-// Note: renderer.js is loaded separately in index.html for now
-// Once fully migrated, we'll import it here:
-// import './renderer.js';
+// Signal that modules are ready (for any code that needs to wait)
+window.OnePromptModulesReady = true;
+window.dispatchEvent(new CustomEvent('oneprompt-modules-ready'));
+
+// CRITICAL: Use dynamic import to ensure window.OnePromptCore is set BEFORE renderer.js runs
+// Static imports are hoisted and would execute renderer.js before our window assignments
+import('./renderer.js').then(() => {
+  console.log('[OnePrompt] renderer.js loaded successfully');
+}).catch(err => {
+  console.error('[OnePrompt] Failed to load renderer.js:', err);
+});

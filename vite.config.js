@@ -61,11 +61,8 @@ function copyStaticFiles() {
         path.resolve(distDir, 'core-bridge.js')
       );
 
-      // Copy renderer.js (main app logic, will be migrated eventually)
-      copyFileSync(
-        path.resolve(__dirname, 'src/renderer.js'),
-        path.resolve(distDir, 'renderer.js')
-      );
+      // Note: renderer.js is now imported by renderer-entry.js and bundled by Vite
+      // No longer needs to be copied separately
 
       console.log('Static files copied to dist/renderer');
     }
