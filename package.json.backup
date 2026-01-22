@@ -3,9 +3,6 @@
   "version": "0.1.6",
   "description": "Un'applicazione per gestire più AI chat in un unico posto - inserisci un prompt e invialo a tutte le tue AI preferite",
   "main": "src/main.js",
-  "engines": {
-    "node": ">=22"
-  },
   "scripts": {
     "start": "electron .",
     "dev": "concurrently \"vite --config vite.config.js\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron . --dev\"",
@@ -33,8 +30,8 @@
   "devDependencies": {
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
-    "electron": "^39.3.0",
-    "electron-builder": "^26.4.0",
+    "electron": "^28.3.0",
+    "electron-builder": "^24.9.1",
     "vite": "^5.4.0",
     "wait-on": "^8.0.3"
   },

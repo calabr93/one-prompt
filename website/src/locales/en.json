@@ -130,6 +130,10 @@
       {
         "question": "What's the difference between API Mode and Web Mode?",
         "answer": "API Mode uses the official APIs of AI services. Web Mode uses web interfaces."
+      },
+      {
+        "question": "If the app is free, what are the paid credits for?",
+        "answer": "OnePrompt is free in Web Mode, but this mode has natural limitations due to the Terms of Service of AI services. Credits unlock the full power of Cross Check through official APIs: we created a turnkey system to allow even non-developers (who don't have their own API keys) to compare models without restrictions and without complex configurations."
       }
     ]
   },
@@ -237,6 +241,10 @@
     "message": "We use cookies to analyze traffic and improve your experience.",
     "accept": "Accept",
     "deny": "Deny"
+  },
+  "windowsModal": {
+    "title": "⚠️ Download not starting?",
+    "description": "Since this is a new app, your browser may ask if you trust the file. This is normal. Confirm that you trust the app to complete the download. Watch the GIF below to see how."
   },
   "promptsPage": {
     "title": "Prompts for Cross-Check",

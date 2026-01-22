@@ -93,6 +93,10 @@ Download the latest version from the [Releases page](https://github.com/calabr93
 
 ### Development
 
+#### Requirements
+- **Node.js 22** or higher
+- If using nvm: run `nvm use` (automatically reads `.nvmrc`)
+
 ```bash
 # Install dependencies
 npm install

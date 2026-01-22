@@ -1,15 +1,19 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Container } from '../layout/Container';
 import { Button } from '../ui/Button';
+import { Modal } from '../ui/Modal';
 import styles from './CTASection.module.css';
 import '../../types/posthog.d';
 
 const trackDownload = (platform: string, variant: string) => {
-  window.posthog?.capture('download_clicked', {
-    platform,
-    variant,
-    section: 'cta'
-  });
+  if (typeof window.posthog?.capture === 'function') {
+    window.posthog.capture('download_clicked', {
+      platform,
+      variant,
+      section: 'cta'
+    });
+  }
 };
 
 const AppleIcon = () => (
@@ -40,6 +44,12 @@ const DownloadIcon = () => (
 
 export function CTASection() {
   const { t } = useTranslation();
+  const [showWindowsModal, setShowWindowsModal] = useState(false);
+
+  const handleWindowsDownload = (variant: string) => {
+    trackDownload('windows', variant);
+    setShowWindowsModal(true);
+  };
 
   return (
     <section className={styles.cta} id="download">
@@ -88,7 +98,7 @@ export function CTASection() {
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
-                  onClick={() => trackDownload('windows', 'installer')}
+                  onClick={() => handleWindowsDownload('installer')}
                 >
                   Installer
                 </Button>
@@ -97,7 +107,7 @@ export function CTASection() {
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
-                  onClick={() => trackDownload('windows', 'portable')}
+                  onClick={() => handleWindowsDownload('portable')}
                 >
                   Portable
                 </Button>
@@ -134,6 +144,20 @@ export function CTASection() {
           </div>
         </div>
       </Container>
+
+      {/* Windows Download Help Modal */}
+      <Modal
+        isOpen={showWindowsModal}
+        onClose={() => setShowWindowsModal(false)}
+        title={t('windowsModal.title')}
+      >
+        <p>{t('windowsModal.description')}</p>
+        <img 
+          src="/assets/media/Windows-installation.gif" 
+          alt="Windows installation guide"
+          loading="lazy"
+        />
+      </Modal>
     </section>
   );
 }

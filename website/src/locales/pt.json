@@ -130,6 +130,10 @@
       {
         "question": "Qual é a diferença entre Modo API e Modo Web?",
         "answer": "O Modo API usa as APIs oficiais dos serviços de IA. O Modo Web usa interfaces web."
+      },
+      {
+        "question": "Se o app é gratuito, para que servem os créditos pagos?",
+        "answer": "O OnePrompt é gratuito no Modo Web, mas este modo tem limitações naturais devido aos Termos de Serviço dos serviços de IA. Os créditos servem para desbloquear todo o poder do Cross Check através das APIs oficiais: criamos um sistema pronto para usar para permitir que mesmo quem não é desenvolvedor (e não tem suas próprias chaves de API) possa comparar modelos sem restrições e sem configurações complexas."
       }
     ]
   },
@@ -237,6 +241,10 @@
     "message": "Usamos cookies para analisar o tráfego e melhorar sua experiência.",
     "accept": "Aceitar",
     "deny": "Recusar"
+  },
+  "windowsModal": {
+    "title": "⚠️ O download não inicia?",
+    "description": "Por ser um app novo, o navegador pode perguntar se você confia no arquivo. Isso é normal. Confirme que você confia no app para completar o download. Veja o GIF abaixo para saber como fazer."
   },
   "promptsPage": {
     "title": "Prompts para Cross-Check",
