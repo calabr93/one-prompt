@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, Menu } = require('electron');
 
 // IMPORTANT: Set app name BEFORE any other requires that might use app.getPath()
 // This determines the userData folder name in %APPDATA% (Windows) or ~/Library/Application Support/ (Mac)
@@ -183,6 +183,39 @@ function createMainWindow() {
 
 // Lifecycle dell'app
 app.whenReady().then(() => {
+  // Enable context menu for all webContents (including webviews)
+  app.on('web-contents-created', (event, contents) => {
+    contents.on('context-menu', (e, params) => {
+      const menuItems = [];
+      
+      // Add text selection options
+      if (params.selectionText) {
+        menuItems.push(
+          { label: 'Cut', role: 'cut', enabled: params.editFlags.canCut },
+          { label: 'Copy', role: 'copy', enabled: params.editFlags.canCopy }
+        );
+      }
+      
+      // Add paste option for editable fields
+      if (params.isEditable) {
+        menuItems.push(
+          { label: 'Paste', role: 'paste', enabled: params.editFlags.canPaste },
+          { label: 'Select All', role: 'selectAll', enabled: params.editFlags.canSelectAll }
+        );
+      }
+      
+      // Only show menu if there are items
+      if (menuItems.length > 0) {
+        // Add separator if we have both selection and editable options
+        if (params.selectionText && params.isEditable && menuItems.length > 2) {
+          menuItems.splice(2, 0, { type: 'separator' });
+        }
+        const menu = Menu.buildFromTemplate(menuItems);
+        menu.popup();
+      }
+    });
+  });
+
   // Handler IPC
   ipcMain.handle('get-ai-configs', () => {
     return AI_CONFIGS;
