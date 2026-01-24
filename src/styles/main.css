@@ -742,8 +742,8 @@ body {
 .prompt-input-wrapper {
   flex: 1;
   display: flex;
-  gap: 12px;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .prompt-input-wrapper .prompt-input {
@@ -2029,6 +2029,71 @@ input:checked+.toggle-slider:before {
   width: 20px;
   height: 20px;
   fill: white;
+}
+
+/* Cross Check Badge Toggle */
+.cross-check-badge {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--bg-tertiary, #2a2a2a);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.cross-check-badge:hover {
+  background: var(--bg-hover, #333);
+}
+
+.cross-check-badge input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  cursor: pointer;
+  accent-color: #667eea;
+}
+
+.cross-check-badge .badge-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cross-check-badge .badge-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.cross-check-badge:has(input:checked) .badge-label {
+  color: var(--text-primary);
+}
+
+.cross-check-badge svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--text-secondary);
+  transition: fill 0.2s ease;
+}
+
+.cross-check-badge:has(input:checked) svg {
+  fill: #667eea;
+}
+
+/* Light mode */
+[data-theme="light"] .cross-check-badge {
+  background: #f0f0f5;
+}
+
+[data-theme="light"] .cross-check-badge:hover {
+  background: #e5e5ea;
 }
 
 /* Cross-Check Response Style (Apple Intelligence gradient) */

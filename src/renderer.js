@@ -162,9 +162,6 @@ let configuredApiAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-config
 // API History limit (sliding window: 6 user/assistant exchanges = 12 messages)
 const API_HISTORY_LIMIT = 12;
 
-// Cross-Check mode state
-let crossCheckEnabled = false;
-
 // Webview zoom state - tracks the currently focused webview for zoom controls
 let focusedWebview = null;
 let webviewZoomLevels = {}; // Map aiKey → zoomLevel (persisted per webview)
@@ -782,6 +779,9 @@ async function init() {
     if (LayoutModule) {
       LayoutModule.initLayoutMode();
     }
+
+    // Initialize cross-check toggle badge
+    initCrossCheckToggle();
 
     // Update cross-check button visibility
     updateCrossCheckButtonVisibility();
@@ -1669,6 +1669,9 @@ async function renderWebviews() {
       }
     });
   }
+
+  // Update cross-check visibility after rendering
+  updateCrossCheckVisibility();
 }
 
 // Create webview - uses module if available, fallback to inline
@@ -2470,13 +2473,47 @@ function initCrossCheckButton() {
   });
 }
 
-// Update cross-check button visibility based on mode
-function updateCrossCheckButtonVisibility() {
-  const crossCheckBtn = document.getElementById('crossCheckBtn');
-  if (!crossCheckBtn) return;
+// Cross Check Toggle state - default OFF for one-prompt
+let crossCheckEnabled = localStorage.getItem('oneprompt-crosscheck-enabled') === 'true';
 
-  // Always show cross-check button
-  crossCheckBtn.style.display = 'flex';
+// Initialize Cross Check Toggle
+function initCrossCheckToggle() {
+  const toggle = document.getElementById('crossCheckToggle');
+  if (!toggle) return;
+
+  // Set initial state from storage
+  toggle.checked = crossCheckEnabled;
+  
+  // Apply initial visibility
+  updateCrossCheckVisibility();
+
+  // Listen for changes
+  toggle.addEventListener('change', (e) => {
+    crossCheckEnabled = e.target.checked;
+    localStorage.setItem('oneprompt-crosscheck-enabled', crossCheckEnabled.toString());
+    updateCrossCheckVisibility();
+  });
+}
+
+// Update visibility of cross-check button and response containers
+function updateCrossCheckVisibility() {
+  const crossCheckBtn = document.getElementById('crossCheckBtn');
+  const responseContainers = document.querySelectorAll('.ai-response-container');
+
+  // Cross Check Button
+  if (crossCheckBtn) {
+    crossCheckBtn.style.display = crossCheckEnabled ? 'flex' : 'none';
+  }
+
+  // AI Response Containers (textarea containers in web mode)
+  responseContainers.forEach(container => {
+    container.style.display = crossCheckEnabled ? 'block' : 'none';
+  });
+}
+
+// Update cross-check button visibility based on mode (legacy, now delegates to updateCrossCheckVisibility)
+function updateCrossCheckButtonVisibility() {
+  updateCrossCheckVisibility();
 }
 
 // Initialize cross-check settings

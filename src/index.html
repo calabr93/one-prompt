@@ -100,6 +100,16 @@
         <div class="prompt-bar-inner">
           <!-- Prompt input -->
           <div class="prompt-input-wrapper">
+            <!-- Cross Check Toggle Badge -->
+            <label class="cross-check-badge" id="crossCheckBadge">
+              <input type="checkbox" id="crossCheckToggle">
+              <span class="badge-content">
+              <span class="badge-label">Cross Check</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+                  <path d="M24.414,16.586L30.828,23l-6.414,6.414l-2.828-2.828L23.172,25H22c-3.924,0-6.334-2.289-8.173-4.747c0.987-1.097,1.799-2.285,2.516-3.36C18.109,19.46,19.521,21,22,21h1.172l-1.586-1.586L24.414,16.586z M22,11h1.172l-1.586,1.586l2.828,2.828L30.828,9l-6.414-6.414l-2.828,2.828L23.172,7H22c-5.07,0-7.617,3.82-9.664,6.891C10.224,17.059,8.788,19,6,19H2v4h4c5.07,0,7.617-3.82,9.664-6.891C17.776,12.941,19.212,11,22,11z M10.212,15.191c0.399-0.539,1.957-2.848,2.322-3.365C10.917,10.216,8.86,9,6,9H2v4h4C7.779,13,9.007,13.797,10.212,15.191z" />
+                </svg>
+              </span>
+            </label>
             <textarea id="promptInput" class="prompt-input" data-i18n-placeholder="prompt.placeholder"
               rows="2"></textarea>
           </div>
