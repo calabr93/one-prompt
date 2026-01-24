@@ -36,3 +36,6 @@ temp/
 
 # Scripts
 scripts/release.js
+
+# Claude Code
+.claude/
