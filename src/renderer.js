@@ -670,7 +670,9 @@ async function init() {
           updateCrossCheckVisibility: () => updateCrossCheckButtonVisibility(),
           updatePromptButtons: () => updatePromptButtons(),
           getSelectedAIs: () => selectedAIs,
-          setSelectedAIs: (newSet) => { selectedAIs = newSet; }
+          setSelectedAIs: (newSet) => { selectedAIs = newSet; },
+          // Use renderer.js version to ensure state sync between local and module
+          createNewSessionAndSwitch: () => createNewSessionAndSwitch()
         }
       });
       logger.log('[init] Tabs module initialized');

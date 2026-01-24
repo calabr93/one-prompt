@@ -27,7 +27,8 @@ let callbacks = {
   updateCrossCheckVisibility: () => {},
   updatePromptButtons: () => {},
   getSelectedAIs: () => new Set(),
-  setSelectedAIs: () => {}
+  setSelectedAIs: () => {},
+  createNewSessionAndSwitch: null // If provided, use this instead of internal function
 };
 
 /**
@@ -78,7 +79,12 @@ export function renderTabs() {
   `;
   newTabBtn.addEventListener('click', (e) => {
     e.stopPropagation();
-    createNewSessionAndSwitch();
+    // Use callback if provided (allows repo-specific state sync)
+    if (callbacks.createNewSessionAndSwitch) {
+      callbacks.createNewSessionAndSwitch();
+    } else {
+      createNewSessionAndSwitch();
+    }
   });
   tabList.appendChild(newTabBtn);
 
