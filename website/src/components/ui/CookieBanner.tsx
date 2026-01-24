@@ -28,8 +28,15 @@ export function CookieBanner() {
         autocapture: true,
         enable_heatmaps: true,
         persistence: 'localStorage+cookie',
+        session_recording: {
+          maskAllInputs: false,
+          maskInputOptions: {
+            password: true
+          }
+        },
         loaded: (posthog: typeof window.posthog) => {
-          posthog?.register({ source: 'website' });
+          posthog?.register({ source: 'website', platform: 'website' });
+          posthog?.startSessionRecording();
         }
       });
     }
