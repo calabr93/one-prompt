@@ -42,8 +42,16 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1) || '/';
-      setCurrentPage(hash);
-      window.scrollTo(0, 0);
+      
+      // Only treat paths starting with / as page navigation
+      if (hash.startsWith('/')) {
+        setCurrentPage(hash);
+        window.scrollTo(0, 0);
+      } else {
+        // For anchor links like #features, #pricing, #download
+        // let the browser handle the scroll natively
+        setCurrentPage('/');
+      }
     };
 
     handleHashChange();

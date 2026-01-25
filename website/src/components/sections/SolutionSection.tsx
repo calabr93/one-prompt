@@ -32,9 +32,14 @@ export function SolutionSection() {
 
           <div className={styles.visual}>
             <img
+              src="./assets/media/One-Prompt-demo-vertical.gif"
+              alt="OnePrompt in action"
+              className={`${styles.gif} ${styles.gifDesktop}`}
+            />
+            <img
               src="./assets/media/OnePrompt-demo.gif"
               alt="OnePrompt in action"
-              className={styles.gif}
+              className={`${styles.gif} ${styles.gifMobile}`}
             />
           </div>
         </div>

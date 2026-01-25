@@ -84,7 +84,22 @@
   display: block;
 }
 
+.demoDesktop {
+  display: block;
+}
+
+.demoMobile {
+  display: none;
+}
+
 @media (max-width: 768px) {
+  .demoDesktop {
+    display: none;
+  }
+
+  .demoMobile {
+    display: block;
+  }
   .hero {
     padding-top: 100px;
   }

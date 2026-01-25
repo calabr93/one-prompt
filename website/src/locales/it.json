@@ -6,7 +6,7 @@
     "github": "GitHub"
   },
   "hero": {
-    "badge": "Open source · Nessun abbonamento · Sicuro & Compliant",
+    "badge": ["Open source", "Nessun abbonamento", "Sicuro & Compliant"],
     "headline": "Confronta le AI in un istante",
     "subheadline": "Visualizza le risposte di ChatGPT, Claude, Gemini e altri affiancate in un'unica finestra. Trova la risposta migliore a colpo d'occhio.",
     "cta": {

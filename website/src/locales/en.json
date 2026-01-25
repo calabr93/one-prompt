@@ -6,7 +6,7 @@
     "github": "GitHub"
   },
   "hero": {
-    "badge": "Open source · No subscription · Safe & Compliant",
+    "badge": ["Open source", "No subscription", "Safe & Compliant"],
     "headline": "Compare AIs in an instant",
     "subheadline": "See responses from ChatGPT, Claude, Gemini and more side-by-side in one window. Find the best answer at a glance.",
     "cta": {

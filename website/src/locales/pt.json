@@ -6,7 +6,7 @@
     "github": "GitHub"
   },
   "hero": {
-    "badge": "Open source · Sem assinatura · Seguro e Compliant",
+    "badge": ["Open source", "Sem assinatura", "Seguro e Compliant"],
     "headline": "Compare IAs num instante",
     "subheadline": "Visualize as respostas do ChatGPT, Claude, Gemini e mais lado a lado em uma única janela. Encontre a melhor resposta num relance.",
     "cta": {

@@ -6,7 +6,7 @@
     "github": "GitHub"
   },
   "hero": {
-    "badge": "Açık Kaynak · Abonelik Yok · Güvenli ve Uyumlu",
+    "badge": ["Açık Kaynak", "Abonelik Yok", "Güvenli ve Uyumlu"],
     "headline": "Yapay Zekaları anında karşılaştırın",
     "subheadline": "ChatGPT, Claude, Gemini ve daha fazlasından gelen yanıtları tek bir pencerede yan yana görün. En iyi cevabı bir bakışta bulun.",
     "cta": {

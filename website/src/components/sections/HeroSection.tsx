@@ -30,12 +30,24 @@ const LinuxIcon = () => (
 
 export function HeroSection() {
   const { t } = useTranslation();
+  const badgeParts = t('hero.badge', { returnObjects: true }) as string[];
 
   return (
     <section className={styles.hero}>
       <Container>
         <div className={styles.content}>
-          <Badge variant="accent">{t('hero.badge')}</Badge>
+          <Badge variant="accent">
+            {badgeParts.map((part, index) => (
+              <span key={index}>
+                {index > 0 && ' · '}
+                {index === badgeParts.length - 1 ? (
+                  <span style={{ whiteSpace: 'nowrap' }}>{part}</span>
+                ) : (
+                  part
+                )}
+              </span>
+            ))}
+          </Badge>
           <h1 className={styles.headline}>{t('hero.headline')}</h1>
           <p className={styles.subheadline}>{t('hero.subheadline')}</p>
 
@@ -75,7 +87,12 @@ export function HeroSection() {
           <img
             src="./assets/media/OnePrompt-demo.gif"
             alt="OnePrompt Demo"
-            className={styles.demoImage}
+            className={`${styles.demoImage} ${styles.demoDesktop}`}
+          />
+          <img
+            src="./assets/media/One-Prompt-demo-vertical.gif"
+            alt="OnePrompt Demo"
+            className={`${styles.demoImage} ${styles.demoMobile}`}
           />
         </div>
       </Container>
