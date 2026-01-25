@@ -1,0 +1,32 @@
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  transition: all 0.3s ease;
+}
+
+.default:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.highlighted {
+  border-color: var(--accent-color);
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(0, 122, 255, 0.1) 100%);
+}
+
+.highlighted:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 48px rgba(0, 122, 255, 0.2);
+}
+
+.feature {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.feature:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-color);
+}

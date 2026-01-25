@@ -1,0 +1,126 @@
+{
+  "name": "oneprompt",
+  "version": "0.1.6",
+  "description": "Un'applicazione per gestire più AI chat in un unico posto - inserisci un prompt e invialo a tutte le tue AI preferite",
+  "main": "src/main.js",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "npm run build && electron . --prod",
+    "dev": "concurrently \"vite --config vite.config.js\" \"wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron . --dev\"",
+    "build": "vite build --config vite.config.js",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:win": "npm run build && electron-builder --win",
+    "build:linux": "npm run build && electron-builder --linux",
+    "pack": "npm run build && electron-builder --dir",
+    "clean": "rm -rf \"$HOME/Library/Application Support/OnePrompt\" && rm -rf \"$HOME/Library/Preferences/com.oneprompt.app.plist\"",
+    "publish": "node scripts/release.js",
+    "deploy:website": "cd website && npm install && npm run deploy"
+  },
+  "keywords": [
+    "AI",
+    "chat",
+    "ChatGPT",
+    "Claude",
+    "Gemini",
+    "Electron"
+  ],
+  "author": "Fabio Calabretta <info@one-prompt.app>",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^39.3.0",
+    "electron-builder": "^26.4.0",
+    "vite": "^5.4.0",
+    "wait-on": "^8.0.3"
+  },
+  "build": {
+    "appId": "com.oneprompt.app",
+    "productName": "OnePrompt",
+    "publish": null,
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/logo/logo.icns",
+      "artifactName": "${productName}-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/logo/logo.ico",
+      "artifactName": "${productName}-Setup.${ext}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "deb",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "category": "Utility",
+      "icon": "assets/logo/logo.png",
+      "artifactName": "${productName}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "artifactName": "${productName}-Setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "${productName}-Portable.${ext}"
+    },
+    "files": [
+      "src/main.js",
+      "src/preload.js",
+      "src/webview-preload.js",
+      "dist/renderer/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
+    }
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  }
+}

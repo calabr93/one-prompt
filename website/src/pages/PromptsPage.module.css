@@ -1,0 +1,188 @@
+.main {
+  min-height: calc(100vh - 200px);
+  padding-top: var(--spacing-4xl);
+  padding-bottom: var(--spacing-4xl);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: var(--spacing-3xl);
+}
+
+.backLink {
+  display: inline-block;
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: var(--accent-color);
+}
+
+.title {
+  margin-bottom: var(--spacing-md);
+}
+
+.subtitle {
+  max-width: 600px;
+  margin: 0 auto;
+  color: var(--text-secondary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.card {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(0, 122, 255, 0.03) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.15);
+  border-color: var(--accent-color);
+}
+
+.card:hover .copyIcon {
+  opacity: 1;
+  color: var(--accent-color);
+}
+
+.card:hover .clickHint {
+  opacity: 1;
+}
+
+.card.copied {
+  border-color: var(--success-color);
+  box-shadow: 0 8px 24px rgba(40, 167, 69, 0.2);
+}
+
+.card.copied .copyIcon {
+  opacity: 1;
+  color: var(--success-color);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+  gap: var(--spacing-sm);
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  flex: 1;
+}
+
+.copyIcon {
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: all 0.2s;
+  color: var(--text-secondary);
+}
+
+.cardPrompt {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.readMore {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  margin-top: var(--spacing-md);
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.readMore:hover {
+  opacity: 0.8;
+}
+
+.clickHint {
+  display: block;
+  margin-top: var(--spacing-md);
+  font-size: 0.8rem;
+  color: var(--accent-color);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.notification {
+  position: fixed;
+  bottom: var(--spacing-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--success-color);
+  color: white;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(40, 167, 69, 0.4);
+  animation: fadeIn 0.2s ease;
+  z-index: 1000;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding-top: var(--spacing-2xl);
+    padding-bottom: var(--spacing-2xl);
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+
+  .clickHint {
+    opacity: 0.7;
+  }
+
+  .copyIcon {
+    opacity: 0.7;
+  }
+
+  .notification {
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    transform: none;
+    text-align: center;
+    justify-content: center;
+  }
+}

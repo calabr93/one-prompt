@@ -1,0 +1,250 @@
+{
+  "nav": {
+    "features": "Özellikler",
+    "pricing": "Fiyatlandırma",
+    "download": "Ücretsiz İndir",
+    "github": "GitHub"
+  },
+  "hero": {
+    "badge": "Açık Kaynak · Abonelik Yok · Güvenli ve Uyumlu",
+    "headline": "Yapay Zekaları anında karşılaştırın",
+    "subheadline": "ChatGPT, Claude, Gemini ve daha fazlasından gelen yanıtları tek bir pencerede yan yana görün. En iyi cevabı bir bakışta bulun.",
+    "cta": {
+      "download": "Ücretsiz İndir"
+    },
+    "github": "Veya GitHub'da görüntüle"
+  },
+  "problem": {
+    "title": "Sorun",
+    "subtitle": "Her yapay zeka farklı düşünür. Tek tek karşılaştırmak yavaş ve sinir bozucu.",
+    "solution": "OnePrompt ile tüm yapay zekalar için tek bir pencereniz var.",
+    "tagline": "Yaz, karşılaştır, seç ✅",
+    "before": "ÖNCE",
+    "after": "SONRA",
+    "comparisonFatigue": "Karşılaştırma yorgunluğu",
+    "copyPasteLoop": "Kopyala-yapıştır döngüsü",
+    "tabOverload": "Sekme aşırı yükü",
+    "inconsistentOutputs": "Tutarsız çıktılar",
+    "session": "Oturum",
+    "allInOneView": "Hepsi tek görünümde"
+  },
+  "solution": {
+    "title": "Çözüm: tüm yapay zekalar tek pencerede",
+    "description": "OnePrompt, birden fazla yapay zeka servisinden gelen yanıtları yan yana görüntülemenize ve karşılaştırmanıza olanak tanıyan bir masaüstü uygulamasıdır. En iyisini bir bakışta seçin.",
+    "features": [
+      "Anında karşılaştırma için yan yana yanıtlar",
+      "Cross-Check: her yapay zekanın diğerlerini değerlendirmesini sağlayın",
+      "Mevcut hesaplarınızla çalışır",
+      "Verileriniz bilgisayarınızda kalır"
+    ]
+  },
+  "features": {
+    "title": "Özellikler",
+    "items": [
+      {
+        "title": "Bir kez yaz, her yere gönder",
+        "description": "Aynı prompt'u birkaç tıklamayla ChatGPT, Claude, Gemini ve diğer yapay zekalara gönderin."
+      },
+      {
+        "title": "Yan yana karşılaştırma",
+        "description": "Anında karşılaştırma için tüm yanıtları uyarlanabilir bir ızgarada görün."
+      },
+      {
+        "title": "Cross-Check",
+        "description": "Yapay zekaların birbirlerinin yanıtlarını değerlendirmesini ve karşılaştırmasını sağlayın."
+      },
+      {
+        "title": "İki mod",
+        "description": "Web Modu ve API Modu."
+      },
+      {
+        "title": "Çoklu oturumlar",
+        "description": "Çalışmanızı bir tarayıcı gibi ayrı sekmelerde düzenleyin."
+      },
+      {
+        "title": "Önce gizlilik",
+        "description": "Verileriniz cihazınızda kalır."
+      }
+    ]
+  },
+  "crossCheck": {
+    "title": "Cross-Check",
+    "subtitle": "Yapay zekaların birbirini değerlendirmesini sağlayın",
+    "description": "Cross-Check ile her yapay zekadan diğerlerinin yanıtlarını analiz etmesini ve karşılaştırmasını isteyebilirsiniz. Hangi yanıtın sizin sorunuz için en doğru, kapsamlı veya ilgili olduğuna dair kapsamlı bir değerlendirme alın.",
+    "features": [
+      "Her yapay zeka diğer tüm yanıtları inceler",
+      "En doğru yanıtı belirleyin",
+      "Her yanıtın güçlü ve zayıf yönlerini keşfedin",
+      "Daha hızlı bilinçli kararlar verin"
+    ],
+    "viewPrompts": "Prompt şablonlarını görüntüle →"
+  },
+  "pricing": {
+    "title": "Nasıl başlayacağınızı seçin",
+    "github": {
+      "title": "GitHub Sürümü",
+      "price": "Açık Kaynak",
+      "subtitle": "Geliştiriciler için",
+      "features": [
+        { "text": "Web Modu: ücretsiz sınırsız", "type": "included" },
+        { "text": "Tam gizlilik (yerel veriler)", "type": "included" },
+        { "text": "API Modu: manuel yapılandırma", "type": "excluded" },
+        { "text": "Kredi dahil değil", "type": "excluded" }
+      ],
+      "cta": "GitHub'da Görüntüle"
+    },
+    "desktop": {
+      "title": "OnePrompt Masaüstü",
+      "price": "Ücretsiz",
+      "recommendedBadge": "Önerilen",
+      "subtitle": "MacOS/Windows/Linux için indir",
+      "features": [
+        { "text": "Web Modu: ücretsiz sınırsız", "type": "included" },
+        { "text": "Tam gizlilik (yerel veriler)", "type": "included" },
+        { "text": "API Modu: kullanıma hazır", "type": "included" },
+        { "text": "50 kredi anında dahil", "type": "included" },
+        { "text": "Otomatik güncellemeler", "type": "included" },
+        { "text": "Abonelik yok", "type": "included" },
+        { "text": "API Modu: 4,99$'dan başlayan isteğe bağlı krediler", "type": "premium" }
+      ],
+      "cta": "Ücretsiz İndir"
+    }
+  },
+  "platforms": {
+    "title": "Desteklenen platformlar",
+    "api": "API Modu",
+    "web": "Web Modu",
+    "comingSoon": "Çok yakında"
+  },
+  "faq": {
+    "title": "Sıkça sorulan sorular",
+    "items": [
+      {
+        "question": "OnePrompt gerçekten ücretsiz mi?",
+        "answer": "Evet, uygulama Mac, Windows ve Linux'a ücretsiz yüklenir. Ücretsiz sınırsız Web Modu ve API Modu için 50 kredi içerir. GitHub'daki açık kaynak sürümü, kendi API anahtarlarınızı yapılandırmanıza olanak tanır."
+      },
+      {
+        "question": "Verilerim güvende mi?",
+        "answer": "Kesinlikle. Prompt'larınız ve yanıtlarınız asla cihazınızdan ayrılmaz. API anahtarları yerel olarak saklanır."
+      },
+      {
+        "question": "API Modu ile Web Modu arasındaki fark nedir?",
+        "answer": "API Modu, yapay zeka servislerinin resmi API'lerini kullanır. Web Modu web arayüzlerini kullanır."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Yapay Zekaları tek tıkla karşılaştırın"
+  },
+  "footer": {
+    "tagline": "Yapay Zekaları anında karşılaştırın.",
+    "reportBug": "Hata bildir",
+    "support": "Projeyi destekle",
+    "copyright": "Tüm hakları saklıdır.",
+    "license": "Kaynak kod MIT Lisansı altında mevcuttur. OnePrompt Masaüstü özellikleri mülkiyet altındadır.",
+    "builtIn": "",
+    "privacyPolicy": "Gizlilik Politikası",
+    "termsOfService": "Hizmet Şartları"
+  },
+  "privacy": {
+    "lastUpdated": "Son güncelleme: Ocak 2026",
+    "intro": {
+      "title": "Giriş",
+      "text": "Fabio Calabretta (\"biz\", \"bize\" veya \"bizim\") OnePrompt'u işletmektedir. Bu Gizlilik Politikası, masaüstü uygulamamızı kullandığınızda bilgilerinizi nasıl topladığımızı, kullandığımızı ve koruduğumuzu açıklar."
+    },
+    "dataCollection": {
+      "title": "Topladığımız veriler",
+      "text": "OnePrompt, gizliliği temel ilke olarak tasarlanmıştır. Toplayabileceğimiz veriler uygulamayı nasıl kullandığınıza bağlıdır:",
+      "item1": "Yerel veriler: prompt'larınız, yapay zeka yanıtlarınız ve ayarlarınız cihazınızda yerel olarak saklanır ve asla sunucularımıza iletilmez.",
+      "item2": "API anahtarları: kendi API anahtarlarınızı kullanırsanız, bunlar yerel olarak ve şifrelenmiş bir şekilde cihazınızda saklanır.",
+      "item3": "OnePrompt Masaüstü: OnePrompt Masaüstü özelliklerini kullanırsanız, hizmeti sağlamak için gerekli olan minimum verileri (kimlik doğrulama belirteçleri, faturalandırma için kullanım ölçümleri) işleriz."
+    },
+    "dataStorage": {
+      "title": "Veri saklama ve güvenliği",
+      "text": "Tüm yerel veriler, endüstri standardı şifreleme kullanılarak cihazınızda saklanır. Prompt'larınız, yanıtlarınız veya API anahtarlarınız dahil olmak üzere yerel olarak saklanan verilerinize erişimimiz yoktur."
+    },
+    "thirdParty": {
+      "title": "Üçüncü taraf hizmetler",
+      "text": "OnePrompt'u yapay zeka servisleriyle (ChatGPT, Claude, Gemini vb.) etkileşim kurmak için kullandığınızda, prompt'larınız doğrudan bu servislere gönderilir. Her servisin verilerinizi nasıl işlediğini düzenleyen kendi gizlilik politikası vardır. Kullandığınız yapay zeka servislerinin gizlilik politikalarını incelemenizi öneririz."
+    },
+    "apiKeys": {
+      "title": "API anahtarları",
+      "text": "API anahtarlarınız cihazınızda yerel olarak saklanır ve asla sunucularımıza iletilmez. Bunlar yalnızca sizin adınıza ilgili yapay zeka servislerine yapılan istekleri doğrulamak için kullanılır."
+    },
+    "proFeatures": {
+      "title": "OnePrompt Masaüstü özellikleri",
+      "text": "OnePrompt Masaüstü kredilerini kullanırsanız, hizmeti sağlamak için gerekli olan minimum bilgileri toplarız: hesap yönetimi için e-posta adresiniz, Stripe aracılığıyla güvenli bir şekilde işlenen ödeme bilgileri ve faturalandırma amaçları için kullanım verileri. Prompt'larınızı veya yapay zeka yanıtlarınızı saklamayız veya bunlara erişmeyiz."
+    },
+    "rights": {
+      "title": "Haklarınız",
+      "text": "GDPR ve geçerli veri koruma yasaları uyarınca, kişisel verilerinize erişme, bunları düzeltme veya silme hakkına sahipsiniz. Çoğu veri yerel olarak cihazınızda saklandığı için bunlar üzerinde doğrudan kontrole sahipsiniz. OnePrompt Masaüstü satın alımlarıyla ilgili veriler için aşağıdaki adresten bizimle iletişime geçin."
+    },
+    "contact": {
+      "title": "Bize ulaşın",
+      "text": "Bu Gizlilik Politikası ile ilgili sorularınız için lütfen şu adrese başvurun: Fabio Calabretta, P.IVA: 13010040965, Milano, İtalya."
+    }
+  },
+  "terms": {
+    "lastUpdated": "Son güncelleme: Ocak 2026",
+    "acceptance": {
+      "title": "Şartların kabulü",
+      "text": "OnePrompt'u indirerek, yükleyerek veya kullanarak, bu Hizmet Şartları'na bağlı kalmayı kabul edersiniz. Bu şartları kabul etmiyorsanız, uygulamayı kullanmayın."
+    },
+    "license": {
+      "title": "Lisans",
+      "text": "OnePrompt, çift lisanslama modeli altında dağıtılmaktadır:",
+      "item1": "Ana uygulama kaynak kodu MIT Lisansı altında mevcuttur, bu da onu özgürce kullanmanıza, değiştirmenize ve dağıtmanıza olanak tanır.",
+      "item2": "OnePrompt Masaüstü özellikleri mülkiyet altındadır ve kullanım için kredi satın alınmasını gerektirir."
+    },
+    "proFeatures": {
+      "title": "OnePrompt Masaüstü",
+      "text": "OnePrompt Masaüstü özellikleri kredi satın alarak kullanılabilir. Krediler, satın alma sırasında belirtildiği gibi faturalandırılır. İadeler duruma göre ele alınır."
+    },
+    "usage": {
+      "title": "Kabul edilebilir kullanım",
+      "text": "OnePrompt'u geçerli tüm yasalara ve düzenlemelere uygun olarak kullanmayı kabul edersiniz. Şunları yapamazsınız:",
+      "item1": "Uygulamayı herhangi bir yasadışı amaçla kullanmak veya yasaları ihlal etmek",
+      "item2": "Mülkiyet altındaki bileşenlerin kaynak kodunu tersine mühendislik, kaynak koda dönüştürme veya çıkarma girişiminde bulunmak",
+      "item3": "OnePrompt Masaüstü özelliklerini izinsiz olarak yeniden dağıtmak",
+      "item4": "Uygulamayı başkalarını taciz etmek, kötüye kullanmak veya zarar vermek için kullanmak"
+    },
+    "thirdParty": {
+      "title": "Üçüncü taraf hizmetler",
+      "text": "OnePrompt, üçüncü taraf yapay zeka servisleriyle (OpenAI, Anthropic, Google vb.) entegre olur. Bu servisleri kullanımınız, ilgili hizmet şartlarına tabidir. OnePrompt aracılığıyla kullandığınız her yapay zeka servisinin şartlarına uymaktan siz sorumlusunuz."
+    },
+    "disclaimer": {
+      "title": "Garanti reddi",
+      "text": "OnePrompt, açık veya zımni hiçbir garanti olmaksızın \"olduğu gibi\" sağlanır. Uygulamanın hatasız, güvenli veya her zaman kullanılabilir olacağını garanti etmeyiz. Üçüncü taraf yapay zeka servislerinden gelen yanıtların içeriği, doğruluğu veya güvenilirliğinden sorumlu değiliz."
+    },
+    "limitation": {
+      "title": "Sorumluluk sınırlaması",
+      "text": "Yasaların izin verdiği azami ölçüde, Fabio Calabretta, OnePrompt'u kullanımınızdan kaynaklanan dolaylı, arızi, özel, sonuçsal veya cezai zararlardan veya doğrudan veya dolaylı olarak ortaya çıkan kar veya gelir kaybından veya veri, kullanım, şerefiye veya diğer maddi olmayan kayıplardan sorumlu olmayacaktır."
+    },
+    "changes": {
+      "title": "Şartlardaki değişiklikler",
+      "text": "Bu şartları herhangi bir zamanda değiştirme hakkımız saklıdır. Önemli değişiklikleri uygulama veya web sitemiz aracılığıyla kullanıcılara bildireceğiz. Değişikliklerden sonra OnePrompt'u kullanmaya devam etmeniz, yeni şartları kabul ettiğiniz anlamına gelir."
+    },
+    "governing": {
+      "title": "Geçerli hukuk",
+      "text": "Bu şartlar İtalya yasalarına tabidir ve bunlara göre yorumlanır. Bu şartlardan kaynaklanan her türlü anlaşmazlık, Milano, İtalya mahkemelerinin münhasır yargı yetkisine tabi olacaktır."
+    },
+    "contact": {
+      "title": "İletişim",
+      "text": "Bu Hizmet Şartları ile ilgili sorularınız için lütfen şu adrese başvurun: Fabio Calabretta, P.IVA: 13010040965, Milano, İtalya."
+    }
+  },
+  "cookie": {
+    "message": "Trafiği analiz etmek ve deneyiminizi geliştirmek için çerezler kullanıyoruz.",
+    "accept": "Kabul Et",
+    "deny": "Reddet"
+  },
+  "promptsPage": {
+    "title": "Cross-Check için Promptlar",
+    "subtitle": "Yapay zeka yanıtlarını karşılaştırmak için hazır promptlar. Kopyalamak için bir karta tıklayın.",
+    "back": "Ana sayfaya dön",
+    "copied": "Prompt panoya kopyalandı!",
+    "clickToCopy": "Kopyalamak için tıklayın",
+    "readMore": "Devamını oku",
+    "readLess": "Daha az göster"
+  }
+}

@@ -1,0 +1,461 @@
+.problem {
+  background: var(--bg-secondary);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 1.25rem;
+  margin: 0 auto var(--spacing-xl);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.beforeAfterContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  max-width: 1100px;
+  margin: 0 auto var(--spacing-xl);
+  padding: 0 var(--spacing-md);
+}
+
+.beforeCard,
+.afterCard {
+  flex: 1;
+  max-width: 480px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 20px 40px -10px rgba(0, 0, 0, 0.15);
+}
+
+.beforeCard {
+  background: linear-gradient(145deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid rgba(255, 100, 100, 0.2);
+}
+
+.afterCard {
+  background: linear-gradient(145deg, #0f1419 0%, #1a1f2e 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.cardLabel {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 8px;
+  text-transform: uppercase;
+}
+
+.beforeCard .cardLabel {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+  color: #f87171;
+}
+
+.afterCard .cardLabel {
+  background: linear-gradient(90deg, rgba(99, 102, 241, 0.2), rgba(34, 197, 94, 0.2));
+  color: #22c55e;
+}
+
+.chaosContainer {
+  position: relative;
+  height: 260px;
+  padding: 16px;
+  overflow: hidden;
+}
+
+/* Problem badges */
+.problemBadge {
+  position: absolute;
+  padding: 4px 10px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  z-index: 15;
+  white-space: nowrap;
+}
+
+.badge1 {
+  top: 8px;
+  left: 12px;
+}
+
+.badge2 {
+  top: 8px;
+  right: 12px;
+}
+
+.badge3 {
+  bottom: 8px;
+  left: 12px;
+}
+
+.badge4 {
+  bottom: 8px;
+  right: 12px;
+}
+
+.browserWindow {
+  position: absolute;
+  width: 180px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.windowHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.windowDots {
+  display: flex;
+  gap: 4px;
+}
+
+.windowDots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.windowDots span:first-child { background: #ff5f57; }
+.windowDots span:nth-child(2) { background: #ffbd2e; }
+.windowDots span:nth-child(3) { background: #28ca42; }
+
+.windowTitle {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.windowContent {
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  min-height: 60px;
+}
+
+.textLine {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.textLine:last-child {
+  margin-bottom: 0;
+}
+
+.windowChatGPT {
+  top: 35px;
+  left: 20px;
+  z-index: 1;
+  transform: rotate(-2deg);
+}
+.windowChatGPT .windowTitle { color: #10a37f; }
+.windowChatGPT .windowHeader { border-bottom: 2px solid #10a37f; }
+
+.windowClaude {
+  top: 45px;
+  right: 20px;
+  z-index: 2;
+  transform: rotate(2deg);
+}
+.windowClaude .windowTitle { color: #d97757; }
+.windowClaude .windowHeader { border-bottom: 2px solid #d97757; }
+
+.windowGemini {
+  bottom: 45px;
+  left: 50px;
+  z-index: 3;
+  transform: rotate(1deg);
+}
+.windowGemini .windowTitle { color: #4285f4; }
+.windowGemini .windowHeader { border-bottom: 2px solid #4285f4; }
+
+.windowPerplexity {
+  bottom: 35px;
+  right: 50px;
+  z-index: 4;
+  transform: rotate(-1deg);
+}
+.windowPerplexity .windowTitle { color: #20b8cd; }
+.windowPerplexity .windowHeader { border-bottom: 2px solid #20b8cd; }
+
+.cursor {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  color: white;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+  z-index: 10;
+  animation: cursorMove 4s ease-in-out infinite;
+}
+
+.cursor svg {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes cursorMove {
+  0%, 100% {
+    top: 60px;
+    left: 90px;
+  }
+  25% {
+    top: 70px;
+    left: 260px;
+  }
+  50% {
+    top: 175px;
+    left: 120px;
+  }
+  75% {
+    top: 165px;
+    left: 290px;
+  }
+}
+
+.frustrationIndicator {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(239, 68, 68, 0.1);
+  border-top: 1px solid rgba(239, 68, 68, 0.2);
+  font-size: 0.75rem;
+  color: #f87171;
+}
+
+.arrow {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.arrow svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* ===== AFTER Card - Single App Window ===== */
+.appWindow {
+  margin: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0d1117;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.appWindowHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.appTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.sessionTabs {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.sessionTab {
+  font-size: 0.6rem;
+  padding: 3px 8px;
+  background: rgba(99, 102, 241, 0.3);
+  color: #a5b4fc;
+  border-radius: 4px;
+}
+
+.sessionTabInactive {
+  font-size: 0.6rem;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+}
+
+/* Horizontal panels layout */
+.horizontalPanels {
+  display: flex;
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  min-height: 160px;
+}
+
+.hPanel {
+  flex: 1;
+  background: #0d1117;
+  display: flex;
+  flex-direction: column;
+}
+
+.hPanelHeader {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  font-size: 0.55rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.hPanelChatGPT .hPanelHeader { color: #10a37f; }
+.hPanelClaude .hPanelHeader { color: #d97757; }
+.hPanelGemini .hPanelHeader { color: #4285f4; }
+.hPanelPerplexity .hPanelHeader { color: #20b8cd; }
+
+.hPanelBody {
+  padding: 8px;
+  flex: 1;
+}
+
+.successIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  background: rgba(34, 197, 94, 0.1);
+  border-top: 1px solid rgba(34, 197, 94, 0.2);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #22c55e;
+}
+
+.checkIcon {
+  font-size: 0.9rem;
+}
+
+.solution {
+  text-align: center;
+  font-size: 1.25rem;
+  max-width: 700px;
+  margin: 0 auto var(--spacing-sm);
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.tagline {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  max-width: 700px;
+  margin: 0 auto;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .beforeAfterContainer {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding: 0 var(--spacing-sm);
+  }
+
+  .beforeCard,
+  .afterCard {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+    width: 40px;
+    height: 40px;
+  }
+
+  .arrow svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .chaosContainer {
+    height: 240px;
+  }
+
+  .problemBadge {
+    font-size: 0.5rem;
+    padding: 3px 6px;
+  }
+
+  .browserWindow {
+    width: 140px;
+  }
+
+  .windowChatGPT {
+    top: 30px;
+    left: 10px;
+  }
+
+  .windowClaude {
+    top: 40px;
+    right: 10px;
+  }
+
+  .windowGemini {
+    bottom: 40px;
+    left: 30px;
+  }
+
+  .windowPerplexity {
+    bottom: 30px;
+    right: 30px;
+  }
+
+  .gridContent {
+    gap: 6px;
+    padding: 10px;
+    min-height: 160px;
+  }
+
+  .panelHeader {
+    font-size: 0.6rem;
+    padding: 5px 8px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+  }
+
+  .solution {
+    font-size: 1.1rem;
+  }
+
+  .tagline {
+    font-size: 1.25rem;
+  }
+}

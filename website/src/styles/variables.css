@@ -1,0 +1,39 @@
+:root {
+  /* Dark Theme (default) */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #3a3a3a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --accent-color: #007aff;
+  --accent-hover: #0056b3;
+  --success-color: #28a745;
+  --border-color: #404040;
+  --border-radius: 12px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 80px;
+
+  /* Landing Page Specific */
+  --gradient-hero: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.4);
+  --container-max-width: 1200px;
+}
+
+[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f7;
+  --bg-tertiary: #e5e5e7;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border-color: #d1d1d6;
+  --gradient-hero: linear-gradient(135deg, #ffffff 0%, #f5f5f7 100%);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --card-shadow-hover: 0 12px 48px rgba(0, 0, 0, 0.15);
+}

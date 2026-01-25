@@ -1,0 +1,164 @@
+.pricing {
+  background: var(--bg-primary);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--spacing-3xl);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-xl);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card {
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.desktopCard {
+  border: 2px solid var(--accent-color);
+  box-shadow:
+    0 0 20px rgba(0, 122, 255, 0.15),
+    0 0 40px rgba(0, 122, 255, 0.1);
+}
+
+.recommendedBadge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #00d4ff 100%);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 1rem;
+  border-radius: 1rem;
+  white-space: nowrap;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+}
+
+.header h3 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.desktopCard .header h3 {
+  color: var(--accent-color);
+}
+
+.noBadge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: white;
+  background: var(--accent-color);
+  padding: 0.2rem 0.6rem;
+  border-radius: 1rem;
+}
+
+.priceSection {
+  min-height: 70px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-xs);
+}
+
+.amount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.amountFree {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--success-color);
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: var(--spacing-xs) 0 0;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--spacing-xl);
+  flex: 1;
+}
+
+.features li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) 0;
+  font-size: 0.9rem;
+}
+
+.features li.included {
+  color: var(--text-primary);
+}
+
+.features li.included svg {
+  color: var(--success-color);
+  flex-shrink: 0;
+}
+
+.features li.excluded {
+  color: var(--text-tertiary, #888);
+}
+
+.features li.excluded svg {
+  color: var(--text-tertiary, #666);
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.features li.premium {
+  color: var(--text-secondary);
+}
+
+.features li.premium svg {
+  color: #a78bfa;
+  flex-shrink: 0;
+}
+
+.cta {
+  width: 100%;
+}
+
+.ctaPrimary {
+  width: 100%;
+  font-size: 1.1rem;
+  padding: var(--spacing-md) var(--spacing-xl);
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .recommendedBadge {
+    top: -10px;
+    font-size: 0.65rem;
+  }
+}

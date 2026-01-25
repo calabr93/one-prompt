@@ -1,0 +1,258 @@
+{
+  "nav": {
+    "features": "Funcionalidades",
+    "pricing": "Preços",
+    "download": "Baixar grátis",
+    "github": "GitHub"
+  },
+  "hero": {
+    "badge": "Open source · Sem assinatura · Seguro e Compliant",
+    "headline": "Compare IAs num instante",
+    "subheadline": "Visualize as respostas do ChatGPT, Claude, Gemini e mais lado a lado em uma única janela. Encontre a melhor resposta num relance.",
+    "cta": {
+      "download": "Baixar grátis"
+    },
+    "github": "Ou veja no GitHub"
+  },
+  "problem": {
+    "title": "O Problema",
+    "subtitle": "Cada IA raciocina de forma diferente. Compará-las uma por uma é lento e frustrante.",
+    "solution": "Com OnePrompt você tem uma única janela para todas as IAs.",
+    "tagline": "Escreva, compare, escolha ✅",
+    "before": "ANTES",
+    "after": "DEPOIS",
+    "comparisonFatigue": "Fadiga de comparação",
+    "copyPasteLoop": "Loop de copiar-colar",
+    "tabOverload": "Sobrecarga de abas",
+    "inconsistentOutputs": "Respostas inconsistentes",
+    "session": "Sessão",
+    "allInOneView": "Tudo em uma única vista"
+  },
+  "solution": {
+    "title": "A solução: todas as IAs em uma janela",
+    "description": "OnePrompt é um aplicativo de desktop que permite visualizar e comparar respostas de múltiplos serviços de IA lado a lado. Escolha a melhor num relance.",
+    "features": [
+      "Respostas lado a lado para comparação instantânea",
+      "Cross-Check: faça cada IA avaliar as outras",
+      "Funciona com suas contas existentes",
+      "Seus dados permanecem no seu computador"
+    ]
+  },
+  "features": {
+    "title": "Funcionalidades",
+    "items": [
+      {
+        "title": "Escreva uma vez, envie para todas",
+        "description": "Envie o mesmo prompt para ChatGPT, Claude, Gemini e outras IAs com poucos cliques."
+      },
+      {
+        "title": "Comparação lado a lado",
+        "description": "Veja todas as respostas em uma grade adaptável para comparação instantânea."
+      },
+      {
+        "title": "Cross-Check",
+        "description": "Faça as IAs avaliarem e compararem as respostas entre si."
+      },
+      {
+        "title": "Dois modos",
+        "description": "Modo Web e Modo API."
+      },
+      {
+        "title": "Múltiplas sessões",
+        "description": "Organize seu trabalho em abas separadas, como um navegador."
+      },
+      {
+        "title": "Privacidade em primeiro lugar",
+        "description": "Seus dados ficam no seu dispositivo."
+      }
+    ]
+  },
+  "crossCheck": {
+    "title": "Cross-Check",
+    "subtitle": "Faça as IAs se avaliarem mutuamente",
+    "description": "Com o Cross-Check, você pode pedir a cada IA que analise e compare as respostas de todas as outras. Obtenha uma avaliação completa de qual resposta é mais precisa, completa ou relevante para sua pergunta específica.",
+    "features": [
+      "Cada IA revisa todas as outras respostas",
+      "Identifique a resposta mais precisa",
+      "Descubra pontos fortes e fracos de cada resposta",
+      "Tome decisões informadas mais rapidamente"
+    ],
+    "viewPrompts": "Ver modelos de prompts →"
+  },
+  "pricing": {
+    "title": "Escolha como começar",
+    "github": {
+      "title": "Edição GitHub",
+      "price": "Open source",
+      "subtitle": "Para desenvolvedores",
+      "features": [
+        { "text": "Modo Web: grátis ilimitado", "type": "included" },
+        { "text": "Privacidade total (dados locais)", "type": "included" },
+        { "text": "Modo API: configuração manual", "type": "excluded" },
+        { "text": "Nenhum crédito incluído", "type": "excluded" }
+      ],
+      "cta": "Ver no GitHub"
+    },
+    "desktop": {
+      "title": "OnePrompt Desktop",
+      "price": "Grátis",
+      "recommendedBadge": "Recomendado",
+      "subtitle": "Download para MacOS/Windows/Linux",
+      "features": [
+        { "text": "Modo Web: grátis ilimitado", "type": "included" },
+        { "text": "Privacidade total (dados locais)", "type": "included" },
+        { "text": "Modo API: pronto para usar", "type": "included" },
+        { "text": "50 créditos incluídos instantaneamente", "type": "included" },
+        { "text": "Atualizações automáticas", "type": "included" },
+        { "text": "Sem assinatura", "type": "included" },
+        { "text": "Modo API: créditos opcionais a partir de $4,99", "type": "premium" }
+      ],
+      "cta": "Baixar grátis"
+    }
+  },
+  "platforms": {
+    "title": "Plataformas suportadas",
+    "api": "Modo API",
+    "web": "Modo Web",
+    "comingSoon": "Em breve"
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "items": [
+      {
+        "question": "O OnePrompt é realmente gratuito?",
+        "answer": "Sim, o aplicativo é instalado gratuitamente no Mac, Windows e Linux. Inclui Modo Web gratuito ilimitado e 50 créditos para o Modo API. A versão open source no GitHub permite configurar suas próprias chaves de API."
+      },
+      {
+        "question": "Meus dados estão seguros?",
+        "answer": "Absolutamente. Seus prompts e respostas nunca saem do seu dispositivo. As chaves de API são armazenadas localmente."
+      },
+      {
+        "question": "Qual é a diferença entre Modo API e Modo Web?",
+        "answer": "O Modo API usa as APIs oficiais dos serviços de IA. O Modo Web usa interfaces web."
+      },
+      {
+        "question": "Se o app é gratuito, para que servem os créditos pagos?",
+        "answer": "O OnePrompt é gratuito no Modo Web, mas este modo tem limitações naturais devido aos Termos de Serviço dos serviços de IA. Os créditos servem para desbloquear todo o poder do Cross Check através das APIs oficiais: criamos um sistema pronto para usar para permitir que mesmo quem não é desenvolvedor (e não tem suas próprias chaves de API) possa comparar modelos sem restrições e sem configurações complexas."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Compare IAs com um clique"
+  },
+  "footer": {
+    "tagline": "Compare IAs num instante.",
+    "reportBug": "Reportar erro",
+    "support": "Apoiar o projeto",
+    "copyright": "Todos os direitos reservados.",
+    "license": "O código-fonte está disponível sob a licença MIT. As funcionalidades do OnePrompt Desktop são proprietárias.",
+    "builtIn": "",
+    "privacyPolicy": "Política de privacidade",
+    "termsOfService": "Termos de serviço"
+  },
+  "privacy": {
+    "lastUpdated": "Última atualização: Janeiro de 2026",
+    "intro": {
+      "title": "Introdução",
+      "text": "Fabio Calabretta (\"nós\", \"nos\" ou \"nosso\") opera o OnePrompt. Esta Política de Privacidade explica como coletamos, usamos e protegemos suas informações quando você usa nosso aplicativo de desktop."
+    },
+    "dataCollection": {
+      "title": "Dados que coletamos",
+      "text": "O OnePrompt foi projetado com a privacidade como princípio fundamental. Os dados que podemos coletar dependem de como você usa o aplicativo:",
+      "item1": "Dados locais: seus prompts, respostas de IA e configurações são armazenados localmente no seu dispositivo e nunca transmitidos para nossos servidores.",
+      "item2": "Chaves de API: se você usar suas próprias chaves de API, elas são armazenadas localmente e criptografadas no seu dispositivo.",
+      "item3": "OnePrompt Desktop: se você usar as funcionalidades do OnePrompt Desktop, processamos o mínimo de dados necessários para fornecer o serviço (tokens de autenticação, métricas de uso para faturamento)."
+    },
+    "dataStorage": {
+      "title": "Armazenamento e segurança de dados",
+      "text": "Todos os dados locais são armazenados no seu dispositivo usando criptografia padrão da indústria. Não temos acesso aos seus dados armazenados localmente, incluindo seus prompts, respostas ou chaves de API."
+    },
+    "thirdParty": {
+      "title": "Serviços de terceiros",
+      "text": "Quando você usa o OnePrompt para interagir com serviços de IA (ChatGPT, Claude, Gemini, etc.), seus prompts são enviados diretamente para esses serviços. Cada serviço tem sua própria política de privacidade que rege como eles lidam com seus dados. Recomendamos revisar as políticas de privacidade dos serviços de IA que você usa."
+    },
+    "apiKeys": {
+      "title": "Chaves de API",
+      "text": "Suas chaves de API são armazenadas localmente no seu dispositivo e nunca transmitidas para nossos servidores. Elas são usadas exclusivamente para autenticar solicitações aos respectivos serviços de IA em seu nome."
+    },
+    "proFeatures": {
+      "title": "Funcionalidades OnePrompt Desktop",
+      "text": "Se você usar créditos do OnePrompt Desktop, coletamos as informações mínimas necessárias para fornecer o serviço: seu e-mail para gerenciamento de conta, informações de pagamento processadas com segurança através do Stripe e dados de uso para fins de faturamento. Não armazenamos nem acessamos seus prompts ou respostas de IA."
+    },
+    "rights": {
+      "title": "Seus direitos",
+      "text": "De acordo com o GDPR e as leis de proteção de dados aplicáveis, você tem o direito de acessar, corrigir ou excluir seus dados pessoais. Como a maioria dos dados é armazenada localmente no seu dispositivo, você tem controle direto sobre eles. Para quaisquer dados relacionados a compras do OnePrompt Desktop, entre em contato conosco no endereço abaixo."
+    },
+    "contact": {
+      "title": "Contate-nos",
+      "text": "Para quaisquer dúvidas sobre esta Política de Privacidade, entre em contato: Fabio Calabretta, P.IVA: 13010040965, Milão, Itália."
+    }
+  },
+  "terms": {
+    "lastUpdated": "Última atualização: Janeiro de 2026",
+    "acceptance": {
+      "title": "Aceitação dos termos",
+      "text": "Ao baixar, instalar ou usar o OnePrompt, você concorda em ficar vinculado a estes Termos de Serviço. Se você não concordar com esses termos, não use o aplicativo."
+    },
+    "license": {
+      "title": "Licença",
+      "text": "O OnePrompt é distribuído sob um modelo de licenciamento duplo:",
+      "item1": "O código-fonte do aplicativo principal está disponível sob a licença MIT, permitindo que você o use, modifique e distribua livremente.",
+      "item2": "As funcionalidades do OnePrompt Desktop são proprietárias e exigem a compra de créditos para uso."
+    },
+    "proFeatures": {
+      "title": "OnePrompt Desktop",
+      "text": "As funcionalidades do OnePrompt Desktop estão disponíveis através da compra de créditos. Os créditos são faturados conforme indicado no momento da compra. Reembolsos são tratados caso a caso."
+    },
+    "usage": {
+      "title": "Uso aceitável",
+      "text": "Você concorda em usar o OnePrompt em conformidade com todas as leis e regulamentos aplicáveis. Você não pode:",
+      "item1": "Usar o aplicativo para qualquer finalidade ilegal ou para violar quaisquer leis",
+      "item2": "Tentar fazer engenharia reversa, descompilar ou extrair o código-fonte de componentes proprietários",
+      "item3": "Redistribuir as funcionalidades do OnePrompt Desktop sem autorização",
+      "item4": "Usar o aplicativo para assediar, abusar ou prejudicar outros"
+    },
+    "thirdParty": {
+      "title": "Serviços de terceiros",
+      "text": "O OnePrompt se integra a serviços de IA de terceiros (OpenAI, Anthropic, Google, etc.). Seu uso desses serviços está sujeito aos seus respectivos termos de serviço. Você é responsável por cumprir os termos de cada serviço de IA que você usa através do OnePrompt."
+    },
+    "disclaimer": {
+      "title": "Isenção de garantias",
+      "text": "O OnePrompt é fornecido \"como está\" sem garantia de qualquer tipo, expressa ou implícita. Não garantimos que o aplicativo estará livre de erros, seguro ou disponível o tempo todo. Não somos responsáveis pelo conteúdo, precisão ou confiabilidade das respostas de serviços de IA de terceiros."
+    },
+    "limitation": {
+      "title": "Limitação de responsabilidade",
+      "text": "Na extensão máxima permitida por lei, Fabio Calabretta não será responsável por quaisquer danos indiretos, incidentais, especiais, consequenciais ou punitivos, ou qualquer perda de lucros ou receitas, seja incorrida direta ou indiretamente, ou qualquer perda de dados, uso, boa vontade ou outras perdas intangíveis resultantes do seu uso do OnePrompt."
+    },
+    "changes": {
+      "title": "Alterações nos termos",
+      "text": "Reservamo-nos o direito de modificar estes termos a qualquer momento. Notificaremos os usuários sobre alterações significativas através do aplicativo ou do nosso site. Seu uso contínuo do OnePrompt após as alterações constitui aceitação dos novos termos."
+    },
+    "governing": {
+      "title": "Lei aplicável",
+      "text": "Estes termos são regidos e interpretados de acordo com as leis da Itália. Quaisquer disputas decorrentes destes termos estarão sujeitas à jurisdição exclusiva dos tribunais de Milão, Itália."
+    },
+    "contact": {
+      "title": "Contato",
+      "text": "Para quaisquer dúvidas sobre estes Termos de Serviço, entre em contato: Fabio Calabretta, P.IVA: 13010040965, Milão, Itália."
+    }
+  },
+  "cookie": {
+    "message": "Usamos cookies para analisar o tráfego e melhorar sua experiência.",
+    "accept": "Aceitar",
+    "deny": "Recusar"
+  },
+  "windowsModal": {
+    "title": "⚠️ O download não inicia?",
+    "description": "Por ser um app novo, o navegador pode perguntar se você confia no arquivo. Isso é normal. Confirme que você confia no app para completar o download. Veja o GIF abaixo para saber como fazer."
+  },
+  "promptsPage": {
+    "title": "Prompts para Cross-Check",
+    "subtitle": "Prompts prontos para usar para comparar respostas de IA. Clique em um cartão para copiar o prompt.",
+    "back": "Voltar para a página inicial",
+    "copied": "Prompt copiado para a área de transferência!",
+    "clickToCopy": "Clique para copiar",
+    "readMore": "Ler mais",
+    "readLess": "Mostrar menos"
+  }
+}

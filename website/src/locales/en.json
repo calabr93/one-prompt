@@ -1,0 +1,258 @@
+{
+  "nav": {
+    "features": "Features",
+    "pricing": "Pricing",
+    "download": "Download free",
+    "github": "GitHub"
+  },
+  "hero": {
+    "badge": "Open source · No subscription · Safe & Compliant",
+    "headline": "Compare AIs in an instant",
+    "subheadline": "See responses from ChatGPT, Claude, Gemini and more side-by-side in one window. Find the best answer at a glance.",
+    "cta": {
+      "download": "Download free"
+    },
+    "github": "Or view on GitHub"
+  },
+  "problem": {
+    "title": "The Problem",
+    "subtitle": "Every AI thinks differently. Comparing them one by one is slow and frustrating.",
+    "solution": "With OnePrompt you have one window for all AIs.",
+    "tagline": "Write, compare, choose ✅",
+    "before": "BEFORE",
+    "after": "AFTER",
+    "comparisonFatigue": "Comparison Fatigue",
+    "copyPasteLoop": "Copy-Paste Loop",
+    "tabOverload": "Tab Overload",
+    "inconsistentOutputs": "Inconsistent Outputs",
+    "session": "Session",
+    "allInOneView": "All in one view"
+  },
+  "solution": {
+    "title": "The solution: all AIs in one window",
+    "description": "OnePrompt is a desktop app that lets you view and compare responses from multiple AI services side-by-side. Choose the best answer at a glance.",
+    "features": [
+      "Side-by-side responses for instant comparison",
+      "Cross-Check: let each AI evaluate the others",
+      "Works with your existing accounts",
+      "Your data stays on your computer"
+    ]
+  },
+  "features": {
+    "title": "Features",
+    "items": [
+      {
+        "title": "Write once, send everywhere",
+        "description": "Send the same prompt to ChatGPT, Claude, Gemini and other AIs with just a few clicks."
+      },
+      {
+        "title": "Side-by-side comparison",
+        "description": "See all responses in an adaptive grid for instant comparison."
+      },
+      {
+        "title": "Cross-Check",
+        "description": "Have AIs evaluate and compare each other's responses."
+      },
+      {
+        "title": "Two modes",
+        "description": "Web Mode and API Mode."
+      },
+      {
+        "title": "Multiple sessions",
+        "description": "Organize your work in separate tabs, like a browser."
+      },
+      {
+        "title": "Privacy first",
+        "description": "Your data stays on your device."
+      }
+    ]
+  },
+  "crossCheck": {
+    "title": "Cross-Check",
+    "subtitle": "Let AIs evaluate each other",
+    "description": "With Cross-Check, you can ask each AI to analyze and compare the responses from all the others. Get a comprehensive evaluation of which answer is most accurate, complete, or relevant for your specific question.",
+    "features": [
+      "Each AI reviews all other responses",
+      "Identify the most accurate answer",
+      "Discover strengths and weaknesses of each response",
+      "Make informed decisions faster"
+    ],
+    "viewPrompts": "View prompt templates →"
+  },
+  "pricing": {
+    "title": "Choose how to start",
+    "github": {
+      "title": "GitHub Edition",
+      "price": "Open source",
+      "subtitle": "For developers",
+      "features": [
+        { "text": "Web Mode: free unlimited", "type": "included" },
+        { "text": "Total privacy (local data)", "type": "included" },
+        { "text": "API Mode: manual configuration", "type": "excluded" },
+        { "text": "No credits included", "type": "excluded" }
+      ],
+      "cta": "View on GitHub"
+    },
+    "desktop": {
+      "title": "OnePrompt Desktop",
+      "price": "Free",
+      "recommendedBadge": "Recommended",
+      "subtitle": "Download for MacOS/Windows/Linux",
+      "features": [
+        { "text": "Web Mode: free unlimited", "type": "included" },
+        { "text": "Total privacy (local data)", "type": "included" },
+        { "text": "API Mode: ready to use", "type": "included" },
+        { "text": "50 credits included instantly", "type": "included" },
+        { "text": "Automatic updates", "type": "included" },
+        { "text": "No subscription", "type": "included" },
+        { "text": "API Mode: optional credits from $4.99", "type": "premium" }
+      ],
+      "cta": "Download free"
+    }
+  },
+  "platforms": {
+    "title": "Supported platforms",
+    "api": "API Mode",
+    "web": "Web Mode",
+    "comingSoon": "Coming soon"
+  },
+  "faq": {
+    "title": "Frequently asked questions",
+    "items": [
+      {
+        "question": "Is OnePrompt really free?",
+        "answer": "Yes, the app installs free on Mac, Windows, and Linux. It includes free unlimited Web Mode and 50 credits for API Mode. The open source version on GitHub lets you configure your own API keys."
+      },
+      {
+        "question": "Is my data safe?",
+        "answer": "Absolutely. Your prompts and responses never leave your device. API keys are stored locally."
+      },
+      {
+        "question": "What's the difference between API Mode and Web Mode?",
+        "answer": "API Mode uses the official APIs of AI services. Web Mode uses web interfaces."
+      },
+      {
+        "question": "If the app is free, what are the paid credits for?",
+        "answer": "OnePrompt is free in Web Mode, but this mode has natural limitations due to the Terms of Service of AI services. Credits unlock the full power of Cross Check through official APIs: we created a turnkey system to allow even non-developers (who don't have their own API keys) to compare models without restrictions and without complex configurations."
+      }
+    ]
+  },
+  "cta": {
+    "title": "Compare AIs in one click"
+  },
+  "footer": {
+    "tagline": "Compare AIs in an instant.",
+    "reportBug": "Report bug",
+    "support": "Support the project",
+    "copyright": "All rights reserved.",
+    "license": "The source code is available under the MIT License. OnePrompt Desktop features are proprietary.",
+    "builtIn": "",
+    "privacyPolicy": "Privacy policy",
+    "termsOfService": "Terms of service"
+  },
+  "privacy": {
+    "lastUpdated": "Last updated: January 2026",
+    "intro": {
+      "title": "Introduction",
+      "text": "Fabio Calabretta (\"we\", \"us\", or \"our\") operates OnePrompt. This Privacy Policy explains how we collect, use, and protect your information when you use our desktop application."
+    },
+    "dataCollection": {
+      "title": "Data we collect",
+      "text": "OnePrompt is designed with privacy as a core principle. The data we may collect depends on how you use the application:",
+      "item1": "Local data: your prompts, AI responses, and settings are stored locally on your device and never transmitted to our servers.",
+      "item2": "API keys: if you use your own API keys, they are stored locally and encrypted on your device.",
+      "item3": "OnePrompt Desktop: if you use OnePrompt Desktop features, we process minimal data necessary to provide the service (authentication tokens, usage metrics for billing)."
+    },
+    "dataStorage": {
+      "title": "Data storage and security",
+      "text": "All local data is stored on your device using industry-standard encryption. We do not have access to your locally stored data, including your prompts, responses, or API keys."
+    },
+    "thirdParty": {
+      "title": "Third-party services",
+      "text": "When you use OnePrompt to interact with AI services (ChatGPT, Claude, Gemini, etc.), your prompts are sent directly to those services. Each service has its own privacy policy that governs how they handle your data. We recommend reviewing the privacy policies of the AI services you use."
+    },
+    "apiKeys": {
+      "title": "API keys",
+      "text": "Your API keys are stored locally on your device and are never transmitted to our servers. They are used exclusively to authenticate requests to the respective AI services on your behalf."
+    },
+    "proFeatures": {
+      "title": "OnePrompt Desktop features",
+      "text": "If you use OnePrompt Desktop credits, we collect minimal information necessary to provide the service: your email for account management, payment information processed securely through Stripe, and usage data for billing purposes. We do not store or access your prompts or AI responses."
+    },
+    "rights": {
+      "title": "Your rights",
+      "text": "Under GDPR and applicable data protection laws, you have the right to access, correct, or delete your personal data. Since most data is stored locally on your device, you have direct control over it. For any data related to OnePrompt Desktop purchases, contact us at the address below."
+    },
+    "contact": {
+      "title": "Contact us",
+      "text": "For any questions about this Privacy Policy, please contact: Fabio Calabretta, P.IVA: 13010040965, Milan, Italy."
+    }
+  },
+  "terms": {
+    "lastUpdated": "Last updated: January 2026",
+    "acceptance": {
+      "title": "Acceptance of terms",
+      "text": "By downloading, installing, or using OnePrompt, you agree to be bound by these Terms of Service. If you do not agree to these terms, do not use the application."
+    },
+    "license": {
+      "title": "License",
+      "text": "OnePrompt is distributed under a dual licensing model:",
+      "item1": "The core application source code is available under the MIT License, allowing you to use, modify, and distribute it freely.",
+      "item2": "OnePrompt Desktop features are proprietary and require the purchase of credits to use."
+    },
+    "proFeatures": {
+      "title": "OnePrompt Desktop",
+      "text": "OnePrompt Desktop features are available through the purchase of credits. Credits are billed as indicated at the time of purchase. Refunds are handled on a case-by-case basis."
+    },
+    "usage": {
+      "title": "Acceptable use",
+      "text": "You agree to use OnePrompt in compliance with all applicable laws and regulations. You may not:",
+      "item1": "Use the application for any illegal purpose or to violate any laws",
+      "item2": "Attempt to reverse engineer, decompile, or extract the source code of proprietary components",
+      "item3": "Redistribute OnePrompt Desktop features without authorization",
+      "item4": "Use the application to harass, abuse, or harm others"
+    },
+    "thirdParty": {
+      "title": "Third-party services",
+      "text": "OnePrompt integrates with third-party AI services (OpenAI, Anthropic, Google, etc.). Your use of these services is subject to their respective terms of service. You are responsible for complying with the terms of each AI service you use through OnePrompt."
+    },
+    "disclaimer": {
+      "title": "Disclaimer of warranties",
+      "text": "OnePrompt is provided \"as is\" without warranty of any kind, express or implied. We do not guarantee that the application will be error-free, secure, or available at all times. We are not responsible for the content, accuracy, or reliability of responses from third-party AI services."
+    },
+    "limitation": {
+      "title": "Limitation of liability",
+      "text": "To the maximum extent permitted by law, Fabio Calabretta shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses resulting from your use of OnePrompt."
+    },
+    "changes": {
+      "title": "Changes to terms",
+      "text": "We reserve the right to modify these terms at any time. We will notify users of significant changes through the application or our website. Your continued use of OnePrompt after changes constitutes acceptance of the new terms."
+    },
+    "governing": {
+      "title": "Governing law",
+      "text": "These terms are governed by and construed in accordance with the laws of Italy. Any disputes arising from these terms will be subject to the exclusive jurisdiction of the courts of Milan, Italy."
+    },
+    "contact": {
+      "title": "Contact",
+      "text": "For any questions about these Terms of Service, please contact: Fabio Calabretta, P.IVA: 13010040965, Milan, Italy."
+    }
+  },
+  "cookie": {
+    "message": "We use cookies to analyze traffic and improve your experience.",
+    "accept": "Accept",
+    "deny": "Deny"
+  },
+  "windowsModal": {
+    "title": "⚠️ Download not starting?",
+    "description": "Since this is a new app, your browser may ask if you trust the file. This is normal. Confirm that you trust the app to complete the download. Watch the GIF below to see how."
+  },
+  "promptsPage": {
+    "title": "Prompts for Cross-Check",
+    "subtitle": "Ready-to-use prompts to compare AI responses. Click on any card to copy the prompt to your clipboard.",
+    "back": "Back to home",
+    "copied": "Prompt copied to clipboard!",
+    "clickToCopy": "Click to copy",
+    "readMore": "Read more",
+    "readLess": "Read less"
+  }
+}

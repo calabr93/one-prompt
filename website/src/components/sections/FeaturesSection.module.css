@@ -1,0 +1,64 @@
+.features {
+  background: var(--bg-secondary);
+}
+
+.title {
+  text-align: center;
+  margin-bottom: var(--spacing-3xl);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.grid>div {
+  background: linear-gradient(135deg, var(--bg-primary) 0%, rgba(0, 122, 255, 0.03) 100%);
+  border: 1px solid rgba(0, 122, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.grid>div:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.12);
+  border-color: rgba(0, 122, 255, 0.25);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--spacing-md);
+  background: linear-gradient(135deg, rgba(0, 122, 255, 0.15) 0%, rgba(0, 212, 255, 0.1) 100%);
+  border-radius: 16px;
+  color: var(--accent-color);
+}
+
+.grid > div:first-child .icon svg {
+  transform: rotate(180deg);
+}
+
+.grid h3 {
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-primary);
+}
+
+.grid p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

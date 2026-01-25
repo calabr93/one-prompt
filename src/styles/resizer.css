@@ -1,0 +1,99 @@
+/**
+ * Resizer styles for webview-wrapper resize handles
+ * Allows manual resizing of individual webview panels
+ */
+
+/* Base resizer handle */
+.webview-resizer {
+  position: absolute;
+  background: transparent;
+  z-index: 10;
+  transition: background 0.15s ease;
+}
+
+.webview-resizer:hover {
+  background: var(--accent-color);
+}
+
+.webview-resizer.resizing {
+  background: var(--accent-color);
+}
+
+/* Horizontal layout: vertical resizer on the right edge */
+.layout-horizontal .webview-resizer {
+  width: 8px;
+  height: 100%;
+  right: -4px;
+  top: 0;
+  cursor: col-resize;
+}
+
+/* Vertical layout: horizontal resizer on the bottom edge */
+.layout-vertical .webview-resizer {
+  height: 8px;
+  width: 100%;
+  bottom: -4px;
+  left: 0;
+  cursor: row-resize;
+}
+
+/* Grid layout: Global column resizers */
+.grid-col-resizer {
+  position: absolute;
+  width: 8px;
+  top: 0;
+  cursor: col-resize;
+  background: transparent;
+  z-index: 100;
+  transition: background 0.15s ease;
+}
+
+.grid-col-resizer:hover,
+.grid-col-resizer.resizing {
+  background: var(--accent-color);
+}
+
+/* Grid layout: Global row resizers */
+.grid-row-resizer {
+  position: absolute;
+  height: 8px;
+  left: 0;
+  cursor: row-resize;
+  background: transparent;
+  z-index: 100;
+  transition: background 0.15s ease;
+}
+
+.grid-row-resizer:hover,
+.grid-row-resizer.resizing {
+  background: var(--accent-color);
+}
+
+/* Prevent text selection during resize */
+.resizing-active {
+  user-select: none !important;
+}
+
+.resizing-active * {
+  cursor: col-resize !important;
+}
+
+.resizing-active.resizing-vertical * {
+  cursor: row-resize !important;
+}
+
+/* Visual feedback overlay during resize */
+.resize-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  cursor: col-resize;
+  background: transparent;
+}
+
+.resize-overlay.vertical {
+  cursor: row-resize;
+}

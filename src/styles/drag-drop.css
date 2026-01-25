@@ -1,0 +1,18 @@
+/* Drag & Drop Styles for Webview Wrapper */
+.webview-wrapper.dragging {
+  opacity: 0.5;
+  border: 2px dashed var(--accent-color);
+}
+
+.webview-wrapper.drag-over {
+  border-left: 4px solid var(--accent-color);
+  background: rgba(0, 122, 255, 0.05);
+}
+
+.webview-header {
+  cursor: grab;
+}
+
+.webview-header:active {
+  cursor: grabbing;
+}
