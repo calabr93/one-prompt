@@ -2715,7 +2715,6 @@ function appendApiMessage(panel, role, text, save = true) {
 
   const bubble = document.createElement('div');
   bubble.className = `api-message ${role}`;
-  bubble.style.maxWidth = '85%';
   bubble.style.padding = '12px 16px';
   bubble.style.borderRadius = '12px';
   bubble.style.lineHeight = '1.5';

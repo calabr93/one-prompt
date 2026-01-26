@@ -109,11 +109,10 @@ export function selectMode(mode) {
   if (currentSession) {
     currentSession.mode = mode;
 
-    // If switching to API mode, set default API services
+    // If switching to API mode, ensure API services are configured (but don't clear selections)
     if (mode === 'api') {
-      selectedAIs.clear();
-      // Do NOT auto-select services. User must add them manually.
-      // Just ensure they are configured so they appear in sidebar.
+      // Do NOT clear selectedAIs - preserve user's service selections when switching modes
+      // Just ensure API services are configured so they appear in sidebar
       const apiServices = AIServicesModule ? AIServicesModule.getApiServices() : ['chatgpt', 'gemini', 'claude'];
       apiServices.forEach(key => {
         if (!configuredApiAIs.has(key)) {
@@ -121,6 +120,7 @@ export function selectMode(mode) {
         }
       });
       localStorage.setItem('oneprompt-configured-api-services', JSON.stringify([...configuredApiAIs]));
+      // Save current selections to session
       if (saveSelectedAIsFn) saveSelectedAIsFn();
     }
 
