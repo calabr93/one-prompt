@@ -23,9 +23,9 @@ export let aiConfigs = {};
 export let loadedWebviews = new Set();
 export let webviewInstances = {}; // Map sessionId -> { aiKey -> webview element }
 
-// Default to ChatGPT and Perplexity for fresh installations (Web mode)
+// Default to Perplexity and Copilot active, ChatGPT/Claude/Gemini in sidebar for fresh installations (Web mode)
 export let configuredAIs = new Set(
-  JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["chatgpt", "perplexity"]')
+  JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["perplexity", "copilot", "chatgpt", "claude", "gemini"]')
 );
 
 // Default to ChatGPT, Gemini, Claude, and Grok for API mode

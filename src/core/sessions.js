@@ -15,7 +15,7 @@ const STORAGE_KEYS = {
 
 // Default session configuration
 const DEFAULT_CONFIG = {
-  defaultServices: ['chatgpt', 'perplexity'],
+  defaultServices: ['perplexity', 'copilot'],
   defaultMode: 'web',
   maxHistoryPerAI: 6 // Number of messages to keep when trimming
 };

@@ -157,8 +157,8 @@ function renderMarkdown(text) {
 let aiConfigs = {};
 let loadedWebviews = new Set();
 let webviewInstances = {}; // Map sessionId → { aiKey → webview element }
-// Default to ChatGPT, Perplexity, Claude, and Gemini for fresh installations (web mode)
-let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["chatgpt", "perplexity", "claude", "gemini"]'));
+// Default to Perplexity and Copilot active, ChatGPT/Claude/Gemini in sidebar for fresh installations (web mode)
+let configuredAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["perplexity", "copilot", "chatgpt", "claude", "gemini"]'));
 // Default to ChatGPT, Gemini, and Claude for API mode
 let configuredApiAIs = new Set(JSON.parse(localStorage.getItem('oneprompt-configured-api-services') || '["chatgpt", "gemini", "claude"]'));
 
@@ -533,7 +533,7 @@ function loadSessionsFromStorage() {
   // Use module if available
   if (SessionsModule) {
     const result = SessionsModule.loadSessionsFromStorage({
-      defaultServices: ['chatgpt', 'perplexity'],
+      defaultServices: ['perplexity', 'copilot'],
       defaultMode: 'web'
     });
     sessions = result.sessions;
@@ -569,7 +569,11 @@ function loadSessionsFromStorage() {
   // Inizializza con una sessione di default se non esistono sessioni
   if (sessions.length === 0) {
     // Default services for first run - always start with web mode as example
-    const defaultServices = new Set(['chatgpt', 'perplexity', 'claude', 'gemini']);
+    const defaultServices = new Set(['perplexity', 'copilot']);
+    // Ensure default services are in configuredAIs (sidebar)
+    defaultServices.forEach(service => configuredAIs.add(service));
+    localStorage.setItem('oneprompt-configured-services', JSON.stringify([...configuredAIs]));
+    
     const defaultSession = createNewSession(null, defaultServices, 'web');
     sessions.push(defaultSession);
     currentSessionId = defaultSession.id;

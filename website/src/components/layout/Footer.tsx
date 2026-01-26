@@ -51,7 +51,6 @@ export function Footer() {
             <a href="mailto:info@one-prompt.app" className={styles.emailLink}>info@one-prompt.app</a>
             <p className={styles.license}>{t('footer.license')}</p>
             <p className={styles.builtIn}>
-              Fabio Calabretta • {t('footer.builtIn')} P.IVA: 13010040965 • Milan, Italy •{' '}
               <button
                 type="button"
                 className={styles.legalLink}
