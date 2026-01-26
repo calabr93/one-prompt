@@ -223,8 +223,9 @@ function createSidebarButton(key, config, mode) {
     button.classList.add('logged-in');
   }
 
+  // Security fix: avoid innerHTML injection in onerror handler
   const iconHtml = config.logo
-    ? `<img src="${config.logo}" alt="${config.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${config.icon}';">`
+    ? `<img src="${config.logo}" alt="${config.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span class="icon-fallback" style="display:none;">${config.icon}</span>`
     : config.icon;
 
   button.innerHTML = `

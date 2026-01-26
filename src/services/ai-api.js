@@ -147,15 +147,22 @@ export async function callOpenAI(apiKey, model, messages, systemPrompt) {
   });
 
   const data = await res.json();
+
   if (data.error) throw new Error(data.error.message);
 
+  let responseText = null;
+
   if (data.output_text) {
-    return data.output_text;
+    responseText = data.output_text;
   } else if (data.output && Array.isArray(data.output)) {
     const messageOutput = data.output.find(item => item.type === 'message');
     if (messageOutput && messageOutput.content && messageOutput.content[0]) {
-      return messageOutput.content[0].text;
+      responseText = messageOutput.content[0].text;
     }
+  }
+
+  if (responseText) {
+    return responseText;
   }
 
   throw new Error('Invalid response from OpenAI');
@@ -208,14 +215,16 @@ export async function callGemini(apiKey, model, messages, systemPrompt) {
     parts: [{ text: msg.content }]
   }));
 
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
+  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'x-goog-api-key': apiKey
     },
     body: JSON.stringify({
       contents: geminiContents,
       systemInstruction: { parts: [{ text: systemPrompt }] },
+      generationConfig: { maxOutputTokens: 8192 },
       tools: [{ google_search: {} }]
     })
   });

@@ -1291,6 +1291,8 @@ function openSettingsModal() {
     }
   }
 }
+// Expose to window for onclick handlers in translated strings
+window.openSettingsModal = openSettingsModal;
 
 // Chiudi modale impostazioni
 function closeSettingsModalFn() {
@@ -1935,8 +1937,9 @@ function createSidebarButton(key, config) {
     button.classList.add('logged-in');
   }
 
+  // Security fix: avoid innerHTML injection in onerror handler
   const iconHtml = config.logo
-    ? `<img src="${config.logo}" alt="${config.name}" onerror="this.style.display='none'; this.parentElement.innerHTML='${config.icon}';">`
+    ? `<img src="${config.logo}" alt="${config.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span class="icon-fallback" style="display:none;">${config.icon}</span>`
     : config.icon;
 
   button.innerHTML = `
@@ -2523,15 +2526,17 @@ function initCrossCheckToggle() {
 function updateCrossCheckVisibility() {
   const crossCheckBtn = document.getElementById('crossCheckBtn');
   const responseContainers = document.querySelectorAll('.ai-response-container');
+  const currentSession = getCurrentSession();
+  const isApiMode = currentSession && currentSession.mode === 'api';
 
-  // Cross Check Button
+  // Cross Check Button - show only in WEB mode when enabled
   if (crossCheckBtn) {
-    crossCheckBtn.style.display = crossCheckEnabled ? 'flex' : 'none';
+    crossCheckBtn.style.display = (crossCheckEnabled && !isApiMode) ? 'flex' : 'none';
   }
 
-  // AI Response Containers (textarea containers in web mode)
+  // AI Response Containers (textarea containers) - NEVER show in API mode
   responseContainers.forEach(container => {
-    container.style.display = crossCheckEnabled ? 'block' : 'none';
+    container.style.display = (crossCheckEnabled && !isApiMode) ? 'block' : 'none';
   });
 }
 
@@ -2743,8 +2748,9 @@ function appendApiMessage(panel, role, text, save = true) {
   }
 
   // Render Markdown for assistant messages, plain text for user
+  // Security fix: always sanitize HTML before innerHTML
   if (role === 'system') {
-    bubble.innerHTML = text;
+    bubble.innerHTML = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(text) : text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
   } else if (role === 'assistant') {
     // Render Markdown - use module if available, fallback to local function
     bubble.innerHTML = MarkdownModule ? MarkdownModule.renderMarkdown(text) : renderMarkdown(text);
@@ -2825,7 +2831,8 @@ async function handleApiChat(aiKey, prompt, panel) {
   // 2. Check if can proceed (API key in open, credits in private)
   const check = await window.OnePromptCore.checkCanMakeRequest(aiKey);
   if (!check.canProceed) {
-    appendApiMessage(panel, 'system', check.error || t('error.apiKeyMissing'));
+    // Use translated message - error.apiKeyMissing includes link to settings
+    appendApiMessage(panel, 'system', t('error.apiKeyMissing'));
     updateWebviewStatus(aiKey, 'error');
     return;
   }
@@ -2867,7 +2874,20 @@ async function handleApiChat(aiKey, prompt, panel) {
     logger.error(`API Error (${aiKey}):`, error);
     // Remove loader
     loader.remove();
-    appendApiMessage(panel, 'system', `Error: ${error.message}`);
+
+    // Check if error is related to API key issues
+    const errorMsg = error.message || '';
+    const isApiKeyError = errorMsg.includes('ISO-8859-1') ||
+                          errorMsg.includes('Failed to fetch') ||
+                          errorMsg.includes('401') ||
+                          errorMsg.includes('invalid_api_key') ||
+                          errorMsg.includes('Unauthorized');
+
+    if (isApiKeyError) {
+      appendApiMessage(panel, 'system', t('error.apiKeyInvalid'));
+    } else {
+      appendApiMessage(panel, 'system', `Error: ${errorMsg}`);
+    }
     updateWebviewStatus(aiKey, 'error');
   }
 }

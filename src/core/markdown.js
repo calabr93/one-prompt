@@ -20,6 +20,20 @@ export function cleanAIResponseText(text) {
 
   let cleaned = text;
 
+  // Remove markdown code block wrapper when ChatGPT wraps its response in ```markdown
+  // This unwraps the content so it renders as actual markdown instead of as code
+  // Pattern: optional short intro + ```markdown\n...content...\n``` (closing ``` may be missing if truncated)
+  const markdownBlockPattern = /^(.*?)\n*```(?:markdown|md)\n([\s\S]+?)(?:```\s*)?$/;
+  const match = cleaned.match(markdownBlockPattern);
+  if (match) {
+    const intro = match[1].trim();
+    const content = match[2];
+    // Only unwrap if intro is short (a simple phrase, not substantial content)
+    if (intro.length < 150) {
+      cleaned = intro ? intro + '\n\n' + content : content;
+    }
+  }
+
   // Remove OpenAI internal special tokens (Unicode Private Use Area)
   cleaned = cleaned.replace(/[\uE000-\uF8FF]/g, '');
 
@@ -82,12 +96,12 @@ export function renderMarkdown(text) {
     const rawHtml = marked.parse(cleanedText);
 
     // CRITICAL: Sanitize HTML to prevent XSS attacks
-    if (typeof DOMPurify !== 'undefined') {
-      return DOMPurify.sanitize(rawHtml);
+    if (typeof DOMPurify === 'undefined') {
+      logger.error('[OnePrompt] CRITICAL: DOMPurify not loaded - refusing to render unsafe HTML');
+      // Fallback: escape HTML to prevent XSS
+      return rawHtml.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
-
-    logger.warn('[OnePrompt] DOMPurify not loaded - returning raw HTML');
-    return rawHtml;
+    return DOMPurify.sanitize(rawHtml);
   }
 
   // Fallback: return text with basic formatting
