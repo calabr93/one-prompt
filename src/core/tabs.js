@@ -349,7 +349,7 @@ export function createNewSessionAndSwitch() {
 
   // Maximum 20 tabs limit
   if (sessions.length >= 20) {
-    alert(t('error.maxTabs') || 'Massimo 20 tab consentite');
+    alert(t('error.maxTabs') || 'Maximum 20 tabs allowed');
     return;
   }
 

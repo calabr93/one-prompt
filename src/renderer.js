@@ -1169,7 +1169,7 @@ function createNewSessionAndSwitch() {
   // Fallback: inline implementation
   // Limite massimo di 20 tab
   if (sessions.length >= 20) {
-    alert(t('error.maxTabs') || 'Massimo 20 tab consentite');
+    alert(t('error.maxTabs') || 'Maximum 20 tabs allowed');
     return;
   }
 

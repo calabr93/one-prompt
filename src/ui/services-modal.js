@@ -115,9 +115,9 @@ export function openServicesModal() {
   const modalTitle = servicesModal.querySelector('h2');
   if (modalTitle) {
     if (mode === 'api') {
-      modalTitle.textContent = t('services.title.api') || 'Servizi disponibili (API)';
+      modalTitle.textContent = t('services.title.api') || 'Available services (API)';
     } else {
-      modalTitle.textContent = t('services.title') || 'Servizi disponibili';
+      modalTitle.textContent = t('services.title') || 'Available services';
     }
   }
 
