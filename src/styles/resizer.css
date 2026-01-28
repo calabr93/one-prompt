@@ -42,6 +42,7 @@
   position: absolute;
   width: 8px;
   top: 0;
+  bottom: 0;
   cursor: col-resize;
   background: transparent;
   z-index: 100;
@@ -58,6 +59,7 @@
   position: absolute;
   height: 8px;
   left: 0;
+  right: 0;
   cursor: row-resize;
   background: transparent;
   z-index: 100;

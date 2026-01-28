@@ -1442,20 +1442,32 @@ async function renderWebviews() {
     placeholder.style.display = 'none';
   }
 
-  // Nascondi TUTTE le webview di TUTTE le sessioni
+  // Rimuovi TUTTE le webview delle sessioni NON correnti dal DOM
+  // (per evitare duplicati nascosti che causano confusione)
   Object.keys(webviewInstances).forEach(sessionId => {
-    const sessionWebviews = webviewInstances[sessionId];
-    Object.keys(sessionWebviews).forEach(aiKey => {
-      const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${sessionId}"][data-ai-key="${aiKey}"]`);
-      if (wrapper) {
-        wrapper.style.display = 'none';
-      }
-    });
-
+    if (sessionId !== currentSessionId) {
+      const sessionWebviews = webviewInstances[sessionId];
+      Object.keys(sessionWebviews).forEach(aiKey => {
+        const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${sessionId}"][data-ai-key="${aiKey}"]`);
+        if (wrapper) {
+          wrapper.remove();
+        }
+      });
+    }
   });
 
   // Ottieni le webview della sessione corrente
   const sessionWebviews = getCurrentSessionWebviews();
+  
+  // Nascondi le webview della sessione corrente non selezionate
+  Object.keys(sessionWebviews).forEach(aiKey => {
+    if (!selectedAIs.has(aiKey)) {
+      const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${currentSessionId}"][data-ai-key="${aiKey}"]`);
+      if (wrapper) {
+        wrapper.style.display = 'none';
+      }
+    }
+  });
 
   // Mostra solo le webview della sessione corrente che sono selezionate
   let index = 0;
@@ -2246,6 +2258,18 @@ if (document.readyState === 'loading') {
   init();
 }
 
+// Global handler: intercept clicks on external links and open in system browser
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href]');
+  if (!link) return;
+  
+  const href = link.getAttribute('href');
+  if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+    e.preventDefault();
+    window.electronAPI.openExternal(href);
+  }
+});
+
 // Salva gli URL delle chat e i testi delle textarea quando l'app viene chiusa
 window.addEventListener('beforeunload', () => {
   // Sync local state with module state before saving
@@ -2533,12 +2557,12 @@ function updateCrossCheckVisibility() {
   const currentSession = getCurrentSession();
   const isApiMode = currentSession && currentSession.mode === 'api';
 
-  // Cross Check Button - show only in WEB mode when enabled
+  // Cross Check Button - show when enabled (works in both WEB and API mode)
   if (crossCheckBtn) {
-    crossCheckBtn.style.display = (crossCheckEnabled && !isApiMode) ? 'flex' : 'none';
+    crossCheckBtn.style.display = crossCheckEnabled ? 'flex' : 'none';
   }
 
-  // AI Response Containers (textarea containers) - NEVER show in API mode
+  // AI Response Containers (textarea containers) - only show in WEB mode when enabled
   responseContainers.forEach(container => {
     container.style.display = (crossCheckEnabled && !isApiMode) ? 'block' : 'none';
   });

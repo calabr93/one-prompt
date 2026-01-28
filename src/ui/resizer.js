@@ -34,6 +34,14 @@ let gridResizeState = {
   grid: null
 };
 
+// State for logging changes only
+let lastLoggedGridState = {
+  colWidths: [],
+  rowHeights: [],
+  width: 0,
+  height: 0
+};
+
 // ResizeObserver for grid container
 let gridResizeObserver = null;
 
@@ -366,24 +374,66 @@ function updateGridResizerPositions() {
   const grid = document.getElementById('webviewGrid');
   if (!grid) return;
 
+  // const now = new Date().toISOString().split('T')[1];
+  
   const structure = getGridStructure();
   const { colWidths, rowHeights } = structure;
   const gridRect = grid.getBoundingClientRect();
+
+  // Update tracking state
+  lastLoggedGridState = {
+    width: gridRect.width,
+    height: gridRect.height,
+    colWidths: [...colWidths],
+    rowHeights: [...rowHeights]
+  };
 
   // Update column resizers
   let accumulatedWidth = 0;
   grid.querySelectorAll('.grid-col-resizer').forEach((resizer, i) => {
     accumulatedWidth += colWidths[i];
-    resizer.style.left = `${accumulatedWidth - 4}px`;
-    resizer.style.height = `${gridRect.height}px`;
+    const rawLeft = accumulatedWidth - 4;
+    const roundedLeft = Math.round(rawLeft);
+    const currentLeft = parseFloat(resizer.style.left) || 0;
+    
+    // Only update if the difference is significant (> 1px) to prevent infinite loops
+    if (Math.abs(roundedLeft - currentLeft) > 1) {
+      // console.log(`[${now}] [RESIZE DEBUG] Col ${i} UPDATING left to ${roundedLeft}px (was ${currentLeft}px)`);
+      resizer.style.left = `${roundedLeft}px`;
+    }
+    
+    // Check height (layout-aware fallback)
+    if (!resizer.style.bottom) {
+        const currentHeight = parseFloat(resizer.style.height) || 0;
+        const newHeight = Math.round(gridRect.height);
+        if (Math.abs(newHeight - currentHeight) > 1) {
+          resizer.style.height = `${newHeight}px`;
+        }
+    }
   });
 
   // Update row resizers
   let accumulatedHeight = 0;
   grid.querySelectorAll('.grid-row-resizer').forEach((resizer, i) => {
     accumulatedHeight += rowHeights[i];
-    resizer.style.top = `${accumulatedHeight - 4}px`;
-    resizer.style.width = `${gridRect.width}px`;
+    const rawTop = accumulatedHeight - 4;
+    const roundedTop = Math.round(rawTop);
+    const currentTop = parseFloat(resizer.style.top) || 0;
+    
+    // Only update if the difference is significant (> 1px) to prevent infinite loops
+    if (Math.abs(roundedTop - currentTop) > 1) {
+      // console.log(`[${now}] [RESIZE DEBUG] Row ${i} UPDATING top to ${roundedTop}px (was ${currentTop}px)`);
+      resizer.style.top = `${roundedTop}px`;
+    }
+    
+    // Check width (layout-aware fallback)
+    if (!resizer.style.right) {
+        const currentWidth = parseFloat(resizer.style.width) || 0;
+        const newWidth = Math.round(gridRect.width);
+        if (Math.abs(newWidth - currentWidth) > 1) {
+            resizer.style.width = `${newWidth}px`;
+        }
+    }
   });
 }
 
@@ -684,9 +734,31 @@ function setupGridResizeObserver() {
   // Only observe in grid mode
   if (getCurrentLayoutMode() !== 'grid') return;
 
-  gridResizeObserver = new ResizeObserver(() => {
+  gridResizeObserver = new ResizeObserver((entries) => {
     // Don't update during active resize
     if (gridResizeState.isResizing) return;
+
+    let hasSizeChanged = false;
+    // const now = new Date().toISOString().split('T')[1];
+
+    for (const entry of entries) {
+      if (entry.contentRect) {
+        const { width, height } = entry.contentRect;
+        
+        // Skip if dimensions haven't changed significantly (tolerance 0.5px)
+        // Note: lastLoggedGridState tracks the last EFFECTIVE size processed
+        if (Math.abs(width - lastLoggedGridState.width) > 0.5 || 
+            Math.abs(height - lastLoggedGridState.height) > 0.5) {
+          hasSizeChanged = true;
+          // console.log(`[${now}] [RESIZE DEBUG] Grid Size CHANGED: ${width.toFixed(2)} x ${height.toFixed(2)} (was ${lastLoggedGridState.width.toFixed(2)} x ${lastLoggedGridState.height.toFixed(2)})`);
+        }
+      }
+    }
+
+    if (!hasSizeChanged && lastLoggedGridState.width > 0) {
+      // If no size change and we have initialized, skip update
+      return;
+    }
 
     // Debounce: update positions after resize settles
     clearTimeout(gridResizeObserver._debounceTimer);
