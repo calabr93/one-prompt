@@ -25,6 +25,18 @@ let sessions = [];
 let currentSessionId = null;
 let sessionCounter = 0;
 
+// Callback for after-save hook (allows Electron apps to sync to file)
+let onAfterSave = null;
+
+/**
+ * Set a callback to be called after sessions are saved to localStorage
+ * This allows Electron apps to sync to file storage
+ * @param {Function} callback - Function to call after save
+ */
+export function setOnAfterSave(callback) {
+  onAfterSave = callback;
+}
+
 /**
  * Create a new session object
  * @param {string|null} name - Session name (null = use default translated name)
@@ -158,6 +170,15 @@ export function saveSessionsToStorage(captureUrlsFn = null) {
     localStorage.setItem(STORAGE_KEYS.SESSIONS, JSON.stringify(sessions));
     localStorage.setItem(STORAGE_KEYS.CURRENT_SESSION, currentSessionId);
     localStorage.setItem(STORAGE_KEYS.SESSION_COUNTER, sessionCounter.toString());
+    
+    // Call after-save hook if registered (for Electron file sync)
+    if (onAfterSave && typeof onAfterSave === 'function') {
+      try {
+        onAfterSave();
+      } catch (hookError) {
+        logger.error('onAfterSave hook failed:', hookError);
+      }
+    }
   } catch (error) {
     logger.error('Failed to save sessions to storage:', error);
 

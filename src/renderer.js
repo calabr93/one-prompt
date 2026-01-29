@@ -2188,9 +2188,9 @@ async function sendPromptToSelectedAIs() {
   }
 
   try {
-    // CRITICAL: Capture sessionId at the START of the request
+    // CRITICAL: Capture sessionId at the START of the request using module as source of truth
     // This prevents race condition when user switches tabs during API call
-    const capturedSessionId = currentSessionId;
+    const capturedSessionId = SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId;
     
     // Ottieni le webview della sessione corrente
     const sessionWebviews = getCurrentSessionWebviews();
@@ -2753,8 +2753,8 @@ function appendApiMessage(panel, role, text, save = true, sessionId = null) {
 
   // Save to history (only user and assistant, not system messages)
   if (save && role !== 'system') {
-    // Use explicit sessionId or extract from panel's wrapper
-    const targetSessionId = sessionId || panel.closest('[data-session-id]')?.dataset?.sessionId || currentSessionId;
+    // Use explicit sessionId, extract from panel's wrapper, or use module as source of truth
+    const targetSessionId = sessionId || panel.closest('[data-session-id]')?.dataset?.sessionId || (SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId);
     saveApiHistory(panel.dataset.aiKey, role, text, targetSessionId);
   }
 
@@ -2831,9 +2831,19 @@ function appendApiMessage(panel, role, text, save = true, sessionId = null) {
 // Helper to save API chat history with sliding window limit
 // sessionId parameter prevents race condition when user switches tabs during API call
 function saveApiHistory(aiKey, role, content, sessionId = null) {
-  // Use explicit sessionId if provided, otherwise fall back to current session
-  const targetSessionId = sessionId || currentSessionId;
-  const session = sessions.find(s => s.id === targetSessionId);
+  // ALWAYS use module as source of truth to prevent state sync issues
+  const targetSessionId = sessionId || (SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId);
+  const sessionsArray = SessionsModule ? SessionsModule.getSessions() : sessions;
+  const session = sessionsArray.find(s => s.id === targetSessionId);
+
+  // Log sync status for debugging
+  if (SessionsModule && currentSessionId !== SessionsModule.getCurrentSessionId()) {
+    logger.warn('[saveApiHistory] SYNC MISMATCH detected:', {
+      local: currentSessionId,
+      module: SessionsModule.getCurrentSessionId(),
+      usingModule: true
+    });
+  }
   if (!session) {
     logger.warn(`[saveApiHistory] Session not found: ${targetSessionId}`);
     return;
@@ -2876,8 +2886,8 @@ function getSystemPromptWithLanguage() {
 // The bridge can be overridden in private repos to add credit checking, managed API keys, etc.
 // sessionId parameter prevents race condition when user switches tabs during API call
 async function handleApiChat(aiKey, prompt, panel, sessionId = null) {
-  // Use explicit sessionId to prevent race condition
-  const targetSessionId = sessionId || currentSessionId;
+  // Use explicit sessionId or module as source of truth to prevent race condition
+  const targetSessionId = sessionId || (SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId);
   
   // 1. Show User Message immediately (already saved in sendPromptToSelectedAIs)
   appendApiMessage(panel, 'user', prompt, false, targetSessionId);
