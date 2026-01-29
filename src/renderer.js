@@ -447,7 +447,9 @@ function getSessionWebviews(sessionId) {
 }
 
 function getCurrentSessionWebviews() {
-  return getSessionWebviews(currentSessionId);
+  // CRITICAL: Always use module's currentSessionId to stay in sync during callbacks
+  const activeSessionId = SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId;
+  return getSessionWebviews(activeSessionId);
 }
 
 function captureCurrentUrls() {
@@ -1326,6 +1328,10 @@ function toggleAISelection(aiKey) {
 
 // Render webviews (solo quelle selezionate)
 async function renderWebviews() {
+  // CRITICAL: Get the active session ID from the module (source of truth)
+  // This ensures we use the correct session even during tab switch callbacks
+  const activeSessionId = SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId;
+  
   // Reset classe grid
   webviewGrid.className = 'webview-grid';
   
@@ -1444,13 +1450,16 @@ async function renderWebviews() {
 
   // Rimuovi TUTTE le webview delle sessioni NON correnti dal DOM
   // (per evitare duplicati nascosti che causano confusione)
+  // IMPORTANT: Also remove from webviewInstances to force recreation when switching back
   Object.keys(webviewInstances).forEach(sessionId => {
-    if (sessionId !== currentSessionId) {
+    if (sessionId !== activeSessionId) {
       const sessionWebviews = webviewInstances[sessionId];
       Object.keys(sessionWebviews).forEach(aiKey => {
         const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${sessionId}"][data-ai-key="${aiKey}"]`);
         if (wrapper) {
           wrapper.remove();
+          // Remove reference so panel gets recreated with history when switching back
+          delete sessionWebviews[aiKey];
         }
       });
     }
@@ -1462,7 +1471,7 @@ async function renderWebviews() {
   // Nascondi le webview della sessione corrente non selezionate
   Object.keys(sessionWebviews).forEach(aiKey => {
     if (!selectedAIs.has(aiKey)) {
-      const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${currentSessionId}"][data-ai-key="${aiKey}"]`);
+      const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${activeSessionId}"][data-ai-key="${aiKey}"]`);
       if (wrapper) {
         wrapper.style.display = 'none';
       }
@@ -1480,13 +1489,13 @@ async function renderWebviews() {
     }
 
     // Controlla se il wrapper per questa sessione e AI esiste già
-    let wrapper = document.querySelector(`.webview-wrapper[data-session-id="${currentSessionId}"][data-ai-key="${aiKey}"]`);
+    let wrapper = document.querySelector(`.webview-wrapper[data-session-id="${activeSessionId}"][data-ai-key="${aiKey}"]`);
 
     if (!wrapper) {
       // Crea nuovo wrapper e webview
       wrapper = document.createElement('div');
       wrapper.className = 'webview-wrapper';
-      wrapper.dataset.sessionId = currentSessionId;
+      wrapper.dataset.sessionId = activeSessionId;
       wrapper.dataset.aiKey = aiKey;
 
       // Header
@@ -2179,6 +2188,10 @@ async function sendPromptToSelectedAIs() {
   }
 
   try {
+    // CRITICAL: Capture sessionId at the START of the request
+    // This prevents race condition when user switches tabs during API call
+    const capturedSessionId = currentSessionId;
+    
     // Ottieni le webview della sessione corrente
     const sessionWebviews = getCurrentSessionWebviews();
     const currentSession = getCurrentSession();
@@ -2204,14 +2217,15 @@ async function sendPromptToSelectedAIs() {
 
       // Send via IPC to webview or Handle API
       if (isApiMode) {
-        logger.log(`[${Date.now()}] Handling API chat for ${aiKey}...`);
+        logger.log(`[${Date.now()}] Handling API chat for ${aiKey} in session ${capturedSessionId}...`);
 
         // Save USER message to history explicitly before calling handler
-        // The handler will display it, but we ensure it's in storage
-        saveApiHistory(aiKey, 'user', prompt);
+        // Pass capturedSessionId to ensure it goes to the correct session
+        saveApiHistory(aiKey, 'user', prompt, capturedSessionId);
 
         // Fire and forget - all requests start in parallel
-        handleApiChat(aiKey, prompt, webview);
+        // Pass capturedSessionId to prevent race condition
+        handleApiChat(aiKey, prompt, webview, capturedSessionId);
       }
       // Web Mode: user copies prompt manually via copyBtn
     });
@@ -2731,14 +2745,17 @@ function createApiPanel(aiKey) {
 
 // Helper to append message to API panel
 // save: true = save to history, false = just display (for restoring history)
-function appendApiMessage(panel, role, text, save = true) {
+// sessionId: explicit session ID to prevent race condition during tab switches
+function appendApiMessage(panel, role, text, save = true, sessionId = null) {
   const chatContainer = panel.querySelector('.api-chat-container');
   const welcome = panel.querySelector('.api-welcome');
   if (welcome) welcome.remove();
 
   // Save to history (only user and assistant, not system messages)
   if (save && role !== 'system') {
-    saveApiHistory(panel.dataset.aiKey, role, text);
+    // Use explicit sessionId or extract from panel's wrapper
+    const targetSessionId = sessionId || panel.closest('[data-session-id]')?.dataset?.sessionId || currentSessionId;
+    saveApiHistory(panel.dataset.aiKey, role, text, targetSessionId);
   }
 
   const bubble = document.createElement('div');
@@ -2812,9 +2829,15 @@ function appendApiMessage(panel, role, text, save = true) {
 }
 
 // Helper to save API chat history with sliding window limit
-function saveApiHistory(aiKey, role, content) {
-  const session = getCurrentSession();
-  if (!session) return;
+// sessionId parameter prevents race condition when user switches tabs during API call
+function saveApiHistory(aiKey, role, content, sessionId = null) {
+  // Use explicit sessionId if provided, otherwise fall back to current session
+  const targetSessionId = sessionId || currentSessionId;
+  const session = sessions.find(s => s.id === targetSessionId);
+  if (!session) {
+    logger.warn(`[saveApiHistory] Session not found: ${targetSessionId}`);
+    return;
+  }
 
   if (!session.apiChatHistory) {
     session.apiChatHistory = {};
@@ -2851,15 +2874,19 @@ function getSystemPromptWithLanguage() {
 
 // Handle API Chat Logic - uses OnePromptCore bridge for API calls
 // The bridge can be overridden in private repos to add credit checking, managed API keys, etc.
-async function handleApiChat(aiKey, prompt, panel) {
+// sessionId parameter prevents race condition when user switches tabs during API call
+async function handleApiChat(aiKey, prompt, panel, sessionId = null) {
+  // Use explicit sessionId to prevent race condition
+  const targetSessionId = sessionId || currentSessionId;
+  
   // 1. Show User Message immediately (already saved in sendPromptToSelectedAIs)
-  appendApiMessage(panel, 'user', prompt, false);
+  appendApiMessage(panel, 'user', prompt, false, targetSessionId);
 
   // 2. Check if can proceed (API key in open, credits in private)
   const check = await window.OnePromptCore.checkCanMakeRequest(aiKey);
   if (!check.canProceed) {
     // Use translated message - error.apiKeyMissing includes link to settings
-    appendApiMessage(panel, 'system', t('error.apiKeyMissing'));
+    appendApiMessage(panel, 'system', t('error.apiKeyMissing'), false, targetSessionId);
     updateWebviewStatus(aiKey, 'error');
     return;
   }
@@ -2870,7 +2897,8 @@ async function handleApiChat(aiKey, prompt, panel) {
   const loader = appendApiLoader(panel);
 
   // 3. Build messages array with history (including the new user message just saved)
-  const session = getCurrentSession();
+  // Use targetSessionId to get the correct session's history
+  const session = sessions.find(s => s.id === targetSessionId);
   const existingHistory = (session?.apiChatHistory?.[aiKey] || [])
     .filter(msg => msg.role === 'user' || msg.role === 'assistant')
     .slice(-API_HISTORY_LIMIT);
@@ -2887,9 +2915,9 @@ async function handleApiChat(aiKey, prompt, panel) {
     // Remove loader
     loader.remove();
 
-    // Append message to UI and SAVE TO HISTORY
-    logger.log(`[${Date.now()}] [handleApiChat] Saving assistant response for ${aiKey}, length: ${responseText?.length}`);
-    appendApiMessage(panel, 'assistant', responseText, true);
+    // Append message to UI and SAVE TO HISTORY with explicit sessionId
+    logger.log(`[${Date.now()}] [handleApiChat] Saving assistant response for ${aiKey} to session ${targetSessionId}, length: ${responseText?.length}`);
+    appendApiMessage(panel, 'assistant', responseText, true, targetSessionId);
 
     // Explicitly force save session to storage to ensure persistence
     logger.log(`[handleApiChat] Calling saveSessionsToStorage for ${aiKey}`);
