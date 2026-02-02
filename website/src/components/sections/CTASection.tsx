@@ -122,13 +122,22 @@ export function CTASection() {
               </div>
               <div className={styles.buttonGroup}>
                 <Button
+                  href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-x86_64.AppImage"
+                  size="large"
+                  icon={<DownloadIcon />}
+                  className={styles.downloadBtn}
+                  onClick={() => trackDownload('linux', 'appimage')}
+                >
+                  AppImage
+                </Button>
+                <Button
                   href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-amd64.deb"
                   size="large"
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
                   onClick={() => trackDownload('linux', 'deb')}
                 >
-                  .deb (Debian/Ubuntu)
+                  .deb
                 </Button>
               </div>
             </div>
