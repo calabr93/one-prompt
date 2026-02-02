@@ -89,7 +89,7 @@ Different AIs have different strengths. When you need the best answer, comparing
 Download the latest version from the [Releases page](https://github.com/calabr93/one-prompt/releases):
 - **macOS**: Download the `.dmg` file (Apple Silicon or Intel)
 - **Windows**: Download the `.exe` file (Installer or Portable)
-- **Linux**: Download the `.AppImage` (universal) or `.deb` (Debian/Ubuntu)
+- **Linux**: Download the `.deb` (Debian/Ubuntu)
 
 ### Development
 

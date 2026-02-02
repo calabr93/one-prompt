@@ -1,7 +1,7 @@
 {
   "name": "oneprompt",
   "version": "0.1.6",
-  "description": "Un'applicazione per gestire più AI chat in un unico posto - inserisci un prompt e invialo a tutte le tue AI preferite",
+  "description": "An application to manage multiple AI chats in one place - enter a prompt and send it to all your favorite AIs",
   "main": "src/main.js",
   "engines": {
     "node": ">=22"
@@ -82,12 +82,6 @@
     "linux": {
       "target": [
         {
-          "target": "AppImage",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
           "target": "deb",
           "arch": [
             "x64"
@@ -95,7 +89,7 @@
         }
       ],
       "category": "Utility",
-      "icon": "assets/logo/logo.png",
+      "icon": "assets/logo/linux",
       "artifactName": "${productName}-${arch}.${ext}"
     },
     "nsis": {
