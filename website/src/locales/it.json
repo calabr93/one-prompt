@@ -243,7 +243,7 @@
     "deny": "Rifiuta"
   },
   "windowsModal": {
-    "title": "⚠️ Il download non parte?",
+    "title": "⚠️ Vedi un avviso?",
     "description": "Essendo un'app nuova, il browser potrebbe chiederti se ti fidi del file. È normale. Conferma di fidarti dell'app per completare il download. Guarda la GIF qui sotto per vedere come fare."
   },
   "promptsPage": {

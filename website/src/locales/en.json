@@ -243,7 +243,7 @@
     "deny": "Deny"
   },
   "windowsModal": {
-    "title": "⚠️ Download not starting?",
+    "title": "⚠️ Seeing a Warning?",
     "description": "Since this is a new app, your browser may ask if you trust the file. This is normal. Confirm that you trust the app to complete the download. Watch the GIF below to see how."
   },
   "promptsPage": {

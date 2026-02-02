@@ -243,7 +243,7 @@
     "deny": "Rechazar"
   },
   "windowsModal": {
-    "title": "⚠️ ¿El download no inicia?",
+    "title": "⚠️ ¿Ves una advertencia?",
     "description": "Al ser una app nueva, el navegador podría preguntarte si confías en el archivo. Es normal. Confirma que confías en la app para completar la descarga. Mira el GIF a continuación para ver cómo hacerlo."
   },
   "promptsPage": {

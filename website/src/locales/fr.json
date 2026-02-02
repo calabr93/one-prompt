@@ -243,7 +243,7 @@
     "deny": "Refuser"
   },
   "windowsModal": {
-    "title": "⚠️ Le téléchargement ne démarre pas ?",
+    "title": "⚠️ Vous voyez un avertissement ?",
     "description": "Comme il s'agit d'une nouvelle application, votre navigateur peut vous demander si vous faites confiance au fichier. C'est normal. Confirmez que vous faites confiance à l'application pour terminer le téléchargement. Regardez le GIF ci-dessous pour voir comment faire."
   },
   "promptsPage": {

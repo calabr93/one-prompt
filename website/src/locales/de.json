@@ -243,7 +243,7 @@
     "deny": "Ablehnen"
   },
   "windowsModal": {
-    "title": "⚠️ Download startet nicht?",
+    "title": "⚠️ Siehst du eine Warnung?",
     "description": "Da es sich um eine neue App handelt, fragt Ihr Browser möglicherweise, ob Sie der Datei vertrauen. Das ist normal. Bestätigen Sie, dass Sie der App vertrauen, um den Download abzuschließen. Sehen Sie sich das GIF unten an, um zu sehen, wie es geht."
   },
   "promptsPage": {

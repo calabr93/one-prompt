@@ -118,6 +118,17 @@ npm run build:win
 npm run build:linux
 ```
 
+### Uninstall
+
+**macOS**: Drag the app from Applications to Trash
+
+**Windows**: Use "Add or Remove Programs" in Settings
+
+**Linux (Debian/Ubuntu)**:
+```bash
+sudo dpkg -r oneprompt
+```
+
 ## Releases & Updates
 
 ### Creating a New Release (for developers)
