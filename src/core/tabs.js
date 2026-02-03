@@ -316,6 +316,11 @@ export function closeSession(sessionId) {
   const sessionIndex = sessions.findIndex(s => s.id === sessionId);
   if (sessionIndex === -1) return;
 
+  // Pulisci le webview della sessione prima di rimuoverla
+  if (callbacks.cleanupSessionWebviews) {
+    callbacks.cleanupSessionWebviews(sessionId);
+  }
+
   removeSession(sessionId);
 
   // If we closed all sessions, create a new empty one (Chrome style)

@@ -452,6 +452,23 @@ function getCurrentSessionWebviews() {
   return getSessionWebviews(activeSessionId);
 }
 
+/**
+ * Pulisce le webview di una sessione quando viene chiusa
+ * @param {string} sessionId - ID della sessione da pulire
+ */
+function cleanupSessionWebviews(sessionId) {
+  const sessionWebviews = webviewInstances[sessionId];
+  if (sessionWebviews) {
+    Object.keys(sessionWebviews).forEach(aiKey => {
+      const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${sessionId}"][data-ai-key="${aiKey}"]`);
+      if (wrapper) {
+        wrapper.remove();
+      }
+    });
+    delete webviewInstances[sessionId];
+  }
+}
+
 function captureCurrentUrls() {
   const currentSession = getCurrentSession();
   if (!currentSession) return;
@@ -681,7 +698,8 @@ async function init() {
           getSelectedAIs: () => selectedAIs,
           setSelectedAIs: (newSet) => { selectedAIs = newSet; },
           // Use renderer.js version to ensure state sync between local and module
-          createNewSessionAndSwitch: () => createNewSessionAndSwitch()
+          createNewSessionAndSwitch: () => createNewSessionAndSwitch(),
+          cleanupSessionWebviews: (sessionId) => cleanupSessionWebviews(sessionId)
         }
       });
       logger.log('[init] Tabs module initialized');
@@ -1448,18 +1466,15 @@ async function renderWebviews() {
     placeholder.style.display = 'none';
   }
 
-  // Rimuovi TUTTE le webview delle sessioni NON correnti dal DOM
-  // (per evitare duplicati nascosti che causano confusione)
-  // IMPORTANT: Also remove from webviewInstances to force recreation when switching back
+  // Nascondi TUTTE le webview delle sessioni NON correnti (preserva lo stato)
+  // Manteniamo le webview nel DOM per evitare refresh quando si torna alla sessione
   Object.keys(webviewInstances).forEach(sessionId => {
     if (sessionId !== activeSessionId) {
       const sessionWebviews = webviewInstances[sessionId];
       Object.keys(sessionWebviews).forEach(aiKey => {
         const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${sessionId}"][data-ai-key="${aiKey}"]`);
         if (wrapper) {
-          wrapper.remove();
-          // Remove reference so panel gets recreated with history when switching back
-          delete sessionWebviews[aiKey];
+          wrapper.style.display = 'none';
         }
       });
     }
