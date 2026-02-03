@@ -140,18 +140,6 @@ export function saveApiKey(provider, key) {
 }
 
 /**
- * Get all model settings
- */
-export function getModelSettings() {
-  return {
-    openai: getSetting(SETTINGS_KEYS.MODEL_OPENAI, 'gpt-4o'),
-    anthropic: getSetting(SETTINGS_KEYS.MODEL_ANTHROPIC, 'claude-sonnet-4-5'),
-    gemini: getSetting(SETTINGS_KEYS.MODEL_GEMINI, 'gemini-2.5-flash'),
-    xai: getSetting(SETTINGS_KEYS.MODEL_XAI, 'grok-4-1-fast')
-  };
-}
-
-/**
  * Save model selection
  */
 export function saveModelSelection(provider, modelId) {

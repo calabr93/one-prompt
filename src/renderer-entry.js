@@ -28,7 +28,6 @@ import * as servicesModal from './ui/services-modal.js';
 import * as resizer from './ui/resizer.js';
 
 // Import services
-import * as aiApi from './services/ai-api.js';
 import * as settings from './services/settings.js';
 
 // ============================================================
@@ -60,7 +59,6 @@ window.OnePromptUI.servicesModal = servicesModal;
 window.OnePromptUI.resizer = resizer;
 
 // Expose services
-window.OnePromptServices.aiApi = aiApi;
 window.OnePromptServices.settings = settings;
 
 // Convenience aliases for most commonly used functions
