@@ -76,9 +76,10 @@ function copyStaticFiles() {
  * Main process and preload scripts remain as Vanilla JS.
  *
  * Alias strategy:
+ * - @app: Application modules (extracted from renderer.js)
  * - @core: Core utilities and shared logic
  * - @ui: UI components and rendering functions
- * - @services: AI services and API handling
+ * - @services: Application settings and configuration
  *
  * Private repos (one-prompt-private, one-prompt-auto) can override
  * these aliases to point to their own implementations while importing
@@ -92,6 +93,7 @@ export default defineConfig({
 
   resolve: {
     alias: {
+      '@app': path.resolve(__dirname, 'src/app'),
       '@core': path.resolve(__dirname, 'src/core'),
       '@ui': path.resolve(__dirname, 'src/ui'),
       '@services': path.resolve(__dirname, 'src/services'),

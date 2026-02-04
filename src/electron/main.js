@@ -7,7 +7,7 @@ app.setName('OnePrompt');
 const { autoUpdater } = require('electron-updater');
 const path = require('path');
 const fs = require('fs');
-const logger = require('./utils/logger');
+const logger = require('../utils/logger');
 
 let mainWindow;
 
@@ -85,25 +85,19 @@ const AI_CONFIGS = {
     icon: '🌊',
     logo: 'ai-services/deepseek.png',
     color: '#1e90ff'
-  },
-  grok: {
-    name: 'Grok',
-    url: 'https://x.com/i/grok',
-    icon: '⚡',
-    logo: 'ai-services/grok.png',
-    color: '#ff6b00'
   }
 };
 
 function createMainWindow() {
   // Seleziona l'icona appropriata per la piattaforma
+  // Note: assets/ is at project root, main.js is in src/electron/
   let iconPath;
   if (process.platform === 'darwin') {
-    iconPath = path.join(__dirname, '../assets/logo/logo.icns');
+    iconPath = path.join(__dirname, '../../assets/logo/logo.icns');
   } else if (process.platform === 'win32') {
-    iconPath = path.join(__dirname, '../assets/logo/logo.ico');
+    iconPath = path.join(__dirname, '../../assets/logo/logo.ico');
   } else {
-    iconPath = path.join(__dirname, '../assets/logo/logo.png');
+    iconPath = path.join(__dirname, '../../assets/logo/logo.png');
   }
 
   mainWindow = new BrowserWindow({
@@ -139,12 +133,12 @@ function createMainWindow() {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL || 'http://localhost:5173');
     logger.log('Loading from Vite dev server');
   } else if (app.isPackaged || forceProd) {
-    // Production: load from dist/renderer
-    mainWindow.loadFile(path.join(__dirname, '../dist/renderer/index.html'));
+    // Production: load from dist/renderer (dist/ is at project root)
+    mainWindow.loadFile(path.join(__dirname, '../../dist/renderer/index.html'));
     logger.log('Loading from dist/renderer (production build)');
   } else {
-    // Development without Vite: load source directly
-    mainWindow.loadFile(path.join(__dirname, 'index.html'));
+    // Development without Vite: load source directly (index.html is in src/)
+    mainWindow.loadFile(path.join(__dirname, '../index.html'));
   }
 
   // DevTools: Open in dev mode, block keyboard shortcut in production

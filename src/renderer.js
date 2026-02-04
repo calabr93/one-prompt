@@ -23,6 +23,12 @@ const ResizerModule = (window.OnePromptUI && window.OnePromptUI.resizer) || null
 // Mode Selection module alias (loaded from core/mode-selection.js)
 const ModeSelectionModule = (window.OnePromptCore && window.OnePromptCore.modeSelection) || null;
 
+// API Chat module alias (loaded from app/api-chat.js)
+const ApiChatModule = (window.OnePromptApp && window.OnePromptApp.apiChat) || null;
+
+// Prompt module alias (loaded from app/prompt.js)
+const PromptModule = (window.OnePromptApp && window.OnePromptApp.prompt) || null;
+
 // CRITICAL: Define window.selectMode early so that onclick handlers in mode-cards work
 // This must be defined BEFORE init() is called, which renders the mode selection screen
 window.selectMode = function (mode) {
@@ -186,7 +192,6 @@ const AI_DISPLAY_NAMES = {
   chatgpt: 'ChatGPT',
   claude: 'Claude',
   gemini: 'Gemini',
-  grok: 'Grok',
   perplexity: 'Perplexity',
   copilot: 'Copilot',
   deepseek: 'DeepSeek'
@@ -771,6 +776,43 @@ async function init() {
         i18nModule: I18nModule
       });
       logger.log('[init] ModeSelection module initialized');
+    }
+
+    // Initialize API Chat module if available
+    if (ApiChatModule) {
+      ApiChatModule.initApiChat({
+        aiConfigs: aiConfigs,
+        logger: logger,
+        t: t,
+        renderMarkdown: MarkdownModule ? MarkdownModule.renderMarkdown : renderMarkdown,
+        getCurrentSession: getCurrentSession,
+        saveSessionsToStorage: saveSessionsToStorage,
+        updateWebviewStatus: updateWebviewStatus,
+        getSessionsArray: () => SessionsModule ? SessionsModule.getSessions() : sessions,
+        getCurrentSessionId: () => SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId
+      });
+      logger.log('[init] ApiChat module initialized');
+    }
+
+    // Initialize Prompt module if available
+    if (PromptModule) {
+      PromptModule.initPrompt({
+        promptInput: promptInput,
+        copyBtn: copyBtn,
+        sendBtn: sendBtn,
+        selectedAIs: selectedAIs,
+        loadedWebviews: loadedWebviews,
+        logger: logger,
+        t: t,
+        showNotification: showNotification,
+        getCurrentSession: getCurrentSession,
+        getCurrentSessionWebviews: getCurrentSessionWebviews,
+        getCurrentSessionId: () => SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId,
+        updateWebviewStatus: updateWebviewStatus,
+        saveApiHistory: ApiChatModule ? ApiChatModule.saveApiHistory : saveApiHistory,
+        handleApiChat: ApiChatModule ? ApiChatModule.handleApiChat : handleApiChat
+      });
+      logger.log('[init] Prompt module initialized');
     }
 
     // Renderizza le tab
@@ -1597,7 +1639,7 @@ async function renderWebviews() {
       let webview = sessionWebviews[aiKey];
       if (!webview) {
         if (mode === 'api') {
-          webview = createApiPanel(aiKey);
+          webview = ApiChatModule ? ApiChatModule.createApiPanel(aiKey) : createApiPanel(aiKey);
         } else {
           webview = await createWebview(aiKey);
         }
@@ -1649,7 +1691,7 @@ async function renderWebviews() {
         if (textareaContainer) {
           textareaContainer.style.display = 'none';
         }
-        const apiPanel = createApiPanel(aiKey);
+        const apiPanel = ApiChatModule ? ApiChatModule.createApiPanel(aiKey) : createApiPanel(aiKey);
         // Insert after header
         const header = wrapper.querySelector('.webview-header');
         if (header && header.nextSibling) {
@@ -2115,24 +2157,26 @@ function setupEventListeners() {
   });
 }
 
-// Update prompt buttons state based on mode
+// Update prompt buttons state based on mode - uses module if available
 function updatePromptButtons() {
+  if (PromptModule) {
+    PromptModule.syncState({ selectedAIs, loadedWebviews });
+    PromptModule.updatePromptButtons();
+    return;
+  }
+  // Fallback: inline implementation
   const hasPrompt = promptInput.value.trim().length > 0;
   const hasSelection = selectedAIs.size > 0;
   const currentSession = getCurrentSession();
   const isApiMode = currentSession && currentSession.mode === 'api';
 
-  // Update placeholder based on mode
-  // Web Mode: copy-paste only, API Mode: write and send
   promptInput.placeholder = t(isApiMode ? 'prompt.placeholder.api' : 'prompt.placeholder');
 
   if (isApiMode) {
-    // API Mode: show sendBtn, hide copyBtn
     copyBtn.style.display = 'none';
     sendBtn.style.display = 'flex';
     sendBtn.disabled = !(hasPrompt && hasSelection);
   } else {
-    // Web Mode: show copyBtn, hide sendBtn
     copyBtn.style.display = 'flex';
     sendBtn.style.display = 'none';
   }
@@ -2143,22 +2187,20 @@ function updateCopyButton() {
   updatePromptButtons();
 }
 
-// Copy prompt to clipboard
+// Copy prompt to clipboard - uses module if available
 async function copyPromptToClipboard() {
+  if (PromptModule) {
+    return PromptModule.copyPromptToClipboard();
+  }
+  // Fallback: inline implementation
   let prompt = promptInput.value.trim();
-
-  // If empty, use placeholder text
   if (!prompt) {
     prompt = promptInput.placeholder;
   }
 
   try {
     await navigator.clipboard.writeText(prompt);
-
-    // Show success message with translation
-    const message = t('copy.success');
-    showNotification(message, 'success');
-
+    showNotification(t('copy.success'), 'success');
   } catch (error) {
     logger.error('Error copying to clipboard:', error);
     showNotification(t('copy.error'), 'error');
@@ -2194,8 +2236,13 @@ function showNotification(message, type = 'info') {
   }, 2000);
 }
 
-// Send prompt to selected AIs
+// Send prompt to selected AIs - uses module if available
 async function sendPromptToSelectedAIs() {
+  if (PromptModule) {
+    PromptModule.syncState({ selectedAIs, loadedWebviews });
+    return PromptModule.sendPromptToSelectedAIs();
+  }
+  // Fallback: inline implementation
   const prompt = promptInput.value.trim();
 
   if (!prompt || selectedAIs.size === 0) {
@@ -2203,21 +2250,15 @@ async function sendPromptToSelectedAIs() {
   }
 
   try {
-    // CRITICAL: Capture sessionId at the START of the request using module as source of truth
-    // This prevents race condition when user switches tabs during API call
     const capturedSessionId = SessionsModule ? SessionsModule.getCurrentSessionId() : currentSessionId;
-    
-    // Ottieni le webview della sessione corrente
     const sessionWebviews = getCurrentSessionWebviews();
     const currentSession = getCurrentSession();
     const isApiMode = currentSession && currentSession.mode === 'api';
     const aiKeys = Array.from(selectedAIs);
 
-    // Clear prompt input IMMEDIATELY after send button click
     promptInput.value = '';
     updatePromptButtons();
 
-    // Send prompt to all selected AIs
     const promises = aiKeys.map(async aiKey => {
       const webview = sessionWebviews[aiKey];
       if (!webview) {
@@ -2225,24 +2266,21 @@ async function sendPromptToSelectedAIs() {
         return;
       }
 
-      // Aspetta che sia caricata (solo per Web Mode)
       if (!isApiMode) {
         await ensureWebviewLoaded(aiKey, webview);
       }
 
-      // Send via IPC to webview or Handle API
       if (isApiMode) {
         logger.log(`[${Date.now()}] Handling API chat for ${aiKey} in session ${capturedSessionId}...`);
 
-        // Save USER message to history explicitly before calling handler
-        // Pass capturedSessionId to ensure it goes to the correct session
-        saveApiHistory(aiKey, 'user', prompt, capturedSessionId);
-
-        // Fire and forget - all requests start in parallel
-        // Pass capturedSessionId to prevent race condition
-        handleApiChat(aiKey, prompt, webview, capturedSessionId);
+        if (ApiChatModule) {
+          ApiChatModule.saveApiHistory(aiKey, 'user', prompt, capturedSessionId);
+          ApiChatModule.handleApiChat(aiKey, prompt, webview, capturedSessionId);
+        } else {
+          saveApiHistory(aiKey, 'user', prompt, capturedSessionId);
+          handleApiChat(aiKey, prompt, webview, capturedSessionId);
+        }
       }
-      // Web Mode: user copies prompt manually via copyBtn
     });
 
     await Promise.all(promises);
@@ -2252,7 +2290,7 @@ async function sendPromptToSelectedAIs() {
   }
 }
 
-// Ensure webview is loaded
+// Ensure webview is loaded (fallback only, module handles this internally)
 async function ensureWebviewLoaded(aiKey, webview) {
   if (loadedWebviews.has(aiKey)) return;
 
@@ -2267,7 +2305,6 @@ async function ensureWebviewLoaded(aiKey, webview) {
     };
     webview.addEventListener('did-finish-load', onLoaded);
 
-    // Timeout fallback (15s)
     setTimeout(() => {
       webview.removeEventListener('did-finish-load', onLoaded);
       logger.log(`${aiKey} load timeout, continuing anyway...`);
@@ -2275,7 +2312,6 @@ async function ensureWebviewLoaded(aiKey, webview) {
     }, 15000);
   });
 
-  // Extra delay for SPA hydration
   logger.log(`Waiting extra 2s for ${aiKey} SPA hydration...`);
   await new Promise(r => setTimeout(r, 2000));
 }
@@ -2425,7 +2461,7 @@ function initSettings() {
 
   const modelOpenAI = document.getElementById('modelOpenAI');
   if (modelOpenAI) {
-    modelOpenAI.value = window.OnePromptCore.getSelectedModel('chatgpt') || 'gpt-4o';
+    modelOpenAI.value = window.OnePromptCore.getSelectedModel('chatgpt') || 'gpt-5.2';
     modelOpenAI.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel('chatgpt', e.target.value));
   }
 
@@ -2449,7 +2485,7 @@ function initSettings() {
 
   const modelGemini = document.getElementById('modelGemini');
   if (modelGemini) {
-    modelGemini.value = window.OnePromptCore.getSelectedModel('gemini') || 'gemini-2.5-flash';
+    modelGemini.value = window.OnePromptCore.getSelectedModel('gemini') || 'gemini-3-flash-preview';
     modelGemini.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel('gemini', e.target.value));
   }
 }
@@ -2799,10 +2835,6 @@ function appendApiMessage(panel, role, text, save = true, sessionId = null) {
     else if (aiKey === 'gemini') bubble.style.backgroundColor = '#1b72e8'; // Google Blue
     else if (aiKey === 'perplexity') bubble.style.backgroundColor = '#22b8cf'; // Perplexity Cyan
     else if (aiKey === 'copilot') bubble.style.backgroundColor = '#24292f'; // GitHub/Copilot Black
-    else if (aiKey === 'grok') {
-      bubble.style.backgroundColor = '#0e0e0e'; // xAI/Grok Black
-      bubble.style.color = '#c6c6c6';
-    }
     else bubble.style.backgroundColor = 'var(--accent-color)';
   }
 

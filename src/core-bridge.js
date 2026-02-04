@@ -54,15 +54,14 @@ const OnePromptCore = {
 
   /**
    * Recupera l'API key per un servizio AI
-   * @param {string} aiKey - chatgpt, claude, gemini, grok
+   * @param {string} aiKey - chatgpt, claude, gemini
    * @returns {string|null}
    */
   getApiKey(aiKey) {
     const keyMap = {
       chatgpt: 'oneprompt-api-openai',
       claude: 'oneprompt-api-anthropic',
-      gemini: 'oneprompt-api-gemini',
-      grok: 'oneprompt-api-xai'
+      gemini: 'oneprompt-api-gemini'
     };
     const storageKey = keyMap[aiKey];
     return storageKey ? localStorage.getItem(storageKey) : null;
@@ -70,15 +69,14 @@ const OnePromptCore = {
 
   /**
    * Salva l'API key per un servizio AI
-   * @param {string} aiKey - chatgpt, claude, gemini, grok
+   * @param {string} aiKey - chatgpt, claude, gemini
    * @param {string} key - L'API key
    */
   setApiKey(aiKey, key) {
     const keyMap = {
       chatgpt: 'oneprompt-api-openai',
       claude: 'oneprompt-api-anthropic',
-      gemini: 'oneprompt-api-gemini',
-      grok: 'oneprompt-api-xai'
+      gemini: 'oneprompt-api-gemini'
     };
     const storageKey = keyMap[aiKey];
     if (storageKey) {
@@ -97,10 +95,9 @@ const OnePromptCore = {
    */
   getSelectedModel(aiKey) {
     const modelMap = {
-      chatgpt: { key: 'oneprompt-model-openai', default: 'gpt-4o' },
+      chatgpt: { key: 'oneprompt-model-openai', default: 'gpt-5.2' },
       claude: { key: 'oneprompt-model-anthropic', default: 'claude-sonnet-4-5' },
-      gemini: { key: 'oneprompt-model-gemini', default: 'gemini-2.5-flash' },
-      grok: { key: 'oneprompt-model-xai', default: 'grok-4-1-fast' }
+      gemini: { key: 'oneprompt-model-gemini', default: 'gemini-3-flash-preview' }
     };
     const config = modelMap[aiKey];
     return config ? (localStorage.getItem(config.key) || config.default) : null;
@@ -115,8 +112,7 @@ const OnePromptCore = {
     const modelMap = {
       chatgpt: 'oneprompt-model-openai',
       claude: 'oneprompt-model-anthropic',
-      gemini: 'oneprompt-model-gemini',
-      grok: 'oneprompt-model-xai'
+      gemini: 'oneprompt-model-gemini'
     };
     const storageKey = modelMap[aiKey];
     if (storageKey && modelId) {
@@ -302,51 +298,6 @@ const OnePromptCore = {
   },
 
   /**
-   * Fa una chiamata API a xAI Grok
-   */
-  async callGrok(apiKey, model, messages, systemPrompt) {
-    const messagesWithSystem = [
-      { role: 'system', content: systemPrompt },
-      ...messages
-    ];
-
-    const res = await fetch('https://api.x.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: model,
-        messages: messagesWithSystem,
-        stream: false
-      })
-    });
-
-    const contentType = res.headers.get('content-type');
-
-    if (contentType && contentType.includes('application/json')) {
-      const data = await res.json();
-      if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
-
-      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-        throw new Error('Invalid response from xAI');
-      }
-
-      const message = data.choices[0].message;
-      if (message.content) {
-        return this.cleanAIResponseText(message.content);
-      } else if (message.tool_calls && message.tool_calls.length > 0) {
-        return 'Grok needs to perform a web search to answer this question. This feature is not supported in direct API mode.';
-      }
-      return '[Empty response from Grok]';
-    } else {
-      const text = await res.text();
-      throw new Error(`xAI API Error: ${text.substring(0, 200)}`);
-    }
-  },
-
-  /**
    * Pulisce il testo delle risposte AI da artifacts
    */
   cleanAIResponseText(text) {
@@ -381,7 +332,7 @@ const OnePromptCore = {
    * Funzione principale per fare una chiamata AI
    * Questa e il punto principale di override nel private
    *
-   * @param {string} aiKey - chatgpt, claude, gemini, grok
+   * @param {string} aiKey - chatgpt, claude, gemini
    * @param {Array} messages - Array di {role, content}
    * @returns {Promise<string>} - La risposta dell'AI
    */
@@ -406,8 +357,6 @@ const OnePromptCore = {
       responseText = await this.callAnthropic(apiKey, model, messages, systemPrompt);
     } else if (aiKey === 'gemini') {
       responseText = await this.callGemini(apiKey, model, messages, systemPrompt);
-    } else if (aiKey === 'grok') {
-      responseText = await this.callGrok(apiKey, model, messages, systemPrompt);
     } else {
       throw new Error('API support for this service is not yet implemented');
     }

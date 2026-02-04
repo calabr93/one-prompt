@@ -28,9 +28,9 @@ export let configuredAIs = new Set(
   JSON.parse(localStorage.getItem('oneprompt-configured-services') || '["perplexity", "copilot", "chatgpt", "claude", "gemini"]')
 );
 
-// Default to ChatGPT, Gemini, Claude, and Grok for API mode
+// Default to ChatGPT, Gemini, Claude for API mode
 export let configuredApiAIs = new Set(
-  JSON.parse(localStorage.getItem('oneprompt-configured-api-services') || '["chatgpt", "gemini", "claude", "grok"]')
+  JSON.parse(localStorage.getItem('oneprompt-configured-api-services') || '["chatgpt", "gemini", "claude"]')
 );
 
 // Cross-Check mode state
@@ -52,7 +52,6 @@ export const AI_DISPLAY_NAMES = {
   chatgpt: 'ChatGPT',
   claude: 'Claude',
   gemini: 'Gemini',
-  grok: 'Grok',
   perplexity: 'Perplexity',
   copilot: 'Copilot',
   deepseek: 'DeepSeek'

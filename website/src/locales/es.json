@@ -102,7 +102,7 @@
         { "text": "Modo Web: gratis ilimitado", "type": "included" },
         { "text": "Privacidad total (datos locales)", "type": "included" },
         { "text": "Modo API: listo para usar", "type": "included" },
-        { "text": "50 créditos incluidos al instante", "type": "included" },
+        { "text": "10 créditos incluidos al instante", "type": "included" },
         { "text": "Actualizaciones automáticas", "type": "included" },
         { "text": "Sin suscripción", "type": "included" },
         { "text": "Modo API: créditos opcionales desde $4.99", "type": "premium" }
@@ -121,7 +121,7 @@
     "items": [
       {
         "question": "¿Es OnePrompt realmente gratis?",
-        "answer": "Sí, la aplicación se instala gratis en Mac, Windows y Linux. Incluye Modo Web gratuito ilimitado y 50 créditos para el Modo API. La versión open source en GitHub te permite configurar tus propias claves API."
+        "answer": "Sí, la aplicación se instala gratis en Mac, Windows y Linux. Incluye Modo Web gratuito ilimitado y 10 créditos para el Modo API. La versión open source en GitHub te permite configurar tus propias claves API."
       },
       {
         "question": "¿Están seguros mis datos?",

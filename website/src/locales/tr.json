@@ -102,7 +102,7 @@
         { "text": "Web Modu: ücretsiz sınırsız", "type": "included" },
         { "text": "Tam gizlilik (yerel veriler)", "type": "included" },
         { "text": "API Modu: kullanıma hazır", "type": "included" },
-        { "text": "50 kredi anında dahil", "type": "included" },
+        { "text": "10 kredi anında dahil", "type": "included" },
         { "text": "Otomatik güncellemeler", "type": "included" },
         { "text": "Abonelik yok", "type": "included" },
         { "text": "API Modu: 4,99$'dan başlayan isteğe bağlı krediler", "type": "premium" }
@@ -121,7 +121,7 @@
     "items": [
       {
         "question": "OnePrompt gerçekten ücretsiz mi?",
-        "answer": "Evet, uygulama Mac, Windows ve Linux'a ücretsiz yüklenir. Ücretsiz sınırsız Web Modu ve API Modu için 50 kredi içerir. GitHub'daki açık kaynak sürümü, kendi API anahtarlarınızı yapılandırmanıza olanak tanır."
+        "answer": "Evet, uygulama Mac, Windows ve Linux'a ücretsiz yüklenir. Ücretsiz sınırsız Web Modu ve API Modu için 10 kredi içerir. GitHub'daki açık kaynak sürümü, kendi API anahtarlarınızı yapılandırmanıza olanak tanır."
       },
       {
         "question": "Verilerim güvende mi?",

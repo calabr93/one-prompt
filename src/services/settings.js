@@ -99,8 +99,7 @@ export function hasApiKey(aiKey) {
   const keyMap = {
     chatgpt: SETTINGS_KEYS.API_OPENAI,
     claude: SETTINGS_KEYS.API_ANTHROPIC,
-    gemini: SETTINGS_KEYS.API_GEMINI,
-    grok: SETTINGS_KEYS.API_XAI
+    gemini: SETTINGS_KEYS.API_GEMINI
   };
 
   const storageKey = keyMap[aiKey];

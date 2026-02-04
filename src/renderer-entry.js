@@ -30,6 +30,10 @@ import * as resizer from './ui/resizer.js';
 // Import services
 import * as settings from './services/settings.js';
 
+// Import app modules (extracted from renderer.js)
+import * as apiChat from './app/api-chat.js';
+import * as prompt from './app/prompt.js';
+
 // ============================================================
 // BACKWARD COMPATIBILITY LAYER
 // Expose modules on window for code that hasn't been migrated
@@ -60,6 +64,11 @@ window.OnePromptUI.resizer = resizer;
 
 // Expose services
 window.OnePromptServices.settings = settings;
+
+// Expose app modules (extracted from renderer.js)
+window.OnePromptApp = window.OnePromptApp || {};
+window.OnePromptApp.apiChat = apiChat;
+window.OnePromptApp.prompt = prompt;
 
 // Convenience aliases for most commonly used functions
 window.t = i18n.t;
