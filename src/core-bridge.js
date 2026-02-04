@@ -1,24 +1,24 @@
 /**
  * OnePromptCore Bridge
  *
- * Questo modulo fornisce un layer di astrazione per i servizi esterni.
- * Il renderer.js chiama questi metodi, che possono essere overridden
- * nelle repo private tramite Vite alias o injection.
+ * This module provides an abstraction layer for external services.
+ * renderer.js calls these methods, which can be overridden
+ * in private repos via Vite aliases or injection.
  *
- * NELL'OPEN SOURCE:
- * - BYOK (Bring Your Own Key) - API keys salvate in localStorage
- * - Nessun credit system
- * - Nessun tracking
+ * IN OPEN SOURCE:
+ * - BYOK (Bring Your Own Key) - API keys stored in localStorage
+ * - No credit system
+ * - No tracking
  *
- * NEL PRIVATE (override):
- * - Managed API keys dal backend
- * - Credit system con Supabase
+ * IN PRIVATE (override):
+ * - Managed API keys from backend
+ * - Credit system with Supabase
  * - PostHog tracking
  *
  * @module OnePromptCore
  */
 
-// IIFE per isolare le variabili locali e evitare conflitti con renderer.js
+// IIFE to isolate local variables and avoid conflicts with renderer.js
 (function() {
   'use strict';
 
@@ -27,21 +27,21 @@
 /**
  * OnePromptCore - The Bridge
  *
- * Esposto come window.OnePromptCore per essere accessibile dal renderer
+ * Exposed as window.OnePromptCore to be accessible from renderer
  */
 const OnePromptCore = {
   /**
-   * Feature flags - indicano quali funzionalita sono disponibili
+   * Feature flags - indicate which features are available
    */
   features: {
-    byok: true,          // BYOK sempre attivo nell'open
-    credits: false,      // Sistema crediti (solo nel private)
-    auth: false,         // Autenticazione (solo nel private)
-    analytics: false,    // Tracking PostHog (solo nel private)
+    byok: true,          // BYOK always enabled in open source
+    credits: false,      // Credit system (private only)
+    auth: false,         // Authentication (private only)
+    analytics: false,    // PostHog tracking (private only)
   },
 
   /**
-   * Configurazione dell'app
+   * App configuration
    */
   config: {
     appName: 'OnePrompt',
@@ -53,7 +53,7 @@ const OnePromptCore = {
   // ============================================================
 
   /**
-   * Recupera l'API key per un servizio AI
+   * Get the API key for an AI service
    * @param {string} aiKey - chatgpt, claude, gemini
    * @returns {string|null}
    */
@@ -68,9 +68,9 @@ const OnePromptCore = {
   },
 
   /**
-   * Salva l'API key per un servizio AI
+   * Save the API key for an AI service
    * @param {string} aiKey - chatgpt, claude, gemini
-   * @param {string} key - L'API key
+   * @param {string} key - The API key
    */
   setApiKey(aiKey, key) {
     const keyMap = {
@@ -89,7 +89,7 @@ const OnePromptCore = {
   },
 
   /**
-   * Recupera il modello selezionato per un servizio AI
+   * Get the selected model for an AI service
    * @param {string} aiKey
    * @returns {string}
    */
@@ -104,7 +104,7 @@ const OnePromptCore = {
   },
 
   /**
-   * Salva il modello selezionato per un servizio AI
+   * Save the selected model for an AI service
    * @param {string} aiKey
    * @param {string} modelId
    */
@@ -121,13 +121,13 @@ const OnePromptCore = {
   },
 
   // ============================================================
-  // CREDIT SYSTEM (stubs per l'open, overridden nel private)
+  // CREDIT SYSTEM (stubs for open source, overridden in private)
   // ============================================================
 
   /**
-   * Verifica se l'utente puo fare una chiamata API
-   * Nel private: controlla i crediti
-   * Nell'open: controlla solo se l'API key esiste
+   * Check if the user can make an API call
+   * In private: checks credits
+   * In open source: only checks if API key exists
    *
    * @param {string} aiKey
    * @returns {Promise<{canProceed: boolean, error?: string, credits?: number}>}
@@ -141,27 +141,27 @@ const OnePromptCore = {
   },
 
   /**
-   * Consuma un credito dopo una chiamata API riuscita
-   * Nel private: decrementa i crediti
-   * Nell'open: no-op
+   * Consume a credit after a successful API call
+   * In private: decrements credits
+   * In open source: no-op
    *
    * @param {string} aiKey
    * @returns {Promise<{success: boolean, remainingCredits?: number}>}
    */
   async consumeCredit(aiKey) {
-    // No-op nell'open source
+    // No-op in open source
     return { success: true };
   },
 
   /**
-   * Recupera il saldo crediti corrente
-   * Nel private: query Supabase
-   * Nell'open: restituisce null (crediti non disponibili)
+   * Get current credits balance
+   * In private: Supabase query
+   * In open source: returns null (credits not available)
    *
    * @returns {Promise<number|null>}
    */
   async getCreditsBalance() {
-    // Crediti non disponibili nell'open source
+    // Credits not available in open source
     return null;
   },
 
@@ -170,7 +170,7 @@ const OnePromptCore = {
   // ============================================================
 
   /**
-   * Ottiene il system prompt con la lingua dell'utente
+   * Get the system prompt with user's language
    * @returns {string}
    */
   getSystemPrompt() {
@@ -189,7 +189,7 @@ const OnePromptCore = {
   },
 
   /**
-   * Fa una chiamata API a OpenAI
+   * Make an API call to OpenAI
    * @param {string} apiKey
    * @param {string} model
    * @param {Array} messages
@@ -230,7 +230,7 @@ const OnePromptCore = {
   },
 
   /**
-   * Fa una chiamata API a Anthropic Claude
+   * Make an API call to Anthropic Claude
    */
   async callAnthropic(apiKey, model, messages, systemPrompt) {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -266,7 +266,7 @@ const OnePromptCore = {
   },
 
   /**
-   * Fa una chiamata API a Google Gemini
+   * Make an API call to Google Gemini
    */
   async callGemini(apiKey, model, messages, systemPrompt) {
     const geminiContents = messages.map(msg => ({
@@ -298,7 +298,7 @@ const OnePromptCore = {
   },
 
   /**
-   * Pulisce il testo delle risposte AI da artifacts
+   * Clean AI response text from artifacts
    */
   cleanAIResponseText(text) {
     if (!text) return '';
@@ -329,26 +329,26 @@ const OnePromptCore = {
   },
 
   /**
-   * Funzione principale per fare una chiamata AI
-   * Questa e il punto principale di override nel private
+   * Main function to make an AI call
+   * This is the main override point in private repos
    *
    * @param {string} aiKey - chatgpt, claude, gemini
-   * @param {Array} messages - Array di {role, content}
-   * @returns {Promise<string>} - La risposta dell'AI
+   * @param {Array} messages - Array of {role, content}
+   * @returns {Promise<string>} - The AI response
    */
   async makeAIRequest(aiKey, messages) {
-    // 1. Verifica se puo procedere (crediti nel private, API key nell'open)
+    // 1. Check if can proceed (credits in private, API key in open source)
     const check = await this.checkCanMakeRequest(aiKey);
     if (!check.canProceed) {
       throw new Error(check.error);
     }
 
-    // 2. Recupera API key e model
+    // 2. Get API key and model
     const apiKey = this.getApiKey(aiKey);
     const model = this.getSelectedModel(aiKey);
     const systemPrompt = this.getSystemPrompt();
 
-    // 3. Esegui la chiamata
+    // 3. Execute the call
     let responseText;
 
     if (aiKey === 'chatgpt') {
@@ -361,44 +361,44 @@ const OnePromptCore = {
       throw new Error('API support for this service is not yet implemented');
     }
 
-    // 4. Consuma credito (no-op nell'open)
+    // 4. Consume credit (no-op in open source)
     await this.consumeCredit(aiKey);
 
     return responseText;
   },
 
   // ============================================================
-  // ANALYTICS (stubs per l'open, overridden nel private)
+  // ANALYTICS (stubs for open source, overridden in private)
   // ============================================================
 
   /**
-   * Traccia un evento (solo nel private con PostHog)
+   * Track an event (private only with PostHog)
    * @param {string} eventName
    * @param {Object} properties
    */
   async trackEvent(eventName, properties = {}) {
-    // No-op nell'open source
+    // No-op in open source
     logger.log('[Analytics] Event (disabled):', eventName, properties);
   },
 
   // ============================================================
-  // AUTH (stubs per l'open, overridden nel private)
+  // AUTH (stubs for open source, overridden in private)
   // ============================================================
 
   /**
-   * Verifica se l'utente e autenticato
+   * Check if user is authenticated
    * @returns {Promise<boolean>}
    */
   async isAuthenticated() {
-    return false; // Sempre false nell'open (no auth)
+    return false; // Always false in open source (no auth)
   },
 
   /**
-   * Recupera l'utente corrente
+   * Get current user
    * @returns {Promise<Object|null>}
    */
   async getCurrentUser() {
-    return null; // Sempre null nell'open
+    return null; // Always null in open source
   },
 
   // ============================================================
@@ -406,7 +406,7 @@ const OnePromptCore = {
   // ============================================================
 
   /**
-   * Verifica se mostrare i settings BYOK
+   * Check if BYOK settings should be shown
    * @returns {boolean}
    */
   shouldShowBYOKSettings() {
@@ -414,7 +414,7 @@ const OnePromptCore = {
   },
 
   /**
-   * Verifica se mostrare il credit display
+   * Check if credit display should be shown
    * @returns {boolean}
    */
   shouldShowCredits() {
@@ -422,7 +422,7 @@ const OnePromptCore = {
   },
 
   /**
-   * Verifica se mostrare il login button
+   * Check if login button should be shown
    * @returns {boolean}
    */
   shouldShowAuth() {
@@ -434,8 +434,8 @@ const OnePromptCore = {
   // ============================================================
 
   /**
-   * Inizializza il core
-   * Chiamato all'avvio dell'app
+   * Initialize the core
+   * Called at app startup
    */
   async init() {
     logger.log('[OnePromptCore] Initializing...');
@@ -444,9 +444,9 @@ const OnePromptCore = {
   }
 };
 
-// Esponi globalmente (Safe Merge)
-// Se window.OnePromptCore esiste già (creato da renderer-entry.js), lo estendiamo
-// altrimenti lo creiamo nuovo.
+// Expose globally (Safe Merge)
+// If window.OnePromptCore already exists (created by renderer-entry.js), extend it
+// otherwise create a new one.
 window.OnePromptCore = Object.assign(window.OnePromptCore || {}, OnePromptCore);
 
-})(); // Fine IIFE
+})(); // End IIFE

@@ -198,7 +198,7 @@ export async function sendPromptToSelectedAIs() {
     await Promise.all(promises);
 
   } catch (error) {
-    logger.error('Errore invio prompt:', error);
+    logger.error('Error sending prompt:', error);
   }
 }
 

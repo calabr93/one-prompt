@@ -406,7 +406,7 @@ function createNewSession(name = null, selectedAIsSet = null, mode = null) {
   // Fallback: inline implementation
   sessionCounter++;
 
-  // Calcola il numero di sessione più basso disponibile (gap finding)
+  // Calculate the lowest available session number (gap finding)
   const usedNumbers = new Set(sessions.map(s => s.sessionNumber).filter(n => typeof n === 'number'));
   let nextNumber = 1;
   while (usedNumbers.has(nextNumber)) {
@@ -458,8 +458,8 @@ function getCurrentSessionWebviews() {
 }
 
 /**
- * Pulisce le webview di una sessione quando viene chiusa
- * @param {string} sessionId - ID della sessione da pulire
+ * Clean up webviews when a session is closed
+ * @param {string} sessionId - ID of the session to clean up
  */
 function cleanupSessionWebviews(sessionId) {
   const sessionWebviews = webviewInstances[sessionId];
@@ -478,25 +478,25 @@ function captureCurrentUrls() {
   const currentSession = getCurrentSession();
   if (!currentSession) return;
 
-  // Inizializza chatUrls se non esiste (per sessioni vecchie)
+  // Initialize chatUrls if it doesn't exist (for old sessions)
   if (!currentSession.chatUrls) {
     currentSession.chatUrls = {};
   }
 
-  // Cattura l'URL corrente di ogni webview della sessione corrente
+  // Capture the current URL of each webview in the current session
   const sessionWebviews = getCurrentSessionWebviews();
   Object.keys(sessionWebviews).forEach(aiKey => {
     const webview = sessionWebviews[aiKey];
     if (webview) {
       try {
-        // Usa getURL() se disponibile per ottenere l'URL corrente reale (navigazione utente)
-        // altrimenti fallback su src
+        // Use getURL() if available to get the actual current URL (user navigation)
+        // otherwise fallback to src
         const url = (typeof webview.getURL === 'function') ? webview.getURL() : webview.src;
         if (url) {
           currentSession.chatUrls[aiKey] = url;
         }
       } catch (e) {
-        logger.error(`Errore cattura URL per ${aiKey}:`, e);
+        logger.error(`Error capturing URL for ${aiKey}:`, e);
       }
     }
   });
@@ -883,11 +883,11 @@ async function init() {
 
     logger.log('=== INIT COMPLETED ===');
   } catch (error) {
-    logger.error('Errore durante l\'inizializzazione:', error);
+    logger.error('Error during initialization:', error);
   }
 }
 
-// Salva le AI selezionate nella sessione corrente
+// Save selected AIs in the current session
 function saveSelectedAIs() {
   const session = getCurrentSession();
   if (session) {
@@ -912,7 +912,7 @@ function renderTabs() {
   // Fallback: inline implementation
   tabList.innerHTML = '';
 
-  // Mostra sempre la tab bar (stile Chrome)
+  // Always show the tab bar (Chrome style)
   tabBar.style.display = 'flex';
 
   sessions.forEach(session => {
@@ -920,10 +920,10 @@ function renderTabs() {
     tabList.appendChild(tab);
   });
 
-  // Aggiungi il pulsante + dopo l'ultima tab
+  // Add the + button after the last tab
   const newTabBtn = document.createElement('button');
   newTabBtn.className = 'new-tab-btn';
-  newTabBtn.title = 'Nuova tab';
+  newTabBtn.title = 'New tab';
   newTabBtn.innerHTML = `
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
       <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -936,11 +936,11 @@ function renderTabs() {
   });
   tabList.appendChild(newTabBtn);
 
-  // Dopo il rendering delle tab, assicurati che quella attiva sia visibile
+  // After rendering tabs, ensure the active one is visible
   scrollToActiveTab();
 }
 
-// Scorre la tab attiva in vista se necessario
+// Scroll to the active tab if needed
 function scrollToActiveTab() {
   const activeTab = document.querySelector('.tab.active');
   if (activeTab) {
@@ -960,7 +960,7 @@ function createTabElement(session) {
 
   const tabName = document.createElement('div');
   tabName.className = 'tab-name';
-  // Se name è null o vuoto, usa il nome tradotto con il numero
+  // If name is null or empty, use translated name with the number
   tabName.textContent = session.name || `${t('session.default')} ${session.sessionNumber || '1'}`;
 
   const tabClose = document.createElement('div');
@@ -1122,18 +1122,18 @@ function switchToSession(sessionId) {
     });
   }
 
-  // Salva lo stato della sessione corrente PRIMA di cambiare
+  // Save current session state BEFORE switching
   saveSessionsToStorage();
 
   currentSessionId = sessionId;
   const session = getCurrentSession();
 
-  // Aggiorna selectedAIs con le AI della nuova sessione
+  // Update selectedAIs with the AIs from the new session
   selectedAIs = new Set(session.selectedAIs);
 
   saveSessionsToStorage();
 
-  // Re-render tutto
+  // Re-render everything
   renderTabs();
   renderSidebar();
   renderWebviews();
@@ -1149,7 +1149,7 @@ function switchToSession(sessionId) {
   updatePromptButtons();
 }
 
-// Aggiorna lo stato della sidebar in base alla sessione corrente
+// Update sidebar state based on current session
 function updateSidebarState() {
   // Use module if available
   if (SidebarModule) {
@@ -1157,9 +1157,9 @@ function updateSidebarState() {
     SidebarModule.updateSidebarState();
     return;
   }
-  
+
   // Fallback: inline implementation
-  // Aggiorna quali bottoni AI sono attivi
+  // Update which AI buttons are active
   const allButtons = document.querySelectorAll('.sidebar-item[data-ai-key]');
   allButtons.forEach(button => {
     const aiKey = button.dataset.aiKey;
@@ -1191,15 +1191,15 @@ function closeSession(sessionId) {
 
   sessions.splice(sessionIndex, 1);
 
-  // Se abbiamo chiuso tutte le sessioni, crea una nuova sessione vuota (stile Chrome)
+  // If we closed all sessions, create a new empty session (Chrome style)
   if (sessions.length === 0) {
     const newSession = createNewSession(null, new Set([]));
     sessions.push(newSession);
     currentSessionId = newSession.id;
     selectedAIs = new Set(newSession.selectedAIs);
   } else if (sessionId === currentSessionId) {
-    // Se abbiamo chiuso la sessione corrente, passa a un'altra
-    // Prendi la sessione precedente o la prima disponibile
+    // If we closed the current session, switch to another
+    // Take the previous session or the first available
     const newIndex = Math.max(0, sessionIndex - 1);
     currentSessionId = sessions[newIndex].id;
     selectedAIs = new Set(sessions[newIndex].selectedAIs);
@@ -1207,14 +1207,14 @@ function closeSession(sessionId) {
 
   saveSessionsToStorage();
 
-  // Re-render tutto
+  // Re-render everything
   renderTabs();
   renderSidebar();
   renderWebviews();
   updateCopyButton();
 }
 
-// Crea nuova sessione
+// Create new session
 function createNewSessionAndSwitch() {
   // Use module if available
   if (TabsModule && SessionsModule) {
@@ -1235,10 +1235,10 @@ function createNewSessionAndSwitch() {
     return;
   }
 
-  // Salva lo stato della sessione corrente PRIMA di cambiare
+  // Save current session state BEFORE switching
   saveSessionsToStorage();
 
-  // Crea nuova sessione vuota (senza servizi preselezionati)
+  // Create new empty session (without preselected services)
   const newSession = createNewSession(null, new Set([]));
 
   sessions.push(newSession);
@@ -1247,7 +1247,7 @@ function createNewSessionAndSwitch() {
 
   saveSessionsToStorage();
 
-  // Re-render tutto
+  // Re-render everything
   renderTabs();
   renderSidebar();
   renderWebviews();
@@ -1508,8 +1508,8 @@ async function renderWebviews() {
     placeholder.style.display = 'none';
   }
 
-  // Nascondi TUTTE le webview delle sessioni NON correnti (preserva lo stato)
-  // Manteniamo le webview nel DOM per evitare refresh quando si torna alla sessione
+  // Hide ALL webviews from NON-current sessions (preserve state)
+  // Keep webviews in DOM to avoid refresh when returning to the session
   Object.keys(webviewInstances).forEach(sessionId => {
     if (sessionId !== activeSessionId) {
       const sessionWebviews = webviewInstances[sessionId];
@@ -1522,10 +1522,10 @@ async function renderWebviews() {
     }
   });
 
-  // Ottieni le webview della sessione corrente
+  // Get webviews for current session
   const sessionWebviews = getCurrentSessionWebviews();
-  
-  // Nascondi le webview della sessione corrente non selezionate
+
+  // Hide unselected webviews from current session
   Object.keys(sessionWebviews).forEach(aiKey => {
     if (!selectedAIs.has(aiKey)) {
       const wrapper = document.querySelector(`.webview-wrapper[data-session-id="${activeSessionId}"][data-ai-key="${aiKey}"]`);
@@ -1535,21 +1535,21 @@ async function renderWebviews() {
     }
   });
 
-  // Mostra solo le webview della sessione corrente che sono selezionate
+  // Show only selected webviews from current session
   let index = 0;
   for (const aiKey of selectedAIs) {
-    // Verifica che la config esista
+    // Verify that config exists
     const config = aiConfigs[aiKey];
     if (!config) {
       logger.warn(`[OnePrompt] Config not found for AI: ${aiKey}`);
       continue;
     }
 
-    // Controlla se il wrapper per questa sessione e AI esiste già
+    // Check if wrapper for this session and AI already exists
     let wrapper = document.querySelector(`.webview-wrapper[data-session-id="${activeSessionId}"][data-ai-key="${aiKey}"]`);
 
     if (!wrapper) {
-      // Crea nuovo wrapper e webview
+      // Create new wrapper and webview
       wrapper = document.createElement('div');
       wrapper.className = 'webview-wrapper';
       wrapper.dataset.sessionId = activeSessionId;
@@ -1671,7 +1671,7 @@ async function renderWebviews() {
         ResizerModule.addResizerToWrapper(wrapper);
       }
     } else {
-      // Il wrapper esiste già, mostralo
+      // Wrapper already exists, show it
       wrapper.style.display = 'flex';
 
       // Update order without moving in DOM (prevents reload)
@@ -1902,7 +1902,7 @@ function renderSidebar() {
   const mode = currentSession ? currentSession.mode : 'web';
   const apiServices = AIServicesModule ? AIServicesModule.getApiServices() : ['chatgpt', 'gemini', 'claude'];
 
-  // Mostra solo i servizi configurati nella sidebar
+  // Show only configured services in the sidebar
   Object.entries(aiConfigs).forEach(([key, config]) => {
     let isConfigured = false;
     if (mode === 'api') {
@@ -1975,7 +1975,7 @@ function setupScrollListeners() {
 
   if (sidebarNav) {
     sidebarNav.addEventListener('scroll', updateScrollIndicators);
-    // Aggiorna anche al resize della finestra
+    // Also update on window resize
     window.addEventListener('resize', updateScrollIndicators);
   }
 
@@ -2335,7 +2335,7 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// Salva gli URL delle chat e i testi delle textarea quando l'app viene chiusa
+// Save chat URLs and textarea texts when the app is closed
 window.addEventListener('beforeunload', () => {
   // Sync local state with module state before saving
   sessions = SessionsModule.getSessions();

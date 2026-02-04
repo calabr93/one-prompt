@@ -172,11 +172,11 @@ export function createServiceCard(aiKey, config, mode = 'web') {
     if (configuredAIs.has(aiKey)) isConfigured = true;
   }
 
-  // Aggiungi classe 'coming-soon' se il servizio non è ancora disponibile
+  // Add 'coming-soon' class if the service is not yet available
   if (config.comingSoon) {
     card.classList.add('coming-soon');
   } else if (isConfigured) {
-    // Aggiungi classe 'enabled' se il servizio è abilitato
+    // Add 'enabled' class if the service is enabled
     card.classList.add('enabled');
   }
 
@@ -196,7 +196,7 @@ export function createServiceCard(aiKey, config, mode = 'web') {
   card.appendChild(icon);
   card.appendChild(name);
 
-  // Aggiungi badge "Prossimamente" se coming soon
+  // Add "Coming Soon" badge if coming soon
   if (config.comingSoon) {
     const badge = document.createElement('div');
     badge.className = 'coming-soon-badge';
@@ -204,7 +204,7 @@ export function createServiceCard(aiKey, config, mode = 'web') {
     card.appendChild(badge);
   }
 
-  // Click sul card per abilitare/disabilitare (solo se non è coming soon)
+  // Click on card to enable/disable (only if not coming soon)
   if (!config.comingSoon) {
     card.addEventListener('click', () => {
       toggleServiceEnabled(aiKey, card, mode);
@@ -227,12 +227,12 @@ export function toggleServiceEnabled(aiKey, cardElement, mode = 'web') {
   const storageKey = mode === 'api' ? 'oneprompt-configured-api-services' : 'oneprompt-configured-services';
 
   if (targetSet.has(aiKey)) {
-    // Disabilita servizio
+    // Disable service
     targetSet.delete(aiKey);
     cardElement.classList.remove('enabled');
     localStorage.setItem(storageKey, JSON.stringify([...targetSet]));
 
-    // Se il servizio è anche selezionato nella sessione corrente, rimuovilo
+    // If the service is also selected in the current session, remove it
     if (selectedAIs.has(aiKey)) {
       selectedAIs.delete(aiKey);
       if (saveSelectedAIsFn) saveSelectedAIsFn();
@@ -242,19 +242,19 @@ export function toggleServiceEnabled(aiKey, cardElement, mode = 'web') {
       if (updateCrossCheckVisibilityFn) updateCrossCheckVisibilityFn();
     }
 
-    // Re-render sidebar per rimuovere lo status
+    // Re-render sidebar to remove the status
     if (renderSidebarFn) renderSidebarFn();
   } else {
-    // Abilita servizio
+    // Enable service
     targetSet.add(aiKey);
     cardElement.classList.add('enabled');
     localStorage.setItem(storageKey, JSON.stringify([...targetSet]));
 
-    // Re-render sidebar per aggiungere lo status
+    // Re-render sidebar to add the status
     if (renderSidebarFn) renderSidebarFn();
 
-    // Crea/mostra webview per questo servizio
-    // Prima aggiungi alla selezione se non c'è già
+    // Create/show webview for this service
+    // First add to selection if not already there
     if (!selectedAIs.has(aiKey)) {
       selectedAIs.add(aiKey);
       if (saveSelectedAIsFn) saveSelectedAIsFn();
@@ -278,7 +278,7 @@ export function toggleAISelection(aiKey) {
     selectedAIs.add(aiKey);
   }
 
-  // Salva lo stato
+  // Save state
   if (saveSelectedAIsFn) saveSelectedAIsFn();
 
   // Update sidebar button state

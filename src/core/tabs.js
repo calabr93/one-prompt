@@ -316,7 +316,7 @@ export function closeSession(sessionId) {
   const sessionIndex = sessions.findIndex(s => s.id === sessionId);
   if (sessionIndex === -1) return;
 
-  // Pulisci le webview della sessione prima di rimuoverla
+  // Clean up session webviews before removing it
   if (callbacks.cleanupSessionWebviews) {
     callbacks.cleanupSessionWebviews(sessionId);
   }

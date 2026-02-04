@@ -20,13 +20,11 @@ export const SETTINGS_KEYS = {
   API_OPENAI: 'oneprompt-api-openai',
   API_ANTHROPIC: 'oneprompt-api-anthropic',
   API_GEMINI: 'oneprompt-api-gemini',
-  API_XAI: 'oneprompt-api-xai',
 
   // Selected Models
   MODEL_OPENAI: 'oneprompt-model-openai',
   MODEL_ANTHROPIC: 'oneprompt-model-anthropic',
   MODEL_GEMINI: 'oneprompt-model-gemini',
-  MODEL_XAI: 'oneprompt-model-xai',
 
   // UI Preferences
   LANGUAGE: 'oneprompt-language',
@@ -116,8 +114,7 @@ export function getApiKeySettings() {
   return {
     openai: getSetting(SETTINGS_KEYS.API_OPENAI, ''),
     anthropic: getSetting(SETTINGS_KEYS.API_ANTHROPIC, ''),
-    gemini: getSetting(SETTINGS_KEYS.API_GEMINI, ''),
-    xai: getSetting(SETTINGS_KEYS.API_XAI, '')
+    gemini: getSetting(SETTINGS_KEYS.API_GEMINI, '')
   };
 }
 
@@ -128,8 +125,7 @@ export function saveApiKey(provider, key) {
   const keyMap = {
     openai: SETTINGS_KEYS.API_OPENAI,
     anthropic: SETTINGS_KEYS.API_ANTHROPIC,
-    gemini: SETTINGS_KEYS.API_GEMINI,
-    xai: SETTINGS_KEYS.API_XAI
+    gemini: SETTINGS_KEYS.API_GEMINI
   };
 
   const storageKey = keyMap[provider];
@@ -145,8 +141,7 @@ export function saveModelSelection(provider, modelId) {
   const keyMap = {
     openai: SETTINGS_KEYS.MODEL_OPENAI,
     anthropic: SETTINGS_KEYS.MODEL_ANTHROPIC,
-    gemini: SETTINGS_KEYS.MODEL_GEMINI,
-    xai: SETTINGS_KEYS.MODEL_XAI
+    gemini: SETTINGS_KEYS.MODEL_GEMINI
   };
 
   const storageKey = keyMap[provider];

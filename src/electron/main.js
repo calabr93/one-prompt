@@ -175,7 +175,7 @@ function createMainWindow() {
   });
 }
 
-// Lifecycle dell'app
+// App lifecycle
 app.whenReady().then(() => {
   // Enable context menu for all webContents (including webviews)
   app.on('web-contents-created', (event, contents) => {
