@@ -374,8 +374,6 @@ function updateGridResizerPositions() {
   const grid = document.getElementById('webviewGrid');
   if (!grid) return;
 
-  // const now = new Date().toISOString().split('T')[1];
-  
   const structure = getGridStructure();
   const { colWidths, rowHeights } = structure;
   const gridRect = grid.getBoundingClientRect();
@@ -398,7 +396,6 @@ function updateGridResizerPositions() {
     
     // Only update if the difference is significant (> 1px) to prevent infinite loops
     if (Math.abs(roundedLeft - currentLeft) > 1) {
-      // console.log(`[${now}] [RESIZE DEBUG] Col ${i} UPDATING left to ${roundedLeft}px (was ${currentLeft}px)`);
       resizer.style.left = `${roundedLeft}px`;
     }
     
@@ -422,7 +419,6 @@ function updateGridResizerPositions() {
     
     // Only update if the difference is significant (> 1px) to prevent infinite loops
     if (Math.abs(roundedTop - currentTop) > 1) {
-      // console.log(`[${now}] [RESIZE DEBUG] Row ${i} UPDATING top to ${roundedTop}px (was ${currentTop}px)`);
       resizer.style.top = `${roundedTop}px`;
     }
     
@@ -555,7 +551,6 @@ function restoreSizes() {
  * Clear all custom sizes (reset to equal distribution)
  */
 function clearSizes() {
-  const layoutMode = getCurrentLayoutMode();
   const wrappers = getVisibleWrappers();
   const grid = document.getElementById('webviewGrid');
 
@@ -739,18 +734,15 @@ function setupGridResizeObserver() {
     if (gridResizeState.isResizing) return;
 
     let hasSizeChanged = false;
-    // const now = new Date().toISOString().split('T')[1];
 
     for (const entry of entries) {
       if (entry.contentRect) {
         const { width, height } = entry.contentRect;
-        
+
         // Skip if dimensions haven't changed significantly (tolerance 0.5px)
-        // Note: lastLoggedGridState tracks the last EFFECTIVE size processed
-        if (Math.abs(width - lastLoggedGridState.width) > 0.5 || 
+        if (Math.abs(width - lastLoggedGridState.width) > 0.5 ||
             Math.abs(height - lastLoggedGridState.height) > 0.5) {
           hasSizeChanged = true;
-          // console.log(`[${now}] [RESIZE DEBUG] Grid Size CHANGED: ${width.toFixed(2)} x ${height.toFixed(2)} (was ${lastLoggedGridState.width.toFixed(2)} x ${lastLoggedGridState.height.toFixed(2)})`);
         }
       }
     }

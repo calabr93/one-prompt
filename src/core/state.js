@@ -57,31 +57,12 @@ export const AI_DISPLAY_NAMES = {
   deepseek: 'DeepSeek'
 };
 
-/**
- * Set state variables (used for initializing from external sources)
- */
-export function setAiConfigs(configs) {
-  aiConfigs = configs;
-}
-
 export function setSessions(newSessions) {
   sessions = newSessions;
 }
 
 export function setCurrentSessionId(id) {
   currentSessionId = id;
-}
-
-export function setSessionCounter(count) {
-  sessionCounter = count;
-}
-
-export function setCrossCheckEnabled(enabled) {
-  crossCheckEnabled = enabled;
-}
-
-export function setFocusedWebview(webview) {
-  focusedWebview = webview;
 }
 
 /**

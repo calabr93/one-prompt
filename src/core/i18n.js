@@ -123,14 +123,6 @@ export function hasTranslations(lang) {
 }
 
 /**
- * Get all loaded translations for current language
- * @returns {Object}
- */
-export function getTranslations() {
-  return translations[currentLanguage] || {};
-}
-
-/**
  * Translate a key with optional parameters
  * @param {string} key - Translation key
  * @param {Object} params - Optional parameters for placeholder replacement
@@ -169,7 +161,6 @@ export default {
   isLanguageConfirmed,
   confirmLanguageSelection,
   hasTranslations,
-  getTranslations,
   detectLanguage,
   loadTranslations,
   t,

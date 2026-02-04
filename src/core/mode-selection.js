@@ -139,16 +139,6 @@ export function selectMode(mode) {
 }
 
 /**
- * Get placeholder text for current mode
- * @param {Object} session - Current session object
- * @returns {string} - Placeholder text
- */
-export function getPlaceholderForMode(session) {
-  const isApiMode = session && session.mode === 'api';
-  return t(isApiMode ? 'prompt.placeholder.api' : 'prompt.placeholder');
-}
-
-/**
  * Check if current session is in API mode
  * @param {Object} session - Session object
  * @returns {boolean}
