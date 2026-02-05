@@ -20,6 +20,7 @@ let renderSidebarFn = null;
 let renderWebviewsFn = null;
 let updatePromptButtonsFn = null;
 let updateCrossCheckVisibilityFn = null;
+let renderTabsFn = null;
 let AIServicesModule = null;
 let I18nModule = null;
 
@@ -39,6 +40,7 @@ let getConfiguredApiAIsFn = null;
  * @param {Function} config.renderWebviews - Function to render webviews
  * @param {Function} config.updatePromptButtons - Function to update prompt buttons
  * @param {Function} config.updateCrossCheckVisibility - Function to update cross-check visibility
+ * @param {Function} [config.renderTabs] - Optional function to render tabs
  * @param {Object} [config.aiServicesModule] - Optional AI Services module reference
  * @param {Object} [config.i18nModule] - Optional i18n module reference
  */
@@ -50,6 +52,7 @@ export function initModeSelection(config) {
   renderWebviewsFn = config.renderWebviews;
   updatePromptButtonsFn = config.updatePromptButtons;
   updateCrossCheckVisibilityFn = config.updateCrossCheckVisibility || null;
+  renderTabsFn = config.renderTabs || null;
   AIServicesModule = config.aiServicesModule || null;
   I18nModule = config.i18nModule || null;
 
@@ -125,6 +128,7 @@ export function selectMode(mode) {
     }
 
     if (saveSessionsToStorageFn) saveSessionsToStorageFn();
+    if (renderTabsFn) renderTabsFn(); // Update tab icon for mode
     if (renderSidebarFn) renderSidebarFn(); // Update sidebar for new mode
     if (renderWebviewsFn) renderWebviewsFn();
     if (updatePromptButtonsFn) updatePromptButtonsFn(); // Update button visibility for mode

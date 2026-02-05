@@ -85,6 +85,13 @@ const AI_CONFIGS = {
     icon: '🌊',
     logo: 'ai-services/deepseek.png',
     color: '#1e90ff'
+  },
+  grok: {
+    name: 'Grok',
+    url: 'https://x.com/i/grok',
+    icon: '⚡',
+    logo: 'ai-services/grok.png',
+    color: '#ff6b00'
   }
 };
 

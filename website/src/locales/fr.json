@@ -69,7 +69,7 @@
   },
   "crossCheck": {
     "title": "Cross-Check",
-    "subtitle": "Faites évaluer les IA entre elles",
+    "subtitle": "Faites comparer les IA entre elles",
     "description": "Avec Cross-Check, vous pouvez demander à chaque IA d'analyser et de comparer les réponses de toutes les autres. Obtenez une évaluation complète de quelle réponse est la plus précise, complète ou pertinente pour votre question spécifique.",
     "features": [
       "Chaque IA examine toutes les autres réponses",

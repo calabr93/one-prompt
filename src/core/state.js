@@ -52,6 +52,7 @@ export const AI_DISPLAY_NAMES = {
   chatgpt: 'ChatGPT',
   claude: 'Claude',
   gemini: 'Gemini',
+  grok: 'Grok',
   perplexity: 'Perplexity',
   copilot: 'Copilot',
   deepseek: 'DeepSeek'

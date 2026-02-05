@@ -69,7 +69,7 @@
   },
   "crossCheck": {
     "title": "Cross-Check",
-    "subtitle": "Lassen Sie KIs sich gegenseitig bewerten",
+    "subtitle": "Lassen Sie KIs sich gegenseitig vergleichen",
     "description": "Mit Cross-Check können Sie jede KI bitten, die Antworten aller anderen zu analysieren und zu vergleichen. Erhalten Sie eine umfassende Bewertung, welche Antwort für Ihre spezifische Frage am genauesten, vollständigsten oder relevantesten ist.",
     "features": [
       "Jede KI überprüft alle anderen Antworten",

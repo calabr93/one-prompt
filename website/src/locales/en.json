@@ -69,7 +69,7 @@
   },
   "crossCheck": {
     "title": "Cross-Check",
-    "subtitle": "Let AIs evaluate each other",
+    "subtitle": "Let AIs compare each other",
     "description": "With Cross-Check, you can ask each AI to analyze and compare the responses from all the others. Get a comprehensive evaluation of which answer is most accurate, complete, or relevant for your specific question.",
     "features": [
       "Each AI reviews all other responses",

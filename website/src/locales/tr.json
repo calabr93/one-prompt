@@ -69,7 +69,7 @@
   },
   "crossCheck": {
     "title": "Cross-Check",
-    "subtitle": "Yapay zekaların birbirini değerlendirmesini sağlayın",
+    "subtitle": "Yapay zekaların birbirini karşılaştırmasını sağlayın",
     "description": "Cross-Check ile her yapay zekadan diğerlerinin yanıtlarını analiz etmesini ve karşılaştırmasını isteyebilirsiniz. Hangi yanıtın sizin sorunuz için en doğru, kapsamlı veya ilgili olduğuna dair kapsamlı bir değerlendirme alın.",
     "features": [
       "Her yapay zeka diğer tüm yanıtları inceler",

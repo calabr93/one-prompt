@@ -772,6 +772,7 @@ async function init() {
         renderWebviews: renderWebviews,
         updatePromptButtons: updatePromptButtons,
         updateCrossCheckVisibility: updateCrossCheckButtonVisibility,
+        renderTabs: renderTabs,
         aiServicesModule: AIServicesModule,
         i18nModule: I18nModule
       });
