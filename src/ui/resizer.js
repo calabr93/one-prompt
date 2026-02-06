@@ -849,6 +849,118 @@ function addResizerToWrapper(wrapper) {
   }, 100); // Increased timeout for DOM stability
 }
 
+// ============================================================
+// TEXTAREA TOP-RIGHT RESIZE HANDLE
+// Hides native resize and adds a custom drag handle at the top-right
+// so the textarea grows upward instead of downward.
+// ============================================================
+
+/**
+ * Add a custom top-right resize handle to a textarea.
+ * The native resize is hidden via CSS (resize: none).
+ * Dragging up increases height, dragging down decreases it.
+ * @param {HTMLTextAreaElement} textarea
+ */
+function addTopResizeHandle(textarea) {
+  if (!textarea || textarea.dataset.topResizeHandleAttached) return;
+  textarea.dataset.topResizeHandleAttached = 'true';
+
+  // Read min/max constraints BEFORE wrapping (computed style is reliable here)
+  const cs = getComputedStyle(textarea);
+  const minH = parseFloat(cs.minHeight) || 40;
+  const maxH = parseFloat(cs.maxHeight) || 600;
+
+  // Wrap textarea in a relative container
+  const wrapper = document.createElement('div');
+  wrapper.className = 'textarea-resize-wrapper';
+
+  // Move flex from textarea to wrapper so wrapper fills the parent layout slot
+  const computedFlex = cs.flexGrow;
+  if (computedFlex && computedFlex !== '0') {
+    wrapper.style.flex = computedFlex;
+  }
+
+  textarea.parentNode.insertBefore(wrapper, textarea);
+  wrapper.appendChild(textarea);
+
+  // Override flex on textarea so explicit height takes effect
+  textarea.style.flex = 'none';
+
+  // Set an explicit initial height from the rendered size
+  const initialHeight = textarea.getBoundingClientRect().height;
+  if (initialHeight > 0) {
+    textarea.style.height = initialHeight + 'px';
+  }
+
+  // Disable CSS transitions on height during existence (they cause drag lag)
+  textarea.style.transition = 'none';
+
+  // Create the drag handle
+  const handle = document.createElement('div');
+  handle.className = 'resize-handle-top';
+  wrapper.appendChild(handle);
+
+  let startY = 0;
+  let startHeight = 0;
+  let dragging = false;
+  let rafId = 0;
+  let dragOverlay = null;
+
+  function onPointerDown(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    dragging = true;
+    startY = e.clientY ?? e.touches[0].clientY;
+    startHeight = textarea.getBoundingClientRect().height;
+    handle.classList.add('dragging');
+    document.body.style.cursor = 'n-resize';
+    document.body.style.userSelect = 'none';
+
+    // Full-viewport overlay prevents webviews from swallowing mouse events
+    dragOverlay = document.createElement('div');
+    dragOverlay.className = 'resize-overlay vertical';
+    dragOverlay.style.cursor = 'n-resize';
+    document.body.appendChild(dragOverlay);
+  }
+
+  function onPointerMove(e) {
+    if (!dragging) return;
+    e.preventDefault();
+    const clientY = e.clientY ?? (e.touches && e.touches[0] ? e.touches[0].clientY : startY);
+    const delta = startY - clientY; // positive = dragged up = grow
+    const newHeight = Math.min(maxH, Math.max(minH, startHeight + delta));
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      textarea.style.height = newHeight + 'px';
+    });
+  }
+
+  function onPointerUp() {
+    if (!dragging) return;
+    dragging = false;
+    cancelAnimationFrame(rafId);
+    handle.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+
+    // Remove overlay
+    if (dragOverlay) {
+      dragOverlay.remove();
+      dragOverlay = null;
+    }
+  }
+
+  // Mouse events
+  handle.addEventListener('mousedown', onPointerDown);
+  document.addEventListener('mousemove', onPointerMove);
+  document.addEventListener('mouseup', onPointerUp);
+
+  // Touch events
+  handle.addEventListener('touchstart', onPointerDown, { passive: false });
+  document.addEventListener('touchmove', onPointerMove, { passive: false });
+  document.addEventListener('touchend', onPointerUp);
+}
+
 // Export for module usage
 if (typeof window !== 'undefined') {
   window.OnePromptUI = window.OnePromptUI || {};
@@ -858,7 +970,8 @@ if (typeof window !== 'undefined') {
     onLayoutModeChange,
     clearSizes,
     saveSizes,
-    restoreSizes
+    restoreSizes,
+    addTopResizeHandle
   };
 }
 
@@ -868,5 +981,6 @@ export {
   onLayoutModeChange,
   clearSizes,
   saveSizes,
-  restoreSizes
+  restoreSizes,
+  addTopResizeHandle
 };

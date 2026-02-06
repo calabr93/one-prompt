@@ -634,6 +634,11 @@ let selectedAIs = new Set(getCurrentSession()?.selectedAIs || []);
 
 // DOM elements
 const promptInput = document.getElementById('promptInput');
+
+// Add custom top-right resize handle to prompt input
+if (ResizerModule && promptInput) {
+  ResizerModule.addTopResizeHandle(promptInput);
+}
 const copyBtn = document.getElementById('copyBtn');
 const sendBtn = document.getElementById('sendBtn');
 const webviewGrid = document.getElementById('webviewGrid');
@@ -1661,6 +1666,11 @@ async function renderWebviews() {
 
         textareaContainer.appendChild(responseTextarea);
         wrapper.appendChild(textareaContainer);
+
+        // Add custom top-right resize handle
+        if (ResizerModule) {
+          ResizerModule.addTopResizeHandle(responseTextarea);
+        }
       }
 
       // Set order
@@ -1732,6 +1742,11 @@ async function renderWebviews() {
 
           textareaContainer.appendChild(responseTextarea);
           wrapper.appendChild(textareaContainer);
+
+          // Add custom top-right resize handle
+          if (ResizerModule) {
+            ResizerModule.addTopResizeHandle(responseTextarea);
+          }
         } else {
           textareaContainer.style.display = 'block';
         }
