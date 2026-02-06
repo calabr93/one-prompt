@@ -134,6 +134,10 @@
       {
         "question": "If the app is free, what are the paid credits for?",
         "answer": "OnePrompt is free in Web Mode, but this mode has natural limitations due to the Terms of Service of AI services. Credits unlock the full power of Cross Check through official APIs: we created a turnkey system to allow even non-developers (who don't have their own API keys) to compare models without restrictions and without complex configurations."
+      },
+      {
+        "question": "Can I send one prompt to all AIs at once?",
+        "answer": "To ensure full compliance with AI providers' Terms of Service, the standard edition avoids browser automation, and each prompt requires a few manual clicks. However, an automated edition is available upon request for educational, experimental, and research purposes only. Contact info@one-prompt.app if interested."
       }
     ]
   },

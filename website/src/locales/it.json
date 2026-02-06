@@ -134,6 +134,10 @@
       {
         "question": "Se l'app è gratuita, a cosa servono i crediti a pagamento?",
         "answer": "OnePrompt è gratuita in Web Mode, ma questa modalità ha dei limiti naturali dovuti ai Termini di Servizio dei servizi AI. I crediti servono per sbloccare la piena potenza del Cross Check tramite le API ufficiali: è stato creato un sistema \"chiavi in mano\" per permettere anche a chi non è uno sviluppatore (e non ha le proprie chiavi API) di confrontare i modelli senza restrizioni e senza configurazioni complesse."
+      },
+      {
+        "question": "Posso inviare un prompt a tutte le IA contemporaneamente?",
+        "answer": "Per garantire la piena conformità ai Termini di Servizio dei provider di IA, l'edizione standard evita l'automazione del browser e ogni prompt richiede alcuni click manuali. Tuttavia, un'edizione automatizzata è disponibile su richiesta esclusivamente per scopi educativi, sperimentali e di ricerca. Contatta info@one-prompt.app per informazioni."
       }
     ]
   },

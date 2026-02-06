@@ -39,6 +39,7 @@ To ensure **100% compatibility** with the Terms of Service (ToS) of major AI pro
 * ℹ️ **Commercial Distribution**: This repository contains the **Open Source edition**. 
 * 🚀 **Enterprise & Managed**: If you are interested in commercial licenses or credit-based managed versions, please contact the author.
 * ⚖️ **Disclaimer**: OnePrompt is a tool to enhance productivity. Users are responsible for adhering to the specific usage policies of the AI services they access.
+* 🔬 **Automated Edition**: A separate automated version is **available upon request** for educational, experimental, and research purposes only. It enables simultaneous prompt dispatch to all supported AI services from a single input. It is the user's sole responsibility to ensure compliance with each AI provider's Terms of Service. For inquiries: [info@one-prompt.app](mailto:info@one-prompt.app).
 
 ---
 

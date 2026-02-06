@@ -130,6 +130,10 @@
       {
         "question": "API Modu ile Web Modu arasındaki fark nedir?",
         "answer": "API Modu, yapay zeka servislerinin resmi API'lerini kullanır. Web Modu web arayüzlerini kullanır."
+      },
+      {
+        "question": "Tüm yapay zekalara aynı anda bir prompt gönderebilir miyim?",
+        "answer": "Yapay zeka sağlayıcılarının Hizmet Şartlarına tam uyumu sağlamak için standart sürüm tarayıcı otomasyonundan kaçınır ve her prompt birkaç manuel tıklama gerektirir. Ancak yalnızca eğitim, deneysel ve araştırma amaçlı otomatik bir sürüm talep üzerine mevcuttur. Bilgi için info@one-prompt.app adresine yazın."
       }
     ]
   },

@@ -134,6 +134,10 @@
       {
         "question": "Wenn die App kostenlos ist, wofür sind die kostenpflichtigen Credits?",
         "answer": "OnePrompt ist im Web-Modus kostenlos, aber dieser Modus hat natürliche Einschränkungen aufgrund der Nutzungsbedingungen der KI-Dienste. Die Credits schalten die volle Leistung des Cross Check über die offiziellen APIs frei: Wir haben ein schlüsselfertiges System geschaffen, damit auch Nicht-Entwickler (die keine eigenen API-Schlüssel haben) Modelle ohne Einschränkungen und ohne komplexe Konfigurationen vergleichen können."
+      },
+      {
+        "question": "Kann ich einen Prompt an alle KIs gleichzeitig senden?",
+        "answer": "Um die vollständige Einhaltung der Nutzungsbedingungen der KI-Anbieter zu gewährleisten, verzichtet die Standardversion auf Browser-Automatisierung und jeder Prompt erfordert einige manuelle Klicks. Eine automatisierte Version ist jedoch auf Anfrage ausschließlich für Bildungs-, Experimentier- und Forschungszwecke verfügbar. Kontaktieren Sie info@one-prompt.app für weitere Informationen."
       }
     ]
   },
