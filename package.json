@@ -1,6 +1,6 @@
 {
   "name": "oneprompt",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "An application to manage multiple AI chats in one place - enter a prompt and send it to all your favorite AIs",
   "main": "src/electron/main.js",
   "engines": {
