@@ -148,33 +148,9 @@ function createMainWindow() {
     mainWindow.loadFile(path.join(__dirname, '../index.html'));
   }
 
-  // DevTools: Open in dev mode, block keyboard shortcut in production
-  if (!app.isPackaged || process.argv.includes('--dev')) {
-    // Development: allow DevTools
-    if (process.argv.includes('--dev')) {
-      mainWindow.webContents.openDevTools();
-    }
-  } else {
-    // Production: block DevTools keyboard shortcuts
-    mainWindow.webContents.on('before-input-event', (event, input) => {
-      // Block Cmd+Option+I (Mac) and Ctrl+Shift+I (Windows/Linux)
-      const isMac = process.platform === 'darwin';
-      const isDevToolsShortcut = isMac
-        ? (input.meta && input.alt && input.key.toLowerCase() === 'i')
-        : (input.control && input.shift && input.key.toLowerCase() === 'i');
-
-      // Also block F12
-      const isF12 = input.key === 'F12';
-
-      // Block Cmd+Option+J (Mac) / Ctrl+Shift+J (Windows) - JS Console
-      const isConsoleShortcut = isMac
-        ? (input.meta && input.alt && input.key.toLowerCase() === 'j')
-        : (input.control && input.shift && input.key.toLowerCase() === 'j');
-
-      if (isDevToolsShortcut || isF12 || isConsoleShortcut) {
-        event.preventDefault();
-      }
-    });
+  // DevTools: Open only in dev mode (production blocking handled globally in web-contents-created)
+  if ((!app.isPackaged || process.argv.includes('--dev')) && process.argv.includes('--dev')) {
+    mainWindow.webContents.openDevTools();
   }
 
   mainWindow.on('closed', () => {
@@ -184,8 +160,30 @@ function createMainWindow() {
 
 // App lifecycle
 app.whenReady().then(() => {
-  // Enable context menu for all webContents (including webviews)
+  const isProduction = app.isPackaged && !process.argv.includes('--dev');
+
+  // Block DevTools globally in production (covers main window + all webviews)
   app.on('web-contents-created', (event, contents) => {
+    if (isProduction) {
+      contents.on('devtools-opened', () => {
+        contents.closeDevTools();
+      });
+      contents.on('before-input-event', (evt, input) => {
+        const isMac = process.platform === 'darwin';
+        const isDevToolsShortcut = isMac
+          ? (input.meta && input.alt && input.key.toLowerCase() === 'i')
+          : (input.control && input.shift && input.key.toLowerCase() === 'i');
+        const isF12 = input.key === 'F12';
+        const isConsoleShortcut = isMac
+          ? (input.meta && input.alt && input.key.toLowerCase() === 'j')
+          : (input.control && input.shift && input.key.toLowerCase() === 'j');
+        if (isDevToolsShortcut || isF12 || isConsoleShortcut) {
+          evt.preventDefault();
+        }
+      });
+    }
+
+    // Enable context menu for all webContents (including webviews)
     contents.on('context-menu', (e, params) => {
       const menuItems = [];
       

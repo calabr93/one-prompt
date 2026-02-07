@@ -9,6 +9,15 @@
  * the renderer.js code will be split into proper modules.
  */
 
+// Suppress console output in production (keep errors only)
+if (import.meta.env.PROD) {
+  const noop = () => {};
+  console.log = noop;
+  console.warn = noop;
+  console.info = noop;
+  console.debug = noop;
+}
+
 // Import core modules (use relative paths for dev, Vite resolves aliases in build)
 import * as i18n from './core/i18n.js';
 import * as markdown from './core/markdown.js';
