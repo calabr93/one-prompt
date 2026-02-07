@@ -45,6 +45,9 @@ let lastLoggedGridState = {
 // ResizeObserver for grid container
 let gridResizeObserver = null;
 
+// Session ID for per-session size persistence (null = single-session mode)
+let _sessionId = null;
+
 /**
  * Get current layout mode from the grid element
  * @returns {string} 'horizontal', 'vertical', or 'grid'
@@ -59,11 +62,35 @@ function getCurrentLayoutMode() {
 }
 
 /**
- * Get storage key for current layout mode
+ * Get storage key for current layout mode and session
  * @returns {string} Storage key
  */
 function getStorageKey() {
-  return `${STORAGE_KEY_PREFIX}-${getCurrentLayoutMode()}`;
+  const base = `${STORAGE_KEY_PREFIX}-${getCurrentLayoutMode()}`;
+  return _sessionId ? `${base}-${_sessionId}` : base;
+}
+
+/**
+ * Set session ID for per-session size persistence.
+ * Saves current sizes before switching, then clears inline grid template.
+ * @param {string|null} id - Session ID (null for single-session mode)
+ */
+function setSessionId(id) {
+  if (id === _sessionId) return;
+
+  // Save current session's sizes before switching
+  if (_sessionId !== null) {
+    saveSizes();
+  }
+
+  _sessionId = id;
+
+  // Clear inline grid template to prevent cross-session leaking
+  const grid = document.getElementById('webviewGrid');
+  if (grid) {
+    grid.style.gridTemplateColumns = '';
+    grid.style.gridTemplateRows = '';
+  }
 }
 
 /**
@@ -770,6 +797,12 @@ function initResizers() {
   const layoutMode = getCurrentLayoutMode();
   const wrappers = getVisibleWrappers();
 
+  // Immediately remove old grid resizers to prevent cross-session artifacts
+  const grid = document.getElementById('webviewGrid');
+  if (grid) {
+    grid.querySelectorAll('.grid-col-resizer, .grid-row-resizer').forEach(r => r.remove());
+  }
+
   if (layoutMode === 'grid') {
     // Grid mode: create global column/row resizers
     setTimeout(() => {
@@ -971,7 +1004,8 @@ if (typeof window !== 'undefined') {
     clearSizes,
     saveSizes,
     restoreSizes,
-    addTopResizeHandle
+    addTopResizeHandle,
+    setSessionId
   };
 }
 
@@ -982,5 +1016,6 @@ export {
   clearSizes,
   saveSizes,
   restoreSizes,
-  addTopResizeHandle
+  addTopResizeHandle,
+  setSessionId
 };
