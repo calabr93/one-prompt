@@ -81,6 +81,21 @@ export function HeroSection() {
           >
             {t('hero.github')}
           </a>
+
+          <div className={styles.productHunt}>
+            <a
+              href="https://www.producthunt.com/products/oneprompt-2?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-oneprompt-2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1075834&theme=light&t=1770649461206"
+                alt="OnePrompt - Compare AIs in an instant | Product Hunt"
+                width="250"
+                height="54"
+              />
+            </a>
+          </div>
         </div>
 
         <div className={styles.demo}>

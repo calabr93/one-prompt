@@ -70,6 +70,10 @@
   color: var(--accent-color);
 }
 
+.productHunt {
+  margin-top: var(--spacing-md);
+}
+
 .demo {
   max-width: 900px;
   margin: 0 auto;
