@@ -71,14 +71,17 @@
 .badge {
   display: inline-block;
   width: fit-content;
-  padding: 6px 12px;
-  background: linear-gradient(135deg, rgba(0, 122, 255, 0.15) 0%, rgba(0, 212, 255, 0.1) 100%);
+  padding: 8px 18px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-size: 200% 200%;
   border-radius: 20px;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--accent-color);
+  font-weight: 700;
+  color: #fff;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  box-shadow: 0 2px 12px rgba(102, 126, 234, 0.4);
+  animation: gradientShift 3s ease infinite;
 }
 
 .title {
