@@ -70,8 +70,62 @@
   color: var(--accent-color);
 }
 
-.productHunt {
+.badges {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
   margin-top: var(--spacing-md);
+}
+
+.badges a {
+  display: flex;
+}
+
+.redditBadge {
+  display: inline-flex;
+  align-items: center;
+  width: 250px;
+  height: 54px;
+  border: 1px solid #FF4500;
+  border-radius: 10px;
+  background: #fff;
+  color: #FF4500;
+  text-decoration: none;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+
+.redditBadge:hover {
+  color: #FF4500;
+  box-shadow: 0 2px 8px rgba(255, 69, 0, 0.2);
+}
+
+.redditLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  padding: 0 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.redditLeft svg {
+  flex-shrink: 0;
+}
+
+.redditUpvote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 54px;
+  height: 100%;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .demo {
