@@ -17,41 +17,19 @@ export function CookieBanner() {
     }
   }, []);
 
-  const initPostHog = () => {
-    const isOfficialDomain = window.location.hostname === 'one-prompt.app' || window.location.hostname === 'www.one-prompt.app';
-    if (isOfficialDomain && window.posthog && !window.posthog.__loaded) {
-      window.posthog.init('__POSTHOG_API_KEY__', {
-        api_host: '__POSTHOG_HOST__',
-        person_profiles: 'identified_only',
-        capture_pageview: true,
-        capture_pageleave: true,
-        autocapture: true,
-        enable_heatmaps: true,
-        persistence: 'localStorage+cookie',
-        session_recording: {
-          maskAllInputs: false,
-          maskInputOptions: {
-            password: true
-          }
-        },
-        loaded: (posthog: typeof window.posthog) => {
-          posthog?.register({ source: 'website', platform: 'website' });
-          posthog?.startSessionRecording();
-        }
-      });
-    }
-  };
-
+  // PostHog is initialized in index.html (official domain only); here we just pass the choice on
   const handleAccept = () => {
     localStorage.setItem('cookieConsent', 'true');
     setIsVisible(false);
-    // Initialize PostHog after consent
-    initPostHog();
+    window.posthog?.opt_in_capturing();
+    window.posthog?.startSessionRecording();
   };
 
   const handleDeny = () => {
     localStorage.setItem('cookieConsent', 'false');
     setIsVisible(false);
+    // Switches PostHog to cookieless mode: anonymous pageviews/referrers, no stored identity
+    window.posthog?.opt_out_capturing();
   };
 
   if (!isVisible) return null;
