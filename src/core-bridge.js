@@ -95,12 +95,16 @@ const OnePromptCore = {
    */
   getSelectedModel(aiKey) {
     const modelMap = {
-      chatgpt: { key: 'oneprompt-model-openai', default: 'gpt-5.2' },
-      claude: { key: 'oneprompt-model-anthropic', default: 'claude-sonnet-4-5' },
-      gemini: { key: 'oneprompt-model-gemini', default: 'gemini-3-flash-preview' }
+      chatgpt: 'oneprompt-model-openai',
+      claude: 'oneprompt-model-anthropic',
+      gemini: 'oneprompt-model-gemini'
     };
-    const config = modelMap[aiKey];
-    return config ? (localStorage.getItem(config.key) || config.default) : null;
+    const storageKey = modelMap[aiKey];
+    if (!storageKey) return null;
+    const saved = localStorage.getItem(storageKey);
+    // Falls back to the catalog default when the saved model is no longer offered
+    const models = window.OnePromptServices?.models;
+    return models ? models.resolveModel(aiKey, saved) : saved;
   },
 
   /**

@@ -38,6 +38,8 @@ import * as resizer from './ui/resizer.js';
 
 // Import services
 import * as settings from './services/settings.js';
+import * as models from './services/models.js';
+import bundledModels from '../models.json';
 
 // Import app modules (extracted from renderer.js)
 import * as apiChat from './app/api-chat.js';
@@ -73,6 +75,11 @@ window.OnePromptUI.resizer = resizer;
 
 // Expose services
 window.OnePromptServices.settings = settings;
+window.OnePromptServices.models = models;
+
+// API Mode models: bundled list now, models.json from the repository in background
+const MODELS_URL = 'https://raw.githubusercontent.com/calabr93/one-prompt/main/models.json';
+models.initModels({ bundled: bundledModels, fetchRemote: models.fetchJsonCatalog(MODELS_URL) });
 
 // Expose app modules (extracted from renderer.js)
 window.OnePromptApp = window.OnePromptApp || {};

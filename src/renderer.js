@@ -2475,22 +2475,10 @@ function initSettings() {
     apiKeyOpenAI.addEventListener('input', (e) => window.OnePromptCore.setApiKey('chatgpt', e.target.value));
   }
 
-  const modelOpenAI = document.getElementById('modelOpenAI');
-  if (modelOpenAI) {
-    modelOpenAI.value = window.OnePromptCore.getSelectedModel('chatgpt') || 'gpt-5.2';
-    modelOpenAI.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel('chatgpt', e.target.value));
-  }
-
   // Anthropic
   if (apiKeyAnthropic) {
     apiKeyAnthropic.value = window.OnePromptCore.getApiKey('claude') || '';
     apiKeyAnthropic.addEventListener('input', (e) => window.OnePromptCore.setApiKey('claude', e.target.value));
-  }
-
-  const modelAnthropic = document.getElementById('modelAnthropic');
-  if (modelAnthropic) {
-    modelAnthropic.value = window.OnePromptCore.getSelectedModel('claude') || 'claude-sonnet-4-5';
-    modelAnthropic.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel('claude', e.target.value));
   }
 
   // Google Gemini
@@ -2499,11 +2487,29 @@ function initSettings() {
     apiKeyGemini.addEventListener('input', (e) => window.OnePromptCore.setApiKey('gemini', e.target.value));
   }
 
-  const modelGemini = document.getElementById('modelGemini');
-  if (modelGemini) {
-    modelGemini.value = window.OnePromptCore.getSelectedModel('gemini') || 'gemini-3-flash-preview';
-    modelGemini.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel('gemini', e.target.value));
+  initModelSelects();
+}
+
+// Model selects are filled from the catalog and refilled when the remote list arrives
+function initModelSelects() {
+  const models = window.OnePromptServices.models;
+  const selects = {
+    chatgpt: document.getElementById('modelOpenAI'),
+    claude: document.getElementById('modelAnthropic'),
+    gemini: document.getElementById('modelGemini')
+  };
+
+  const fill = () => {
+    for (const [aiKey, select] of Object.entries(selects)) {
+      if (select) models.populateSelect(select, aiKey, window.OnePromptCore.getSelectedModel(aiKey));
+    }
+  };
+
+  for (const [aiKey, select] of Object.entries(selects)) {
+    if (select) select.addEventListener('change', (e) => window.OnePromptCore.setSelectedModel(aiKey, e.target.value));
   }
+  fill();
+  models.onModelsUpdated(fill);
 }
 
 // Initialize settings logic
