@@ -39,10 +39,6 @@ jobs:
           # Replace in index.html
           sed -i "s|__POSTHOG_API_KEY__|${{ secrets.POSTHOG_API_KEY }}|g" index.html
           sed -i "s|__POSTHOG_HOST__|${{ secrets.POSTHOG_HOST }}|g" index.html
-
-          # Replace in CookieBanner.tsx
-          sed -i "s|__POSTHOG_API_KEY__|${{ secrets.POSTHOG_API_KEY }}|g" src/components/ui/CookieBanner.tsx
-          sed -i "s|__POSTHOG_HOST__|${{ secrets.POSTHOG_HOST }}|g" src/components/ui/CookieBanner.tsx
         working-directory: website
 
       - name: Build

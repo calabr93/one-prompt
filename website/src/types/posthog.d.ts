@@ -1,10 +1,9 @@
 declare global {
   interface Window {
     posthog?: {
-      __loaded?: boolean;
-      init: (key: string, options: Record<string, unknown>) => void;
       capture: (event: string, properties?: Record<string, unknown>) => void;
-      register: (properties: Record<string, unknown>) => void;
+      opt_in_capturing: (options?: { captureEventName?: string | false | null; captureProperties?: Record<string, unknown> }) => void;
+      opt_out_capturing: () => void;
       startSessionRecording: () => void;
     };
   }
