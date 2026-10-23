@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Container } from '../layout/Container';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
+import { isPhone } from '../../utils/device';
 import styles from './HeroSection.module.css';
 
 const DownloadIcon = () => (
@@ -57,7 +58,7 @@ export function HeroSection() {
               size="large"
               icon={<DownloadIcon />}
             >
-              {t('hero.cta.download')}
+              {isPhone() ? t('hero.cta.downloadMobile') : t('hero.cta.download')}
             </Button>
           </div>
 

@@ -10,7 +10,8 @@
     "headline": "Yapay Zekaları anında karşılaştırın",
     "subheadline": "ChatGPT, Claude, Gemini ve daha fazlasından gelen yanıtları tek bir pencerede yan yana görün. En iyi cevabı bir bakışta bulun.",
     "cta": {
-      "download": "Ücretsiz İndir"
+      "download": "Ücretsiz İndir",
+      "downloadMobile": "Bilgisayarınıza indirin"
     },
     "github": "Veya GitHub'da görüntüle"
   },
@@ -139,6 +140,15 @@
   },
   "cta": {
     "title": "Yapay Zekaları tek tıkla karşılaştırın"
+  },
+  "sendToComputer": {
+    "title": "OnePrompt bilgisayarda çalışır",
+    "text": "Mac, Windows ve Linux için bir masaüstü uygulamasıdır. Bağlantıyı kendinize gönderin ve bilgisayarınızdan indirin.",
+    "share": "Bağlantıyı bana gönder",
+    "copy": "Bağlantıyı kopyala",
+    "copied": "Bağlantı kopyalandı",
+    "shareText": "OnePrompt: ChatGPT, Claude, Gemini ve diğerlerini yan yana karşılaştırın. Bilgisayara indirmek için:",
+    "orDownload": "Ya da bilgisayarınız için dosyayı şimdi indirin:"
   },
   "footer": {
     "tagline": "Yapay Zekaları anında karşılaştırın.",

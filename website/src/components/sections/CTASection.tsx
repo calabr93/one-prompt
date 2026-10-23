@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Container } from '../layout/Container';
 import { Button } from '../ui/Button';
 import { Modal } from '../ui/Modal';
+import { SendToComputer } from '../ui/SendToComputer';
+import { isPhone } from '../../utils/device';
 import styles from './CTASection.module.css';
 import '../../types/posthog.d';
 
@@ -45,6 +47,9 @@ const DownloadIcon = () => (
 export function CTASection() {
   const { t } = useTranslation();
   const [showWindowsModal, setShowWindowsModal] = useState(false);
+  const phone = isPhone();
+  // On a phone the file buttons step back: sending the link is the main action there.
+  const fileVariant = phone ? 'secondary' : 'primary';
 
   const handleWindowsDownload = (variant: string) => {
     trackDownload('windows', variant);
@@ -57,6 +62,8 @@ export function CTASection() {
         <div className={styles.content}>
           <h2>{t('cta.title')}</h2>
 
+          {phone && <SendToComputer />}
+
           <div className={styles.downloadButtons}>
             {/* macOS Downloads */}
             <div className={styles.platformSection}>
@@ -68,6 +75,7 @@ export function CTASection() {
                 <Button
                   href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-arm64.dmg"
                   size="large"
+                  variant={fileVariant}
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
                   onClick={() => trackDownload('macos', 'arm64')}
@@ -77,6 +85,7 @@ export function CTASection() {
                 <Button
                   href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-x64.dmg"
                   size="large"
+                  variant={fileVariant}
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
                   onClick={() => trackDownload('macos', 'x64')}
@@ -96,6 +105,7 @@ export function CTASection() {
                 <Button
                   href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Setup.exe"
                   size="large"
+                  variant={fileVariant}
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
                   onClick={() => handleWindowsDownload('installer')}
@@ -105,6 +115,7 @@ export function CTASection() {
                 <Button
                   href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-Portable.exe"
                   size="large"
+                  variant={fileVariant}
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
                   onClick={() => handleWindowsDownload('portable')}
@@ -124,6 +135,7 @@ export function CTASection() {
                 <Button
                   href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-x86_64.AppImage"
                   size="large"
+                  variant={fileVariant}
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
                   onClick={() => trackDownload('linux', 'appimage')}
@@ -133,6 +145,7 @@ export function CTASection() {
                 <Button
                   href="https://github.com/calabr93/one-prompt/releases/latest/download/OnePrompt-amd64.deb"
                   size="large"
+                  variant={fileVariant}
                   icon={<DownloadIcon />}
                   className={styles.downloadBtn}
                   onClick={() => trackDownload('linux', 'deb')}

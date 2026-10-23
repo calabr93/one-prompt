@@ -10,7 +10,8 @@
     "headline": "Comparez les IA en un instant",
     "subheadline": "Visualisez les réponses de ChatGPT, Claude, Gemini et plus côte à côte dans une seule fenêtre. Trouvez la meilleure réponse en un coup d'œil.",
     "cta": {
-      "download": "Télécharger gratuit"
+      "download": "Télécharger gratuit",
+      "downloadMobile": "Télécharger sur l'ordinateur"
     },
     "github": "Ou voir sur GitHub"
   },
@@ -143,6 +144,15 @@
   },
   "cta": {
     "title": "Comparez les IA en un clic"
+  },
+  "sendToComputer": {
+    "title": "OnePrompt s'utilise sur ordinateur",
+    "text": "C'est une application pour Mac, Windows et Linux. Envoyez-vous le lien et téléchargez-la depuis votre ordinateur.",
+    "share": "M'envoyer le lien",
+    "copy": "Copier le lien",
+    "copied": "Lien copié",
+    "shareText": "OnePrompt : comparez ChatGPT, Claude, Gemini et d'autres côte à côte. À télécharger sur l'ordinateur :",
+    "orDownload": "Ou téléchargez dès maintenant le fichier pour votre ordinateur :"
   },
   "footer": {
     "tagline": "Comparez les IA en un instant.",

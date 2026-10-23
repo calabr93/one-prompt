@@ -10,7 +10,8 @@
     "headline": "Compare AIs in an instant",
     "subheadline": "See responses from ChatGPT, Claude, Gemini and more side-by-side in one window. Find the best answer at a glance.",
     "cta": {
-      "download": "Download free"
+      "download": "Download free",
+      "downloadMobile": "Get it on your computer"
     },
     "github": "Or view on GitHub"
   },
@@ -143,6 +144,15 @@
   },
   "cta": {
     "title": "Compare AIs in one click"
+  },
+  "sendToComputer": {
+    "title": "OnePrompt runs on your computer",
+    "text": "It's a desktop app for Mac, Windows and Linux. Send yourself the link and download it when you're at your computer.",
+    "share": "Send me the link",
+    "copy": "Copy link",
+    "copied": "Link copied",
+    "shareText": "OnePrompt: compare ChatGPT, Claude, Gemini and more side by side. Download it on your computer:",
+    "orDownload": "Or download the file for your computer now:"
   },
   "footer": {
     "tagline": "Compare AIs in an instant.",

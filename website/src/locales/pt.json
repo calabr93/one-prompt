@@ -10,7 +10,8 @@
     "headline": "Compare IAs num instante",
     "subheadline": "Visualize as respostas do ChatGPT, Claude, Gemini e mais lado a lado em uma única janela. Encontre a melhor resposta num relance.",
     "cta": {
-      "download": "Baixar grátis"
+      "download": "Baixar grátis",
+      "downloadMobile": "Baixar no computador"
     },
     "github": "Ou veja no GitHub"
   },
@@ -143,6 +144,15 @@
   },
   "cta": {
     "title": "Compare IAs com um clique"
+  },
+  "sendToComputer": {
+    "title": "O OnePrompt é usado no computador",
+    "text": "É um app para Mac, Windows e Linux. Envie o link para você e baixe quando estiver no computador.",
+    "share": "Enviar o link para mim",
+    "copy": "Copiar link",
+    "copied": "Link copiado",
+    "shareText": "OnePrompt: compare ChatGPT, Claude, Gemini e outros lado a lado. Para baixar no computador:",
+    "orDownload": "Ou baixe agora o arquivo para o seu computador:"
   },
   "footer": {
     "tagline": "Compare IAs num instante.",

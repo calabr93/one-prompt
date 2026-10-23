@@ -10,7 +10,8 @@
     "headline": "Confronta le AI in un istante",
     "subheadline": "Visualizza le risposte di ChatGPT, Claude, Gemini e altri affiancate in un'unica finestra. Trova la risposta migliore a colpo d'occhio.",
     "cta": {
-      "download": "Scarica gratis"
+      "download": "Scarica gratis",
+      "downloadMobile": "Scaricala sul computer"
     },
     "github": "Oppure vedi su GitHub"
   },
@@ -143,6 +144,15 @@
   },
   "cta": {
     "title": "Confronta le AI in un click"
+  },
+  "sendToComputer": {
+    "title": "OnePrompt si usa dal computer",
+    "text": "È un'app per Mac, Windows e Linux. Mandati il link e scaricala quando sei al computer.",
+    "share": "Mandami il link",
+    "copy": "Copia il link",
+    "copied": "Link copiato",
+    "shareText": "OnePrompt: confronta ChatGPT, Claude, Gemini e altri fianco a fianco. Da scaricare sul computer:",
+    "orDownload": "Oppure scarica subito il file per il computer:"
   },
   "footer": {
     "tagline": "Confronta le AI in un istante.",
