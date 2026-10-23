@@ -30,8 +30,8 @@
   "devDependencies": {
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
-    "electron": "^39.3.0",
-    "electron-builder": "^26.4.0",
+    "electron": "44.9.3",
+    "electron-builder": "26.17.0",
     "vite": "^5.4.0",
     "wait-on": "^8.0.3"
   },
@@ -41,6 +41,7 @@
     "publish": null,
     "mac": {
       "category": "public.app-category.productivity",
+      "minimumSystemVersion": "13.0",
       "target": [
         {
           "target": "dmg",
@@ -115,9 +116,19 @@
     "directories": {
       "buildResources": "assets",
       "output": "release"
+    },
+    "electronFuses": {
+      "runAsNode": false,
+      "enableNodeOptionsEnvironmentVariable": false,
+      "enableNodeCliInspectArguments": false,
+      "enableEmbeddedAsarIntegrityValidation": true,
+      "onlyLoadAppFromAsar": true
     }
   },
   "dependencies": {
-    "electron-updater": "^6.6.2"
+    "electron-updater": "6.8.10"
+  },
+  "overrides": {
+    "js-yaml": "4.3.2"
   }
 }
