@@ -8,6 +8,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
   // Ottieni path del preload per webview
   getWebviewPreloadPath: () => ipcRenderer.invoke('get-webview-preload-path'),
 
+  // Theme for the AI panels (websites on their "system" theme follow it)
+  setNativeTheme: (theme) => ipcRenderer.invoke('set-native-theme', theme),
+  onNativeThemeUpdated: (callback) => ipcRenderer.on('native-theme-updated', (event, isDark) => callback(isDark)),
+
   // Apri URL esterno nel browser di default
   openExternal: (url) => ipcRenderer.invoke('open-external', url),
 

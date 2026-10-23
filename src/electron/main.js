@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell, Menu } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, Menu, nativeTheme } = require('electron');
 
 // IMPORTANT: Set app name BEFORE any other requires that might use app.getPath()
 // This determines the userData folder name in %APPDATA% (Windows) or ~/Library/Application Support/ (Mac)
@@ -234,6 +234,24 @@ app.whenReady().then(() => {
 
   ipcMain.handle('get-webview-preload-path', () => {
     return path.join(__dirname, 'webview-preload.js');
+  });
+
+  // Theme for the AI panels: websites on their "system" theme read it
+  // through prefers-color-scheme, which follows the native theme
+  ipcMain.handle('set-native-theme', (event, theme) => {
+    if (['system', 'light', 'dark'].includes(theme)) {
+      nativeTheme.themeSource = theme;
+    }
+    return nativeTheme.shouldUseDarkColors;
+  });
+
+  // Tell the renderer when the theme actually shown changes (OS appearance on 'system')
+  nativeTheme.on('updated', () => {
+    BrowserWindow.getAllWindows().forEach(win => {
+      if (!win.isDestroyed()) {
+        win.webContents.send('native-theme-updated', nativeTheme.shouldUseDarkColors);
+      }
+    });
   });
 
   // Open external URL in default browser

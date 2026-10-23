@@ -8,6 +8,7 @@
   "language.selection.confirm": "Bestätigen",
   "settings.theme.dark": "Dunkel",
   "settings.theme.light": "Hell",
+  "settings.theme.system": "System",
   "placeholder.title": "Wählen Sie mindestens einen Dienst aus der Seitenleiste",
   "mode.web.title": "Web-Modus",
   "mode.web.desc": "Original-Webinterfaces verwenden",

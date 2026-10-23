@@ -8,6 +8,7 @@
   "language.selection.confirm": "Confirmer",
   "settings.theme.dark": "Sombre",
   "settings.theme.light": "Clair",
+  "settings.theme.system": "Système",
   "placeholder.title": "Sélectionnez au moins un service dans la barre latérale",
   "mode.web.title": "Mode Web",
   "mode.web.desc": "Utiliser les interfaces web originales",

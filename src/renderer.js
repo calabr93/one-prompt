@@ -2156,8 +2156,13 @@ function setupEventListeners() {
   });
 
   // Theme buttons
+  const themeSystemBtn = document.getElementById('themeSystemBtn');
   const themeDarkBtn = document.getElementById('themeDarkBtn');
   const themeLightBtn = document.getElementById('themeLightBtn');
+
+  if (themeSystemBtn) {
+    themeSystemBtn.addEventListener('click', () => applyTheme('system'));
+  }
 
   if (themeDarkBtn) {
     themeDarkBtn.addEventListener('click', () => applyTheme('dark'));

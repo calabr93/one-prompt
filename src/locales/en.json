@@ -8,6 +8,7 @@
   "language.selection.confirm": "Confirm",
   "settings.theme.dark": "Dark",
   "settings.theme.light": "Light",
+  "settings.theme.system": "System",
   "placeholder.title": "Select at least one service from the sidebar",
   "mode.web.title": "Web Mode",
   "mode.web.desc": "Use original web interfaces",

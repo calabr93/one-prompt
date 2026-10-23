@@ -98,8 +98,8 @@ window.cleanAIResponseText = markdown.cleanAIResponseText;
 
 // Initialize theme immediately (before DOM content loaded)
 // This prevents flash of wrong theme
-const savedTheme = localStorage.getItem('oneprompt-theme') || 'dark';
-document.body.setAttribute('data-theme', savedTheme);
+const savedTheme = localStorage.getItem('oneprompt-theme') || 'system';
+document.body.setAttribute('data-theme', theme.resolveTheme(savedTheme));
 
 // Log that Vite entry point loaded
 console.log('[OnePrompt] Vite entry point loaded, modules available on window');
