@@ -133,7 +133,8 @@ function createMainWindow() {
 
   // In development with Vite, load from dev server
   // In production, load from bundled files
-  const isDev = !app.isPackaged || process.argv.includes('--dev');
+  // --dev only counts when running from source: a packaged app ignores it
+  const isDev = !app.isPackaged;
   const useViteDevServer = isDev && process.env.VITE_DEV_SERVER_URL;
   const forceProd = process.argv.includes('--prod'); // Force loading from dist/renderer
 
@@ -150,7 +151,7 @@ function createMainWindow() {
   }
 
   // DevTools: Open only in dev mode (production blocking handled globally in web-contents-created)
-  if ((!app.isPackaged || process.argv.includes('--dev')) && process.argv.includes('--dev')) {
+  if (!app.isPackaged && process.argv.includes('--dev')) {
     mainWindow.webContents.openDevTools();
   }
 
@@ -184,7 +185,7 @@ function createMainWindow() {
 
 // App lifecycle
 app.whenReady().then(() => {
-  const isProduction = app.isPackaged && !process.argv.includes('--dev');
+  const isProduction = app.isPackaged;
 
   // Block DevTools globally in production (covers main window + all webviews)
   app.on('web-contents-created', (event, contents) => {
@@ -220,6 +221,42 @@ app.whenReady().then(() => {
       });
       contents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) =>
         PANEL_PERMISSIONS.includes(permission) || (permission === 'media' && details.mediaType === 'audio'));
+
+      // Panel popups: links opened in a new tab (e.g. sources cited in an
+      // answer) go to the default browser. Popup windows (window.open with a
+      // size) and sign-in pages stay in the app, titled with their address,
+      // so logins with Google, Apple or Microsoft keep working.
+      const LOGIN_HOSTS = ['accounts.google.com', 'appleid.apple.com', 'login.microsoftonline.com', 'login.live.com', 'auth.openai.com', 'x.com', 'api.x.com'];
+      const isLoginPage = (url) => {
+        try {
+          return LOGIN_HOSTS.includes(new URL(url).hostname);
+        } catch {
+          return false;
+        }
+      };
+      contents.setWindowOpenHandler(({ url, disposition }) => {
+        if (disposition === 'new-window' || isLoginPage(url)) {
+          return { action: 'allow' };
+        }
+        if (url.startsWith('https://') || url.startsWith('http://')) {
+          shell.openExternal(url);
+        }
+        return { action: 'deny' };
+      });
+      contents.on('did-create-window', (popup) => {
+        const showAddress = () => {
+          try {
+            popup.setTitle(new URL(popup.webContents.getURL()).host);
+          } catch {
+            // about:blank or no URL yet: keep the current title
+          }
+        };
+        popup.webContents.on('page-title-updated', (event) => {
+          event.preventDefault();
+          showAddress();
+        });
+        popup.webContents.on('did-navigate', showAddress);
+      });
     }
 
     // Enable context menu for all webContents (including webviews)

@@ -1450,14 +1450,14 @@ async function renderWebviews() {
       placeholder.innerHTML = `
             <div class="mode-selection-container">
                 <div class="mode-cards">
-                    <div class="mode-card" onclick="selectMode('web')">
+                    <div class="mode-card" data-mode="web">
                         <div class="mode-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
                         </div>
                         <div class="mode-title">${safeT('mode.web.title')}</div>
                         <div class="mode-desc">${safeT('mode.web.desc')}</div>
                     </div>
-                    <div class="mode-card" onclick="selectMode('api')">
+                    <div class="mode-card" data-mode="api">
                         <div class="mode-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></svg>
                         </div>
@@ -1474,6 +1474,9 @@ async function renderWebviews() {
                 </div>
             </div>
         `;
+      placeholder.querySelectorAll('.mode-card[data-mode]').forEach(card => {
+        card.addEventListener('click', () => selectMode(card.dataset.mode));
+      });
     } else if (mode === 'api') {
       // API Mode Placeholder
       placeholder.innerHTML = `
@@ -2037,7 +2040,7 @@ function createSidebarButton(key, config) {
 
   // Security fix: avoid innerHTML injection in onerror handler
   const iconHtml = config.logo
-    ? `<img src="${config.logo}" alt="${config.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span class="icon-fallback" style="display:none;">${config.icon}</span>`
+    ? `<img src="${config.logo}" alt="${config.name}"><span class="icon-fallback" style="display:none;">${config.icon}</span>`
     : config.icon;
 
   button.innerHTML = `

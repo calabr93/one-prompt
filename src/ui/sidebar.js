@@ -225,13 +225,22 @@ function createSidebarButton(key, config, mode) {
 
   // Security fix: avoid innerHTML injection in onerror handler
   const iconHtml = config.logo
-    ? `<img src="${config.logo}" alt="${config.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline';"><span class="icon-fallback" style="display:none;">${config.icon}</span>`
+    ? `<img src="${config.logo}" alt="${config.name}"><span class="icon-fallback" style="display:none;">${config.icon}</span>`
     : config.icon;
 
   button.innerHTML = `
     <span class="sidebar-icon">${iconHtml}</span>
     <span class="sidebar-item-status"></span>
   `;
+
+  // Logo missing: show the emoji icon instead (inline onerror is blocked by the CSP)
+  const logoImg = button.querySelector('.sidebar-icon img');
+  if (logoImg) {
+    logoImg.addEventListener('error', () => {
+      logoImg.style.display = 'none';
+      logoImg.nextElementSibling.style.display = 'inline';
+    });
+  }
 
   button.addEventListener('click', () => {
     if (toggleAISelectionFn) {
