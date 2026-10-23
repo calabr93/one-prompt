@@ -50,12 +50,13 @@
                 password: true
               }
             },
-            // Added per event (not via register) so the props survive the reset done on consent changes
+            // Added per event (not via register) so the props survive the reset done on consent changes.
+            // Like register(), keep a platform the event already carries (download_clicked sends the chosen OS).
             before_send: function(event) {
               if (event) {
                 event.properties = event.properties || {};
                 event.properties.source = 'website';
-                event.properties.platform = 'website';
+                if (event.properties.platform == null) event.properties.platform = 'website';
               }
               return event;
             },
