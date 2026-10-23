@@ -126,6 +126,7 @@ function createMainWindow() {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
+      sandbox: true,
       webviewTag: true
     }
   });
@@ -152,6 +153,29 @@ function createMainWindow() {
   if ((!app.isPackaged || process.argv.includes('--dev')) && process.argv.includes('--dev')) {
     mainWindow.webContents.openDevTools();
   }
+
+  // The main window only shows the app: no navigation and no new windows
+  // (links go through openExternal). Blocks forms, links or dropped files
+  // that would load another page in the window that has electronAPI.
+  mainWindow.webContents.on('will-navigate', (event) => {
+    event.preventDefault();
+  });
+  mainWindow.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
+
+  // AI panels: only https pages, always with our preload, sandboxed and isolated,
+  // whatever the page asks for in the <webview> attributes
+  mainWindow.webContents.on('will-attach-webview', (event, webPreferences, params) => {
+    if (!params.src || !params.src.startsWith('https://')) {
+      event.preventDefault();
+      return;
+    }
+    delete webPreferences.preloadURL;
+    webPreferences.preload = path.join(__dirname, 'webview-preload.js');
+    webPreferences.sandbox = true;
+    webPreferences.contextIsolation = true;
+    webPreferences.nodeIntegration = false;
+    webPreferences.webSecurity = true;
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -183,13 +207,19 @@ app.whenReady().then(() => {
       });
     }
 
-    // AI panels: websites may not show system notifications. Electron grants
-    // every permission when no handler is set, so deny this one explicitly.
+    // AI panels: Electron grants every permission when no handler is set.
+    // Allow only what the AI sites need (copy, fullscreen, microphone for
+    // dictation) and deny the rest: notifications, opening external apps,
+    // camera, geolocation, clipboard reading...
     if (contents.getType() === 'webview') {
-      contents.session.setPermissionRequestHandler((webContents, permission, callback) => {
-        callback(permission !== 'notifications');
+      const PANEL_PERMISSIONS = ['clipboard-sanitized-write', 'fullscreen'];
+      contents.session.setPermissionRequestHandler((webContents, permission, callback, details) => {
+        const mediaTypes = details.mediaTypes || [];
+        const microphoneOnly = permission === 'media' && mediaTypes.length > 0 && mediaTypes.every(type => type === 'audio');
+        callback(PANEL_PERMISSIONS.includes(permission) || microphoneOnly);
       });
-      contents.session.setPermissionCheckHandler((webContents, permission) => permission !== 'notifications');
+      contents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) =>
+        PANEL_PERMISSIONS.includes(permission) || (permission === 'media' && details.mediaType === 'audio'));
     }
 
     // Enable context menu for all webContents (including webviews)

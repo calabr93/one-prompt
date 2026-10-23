@@ -174,7 +174,10 @@ export function appendApiMessage(panel, role, text, save = true, sessionId = nul
   // Render content based on role
   if (role === 'system') {
     bubble.innerHTML = typeof DOMPurify !== 'undefined'
-      ? DOMPurify.sanitize(text)
+      ? DOMPurify.sanitize(text, {
+          FORBID_TAGS: ['form', 'button', 'input', 'textarea', 'select', 'option', 'area', 'map'],
+          FORBID_ATTR: ['formaction']
+        })
       : text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
   } else if (role === 'assistant') {
     bubble.innerHTML = renderMarkdown(text);

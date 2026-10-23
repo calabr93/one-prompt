@@ -27,9 +27,8 @@ Desktop.ini
 *.swo
 *~
 
-# Environment
-.env
-.env.local
+# Environment (secrets stay on this machine; .env.production holds only publishable keys)
+.env*
 
 # Temporary files
 tmp/

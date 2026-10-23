@@ -101,7 +101,11 @@ export function renderMarkdown(text) {
       // Fallback: escape HTML to prevent XSS
       return rawHtml.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
-    return DOMPurify.sanitize(rawHtml);
+    // No form controls or image maps: clicking them could submit or navigate
+    return DOMPurify.sanitize(rawHtml, {
+      FORBID_TAGS: ['form', 'button', 'input', 'textarea', 'select', 'option', 'area', 'map'],
+      FORBID_ATTR: ['formaction']
+    });
   }
 
   // Fallback: return text with basic formatting
