@@ -88,7 +88,7 @@ const AI_CONFIGS = {
   },
   grok: {
     name: 'Grok',
-    url: 'https://x.com/i/grok',
+    url: 'https://grok.com',
     icon: '⚡',
     logo: 'ai-services/grok.png',
     color: '#ff6b00'
@@ -181,6 +181,15 @@ app.whenReady().then(() => {
           evt.preventDefault();
         }
       });
+    }
+
+    // AI panels: websites may not show system notifications. Electron grants
+    // every permission when no handler is set, so deny this one explicitly.
+    if (contents.getType() === 'webview') {
+      contents.session.setPermissionRequestHandler((webContents, permission, callback) => {
+        callback(permission !== 'notifications');
+      });
+      contents.session.setPermissionCheckHandler((webContents, permission) => permission !== 'notifications');
     }
 
     // Enable context menu for all webContents (including webviews)

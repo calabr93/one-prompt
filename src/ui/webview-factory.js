@@ -42,6 +42,19 @@ const module = {
   currentSessionId: null
 };
 
+// Sites a service has moved away from: saved URLs there are ignored
+const RETIRED_HOSTS = {
+  grok: ['x.com']
+};
+
+function isRetiredUrl(aiKey, url) {
+  try {
+    return (RETIRED_HOSTS[aiKey] || []).includes(new URL(url).hostname);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Create a webview element for an AI service
  * @param {string} aiKey - The AI service key
@@ -57,7 +70,7 @@ export async function createWebview(aiKey) {
   // Use saved URL if available, otherwise use default URL
   const currentSession = getCurrentSessionFn ? getCurrentSessionFn() : null;
   const savedUrl = currentSession?.chatUrls?.[aiKey];
-  const urlToLoad = savedUrl || config.url;
+  const urlToLoad = savedUrl && !isRetiredUrl(aiKey, savedUrl) ? savedUrl : config.url;
 
   webview.setAttribute('src', urlToLoad);
   webview.setAttribute('data-ai-key', aiKey);
