@@ -139,7 +139,8 @@
     ]
   },
   "cta": {
-    "title": "Yapay Zekaları tek tıkla karşılaştırın"
+    "title": "Yapay Zekaları tek tıkla karşılaştırın",
+    "macRequirement": "macOS 13 veya üzeri gerektirir"
   },
   "sendToComputer": {
     "title": "OnePrompt bilgisayarda çalışır",

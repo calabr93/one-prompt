@@ -12,7 +12,7 @@ const webPlatforms = [
   { name: 'ChatGPT', logo: 'chatgpt.png', url: 'https://chatgpt.com/' },
   { name: 'Claude', logo: 'claude.png', url: 'https://claude.ai/' },
   { name: 'Gemini', logo: 'gemini.png', url: 'https://gemini.google.com/' },
-  { name: 'Grok', logo: 'grok.png', url: 'https://x.com/i/grok' },
+  { name: 'Grok', logo: 'grok.png', url: 'https://grok.com/' },
   { name: 'DeepSeek', logo: 'deepseek.png', url: 'https://chat.deepseek.com/' },
   { name: 'Perplexity', logo: 'perplexity.png', url: 'https://www.perplexity.ai/' },
 ];

@@ -93,6 +93,7 @@ export function CTASection() {
                   Intel
                 </Button>
               </div>
+              <p className={styles.requirement}>{t('cta.macRequirement')}</p>
             </div>
 
             {/* Windows Downloads */}

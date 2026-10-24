@@ -143,7 +143,8 @@
     ]
   },
   "cta": {
-    "title": "Vergleichen Sie AIs mit einem Klick"
+    "title": "Vergleichen Sie AIs mit einem Klick",
+    "macRequirement": "Erfordert macOS 13 oder neuer"
   },
   "sendToComputer": {
     "title": "OnePrompt läuft auf dem Computer",
