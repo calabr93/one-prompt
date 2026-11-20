@@ -1,6 +1,7 @@
-// Writes every page already rendered (src/entry-server.tsx) into dist/: the home page and the prompts
-// page in each language (/, /it/, /prompts/, /it/prompts/…) and the comparison article, each with its
-// own title, description, canonical and hreflang links, plus sitemap.xml.
+// Writes every page already rendered (src/entry-server.tsx) into dist/: the home page, the prompts
+// page and the comparison article in each language (/, /it/, /prompts/, /it/prompts/,
+// /compare/<slug>/, /it/compare/<slug>/…), each with its own title, description, canonical and
+// hreflang links, plus sitemap.xml.
 // Crawlers that don't run JavaScript (GPTBot, ClaudeBot, PerplexityBot…) can then read the pages;
 // in the browser React takes over (see src/main.tsx and the prerender-wait script in index.html).
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';
@@ -29,7 +30,6 @@ function replaceOnce(html, pattern, replacement, what) {
 }
 
 function alternates(page) {
-  if (page === 'compare') return '';
   const links = LANGS.map(
     (l) => `<link rel="alternate" hreflang="${l}" href="${SITE}${pathFor(l, page)}" />`
   );
@@ -37,7 +37,7 @@ function alternates(page) {
   return '\n    ' + links.join('\n    ');
 }
 
-function articleJsonLd(meta) {
+function articleJsonLd(meta, lang) {
   const data = {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -45,7 +45,7 @@ function articleJsonLd(meta) {
     description: meta.description,
     url: meta.url,
     dateModified: COMPARE_UPDATED,
-    inLanguage: 'en',
+    inLanguage: lang,
     image: `${SITE}/og-image.png`,
     author: { '@id': `${SITE}/#organization` },
     publisher: { '@id': `${SITE}/#organization` },
@@ -72,7 +72,7 @@ for (const { lang, page, path: urlPath } of allPages()) {
   html = replaceOnce(
     html,
     /<link rel="canonical" href="[^"]*" \/>/,
-    `<link rel="canonical" href="${esc(meta.url)}" />${alternates(page)}${page === 'compare' ? articleJsonLd(meta) : ''}`,
+    `<link rel="canonical" href="${esc(meta.url)}" />${alternates(page)}${page === 'compare' ? articleJsonLd(meta, lang) : ''}`,
     'canonical'
   );
   html = replaceOnce(html, /"inLanguage": "en"/, `"inLanguage": "${lang}"`, 'JSON-LD inLanguage');
@@ -87,18 +87,18 @@ for (const { lang, page, path: urlPath } of allPages()) {
 // sitemap.xml with the language versions of each page.
 const today = new Date().toISOString().slice(0, 10);
 const urls = [];
-for (const page of ['home', 'prompts']) {
+for (const page of ['home', 'prompts', 'compare']) {
+  const lastmod = page === 'compare' ? COMPARE_UPDATED : today;
   for (const lang of LANGS) {
     const alts = LANGS.map(
       (l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${SITE}${pathFor(l, page)}"/>`
     ).join('\n');
     urls.push(
-      `  <url>\n    <loc>${SITE}${pathFor(lang, page)}</loc>\n    <lastmod>${today}</lastmod>\n${alts}\n` +
+      `  <url>\n    <loc>${SITE}${pathFor(lang, page)}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alts}\n` +
         `    <xhtml:link rel="alternate" hreflang="x-default" href="${SITE}${pathFor('en', page)}"/>\n  </url>`
     );
   }
 }
-urls.push(`  <url>\n    <loc>${SITE}${pathFor('en', 'compare')}</loc>\n    <lastmod>${COMPARE_UPDATED}</lastmod>\n  </url>`);
 await writeFile(
   path.join(dist, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`

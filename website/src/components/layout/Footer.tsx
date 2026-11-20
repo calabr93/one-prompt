@@ -5,7 +5,7 @@ import { pathFor } from '../../routes';
 import styles from './Footer.module.css';
 
 export function Footer() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
 
@@ -23,7 +23,7 @@ export function Footer() {
             </div>
 
             <div className={styles.links}>
-              <a href={pathFor('en', 'compare')}>Claude vs ChatGPT vs Gemini</a>
+              <a href={pathFor(i18n.language, 'compare')}>Claude vs ChatGPT vs Gemini</a>
               <a
                 href="https://github.com/calabr93/one-prompt"
                 target="_blank"

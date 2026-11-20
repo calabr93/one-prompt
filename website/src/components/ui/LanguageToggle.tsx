@@ -26,9 +26,7 @@ export function LanguageToggle() {
     localStorage.setItem('language', code);
     // Each language has its own address (/it/, /es/…): keep the URL in step, without reloading.
     const { page } = currentRoute();
-    if (page !== 'compare') {
-      window.history.replaceState(null, '', pathFor(code, page) + window.location.hash);
-    }
+    window.history.replaceState(null, '', pathFor(code, page) + window.location.hash);
     setIsOpen(false);
   };
 

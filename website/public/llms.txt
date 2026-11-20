@@ -19,7 +19,7 @@
 
 - Home: https://one-prompt.app/ (also in Italian /it/, Spanish /es/, French /fr/, German /de/, Portuguese /pt/, Turkish /tr/)
 - Cross-Check prompt templates: https://one-prompt.app/prompts/
-- Claude Pro vs ChatGPT Plus vs Gemini (Google AI Pro), prices and limits: https://one-prompt.app/compare/claude-pro-vs-chatgpt-plus-vs-gemini/
+- Claude Pro vs ChatGPT Plus vs Gemini (Google AI Pro), prices and limits: https://one-prompt.app/compare/claude-pro-vs-chatgpt-plus-vs-gemini/ (US prices; also with the prices of Italy /it/compare/claude-pro-vs-chatgpt-plus-vs-gemini/, Spain /es/…, France /fr/…, Germany /de/…, Brazil /pt/… and Turkey /tr/…)
 
 ## Download
 

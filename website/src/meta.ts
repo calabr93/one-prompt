@@ -2,6 +2,7 @@
 // scripts/prerender.mjs (the <head> of every prerendered page).
 import i18n from './i18n';
 import { LANGS, isLang, pathFor, type Lang, type Page } from './routes';
+import { COMPARE_CONTENT } from './pages/compareContent';
 
 export const SITE = 'https://one-prompt.app';
 
@@ -11,14 +12,8 @@ export const OG_LOCALE: Record<Lang, string> = {
   es: 'es_ES',
   fr: 'fr_FR',
   de: 'de_DE',
-  pt: 'pt_PT',
+  pt: 'pt_BR',
   tr: 'tr_TR',
-};
-
-export const COMPARE_META = {
-  title: 'Claude Pro vs ChatGPT Plus vs Gemini (Google AI Pro): which AI subscription? | OnePrompt',
-  description:
-    'Prices, limits and features of Claude Pro, ChatGPT Plus and Google AI Pro side by side, checked on the official pages, and how to pick the right one for writing, coding and research.',
 };
 
 export interface PageMeta {
@@ -30,7 +25,8 @@ export interface PageMeta {
 export function pageMeta(language: string, page: Page): PageMeta {
   const lang: Lang = isLang(language) ? language : 'en';
   if (page === 'compare') {
-    return { ...COMPARE_META, url: SITE + pathFor('en', 'compare') };
+    const c = COMPARE_CONTENT[lang];
+    return { title: c.metaTitle, description: c.metaDescription, url: SITE + pathFor(lang, 'compare') };
   }
   const t = i18n.getFixedT(lang);
   if (page === 'prompts') {
@@ -55,14 +51,13 @@ export function pageMeta(language: string, page: Page): PageMeta {
   };
 }
 
-/** Every prerendered page: home and prompts in each language, the comparison article in English. */
+/** Every prerendered page: home, prompts and the comparison article in each language. */
 export function allPages(): { lang: Lang; page: Page; path: string }[] {
   const pages: { lang: Lang; page: Page; path: string }[] = [];
-  for (const page of ['home', 'prompts'] as const) {
+  for (const page of ['home', 'prompts', 'compare'] as const) {
     for (const lang of LANGS) {
       pages.push({ lang, page, path: pathFor(lang, page) });
     }
   }
-  pages.push({ lang: 'en', page: 'compare', path: pathFor('en', 'compare') });
   return pages;
 }
