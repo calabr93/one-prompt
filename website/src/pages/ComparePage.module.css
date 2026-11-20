@@ -65,7 +65,9 @@
   color: var(--text-primary);
 }
 
-.article a {
+/* Only links inside the text: the back link and the CTA button keep their own colors. */
+.article p a,
+.article li a {
   color: var(--accent-color);
 }
 
