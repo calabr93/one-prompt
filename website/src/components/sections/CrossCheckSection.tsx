@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Container } from '../layout/Container';
+import { pathFor } from '../../routes';
 import styles from './CrossCheckSection.module.css';
 
 const CheckIcon = () => (
@@ -16,7 +17,7 @@ const CrossCheckIcon = () => (
 );
 
 export function CrossCheckSection() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const features = t('crossCheck.features', { returnObjects: true }) as string[];
 
   return (
@@ -28,7 +29,7 @@ export function CrossCheckSection() {
               <CrossCheckIcon />
             </div>
             <img
-              src="./assets/media/OnePrompt-cross-check.gif"
+              src="/assets/media/OnePrompt-cross-check.gif"
               alt="Cross-Check feature demo"
               className={styles.demoGif}
             />
@@ -44,7 +45,7 @@ export function CrossCheckSection() {
 
             <div className={styles.visualMobile}>
               <img
-                src="./assets/media/OnePrompt-cross-check.gif"
+                src="/assets/media/OnePrompt-cross-check.gif"
                 alt="Cross-Check feature demo"
                 className={styles.demoGif}
               />
@@ -59,7 +60,7 @@ export function CrossCheckSection() {
               ))}
             </ul>
 
-            <a href="#/prompts" className={styles.promptsLink}>
+            <a href={pathFor(i18n.language, 'prompts')} className={styles.promptsLink}>
               {t('crossCheck.viewPrompts')}
             </a>
           </div>

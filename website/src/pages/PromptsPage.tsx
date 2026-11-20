@@ -1,8 +1,10 @@
 import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
 import { Container } from '../components/layout/Container';
+import { pathFor } from '../routes';
+import promptsMarkdown from '../data/prompts.md?raw';
 import styles from './PromptsPage.module.css';
 
 const MAX_CHARS = 280;
@@ -47,6 +49,9 @@ function parsePrompts(markdown: string): Prompt[] {
       };
     });
 }
+
+// Bundled with the page (not fetched), so the prerendered /prompts/ page already lists them.
+const prompts = parsePrompts(promptsMarkdown);
 
 function PromptCard({ prompt, index, copiedIndex, onCopy, t }: {
   prompt: Prompt;
@@ -94,17 +99,10 @@ function PromptCard({ prompt, index, copiedIndex, onCopy, t }: {
 }
 
 export function PromptsPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const homeHref = pathFor(i18n.language, 'home');
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [notification, setNotification] = useState<string | null>(null);
-  const [prompts, setPrompts] = useState<Prompt[]>([]);
-
-  useEffect(() => {
-    fetch('./data/prompts.md')
-      .then(res => res.text())
-      .then(text => setPrompts(parsePrompts(text)))
-      .catch(err => console.error('Failed to load prompts:', err));
-  }, []);
 
   const copyToClipboard = async (prompt: string, index: number) => {
     try {
@@ -123,11 +121,11 @@ export function PromptsPage() {
 
   return (
     <>
-      <Navbar />
+      <Navbar homeHref={homeHref} />
       <main className={styles.main}>
         <Container>
           <div className={styles.header}>
-            <a href="#/" className={styles.backLink}>
+            <a href={homeHref} className={styles.backLink}>
               ← {t('promptsPage.back')}
             </a>
             <h1 className={styles.title}>{t('promptsPage.title')}</h1>

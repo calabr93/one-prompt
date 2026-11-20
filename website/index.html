@@ -5,21 +5,24 @@
     <link rel="icon" type="image/png" href="/assets/logo/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- The page ships already rendered in English (scripts/prerender.mjs) so crawlers that don't run
-         JavaScript can read it. Keep it hidden until React renders when the visitor needs another
-         language, the phone layout or the #/prompts page. Same language rule as src/i18n.ts. -->
+    <!-- Every page ships already rendered (scripts/prerender.mjs), in the language of <html lang>, so
+         crawlers that don't run JavaScript can read it. Keep it hidden until React renders when the
+         visitor needs another language, the phone layout or an old #/ link. Same language rule as
+         src/i18n.ts: URL prefix (/it/…), then saved choice, then browser language. -->
     <script>
       (function () {
         try {
           var supported = ['it', 'en', 'es', 'fr', 'de', 'pt', 'tr'];
-          var lang = localStorage.getItem('language');
+          var shown = document.documentElement.getAttribute('lang') || 'en';
+          var first = location.pathname.split('/').filter(Boolean)[0];
+          var lang = first && first !== 'en' && supported.indexOf(first) >= 0 ? first : localStorage.getItem('language');
           if (!lang) {
             lang = (navigator.language || 'en').split('-')[0];
             if (supported.indexOf(lang) < 0) lang = 'en';
           }
           var uaData = navigator.userAgentData;
           var phone = (uaData && uaData.mobile) || /Android.+Mobile|iPhone|iPod|Windows Phone/i.test(navigator.userAgent);
-          if (lang !== 'en' || phone || location.hash.indexOf('#/') === 0) {
+          if (lang !== shown || phone || location.hash.indexOf('#/') === 0) {
             document.documentElement.classList.add('prerender-wait');
           }
         } catch (e) {

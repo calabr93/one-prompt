@@ -120,12 +120,12 @@ export function HeroSection() {
 
         <div className={styles.demo}>
           <img
-            src="./assets/media/OnePrompt-demo.gif"
+            src="/assets/media/OnePrompt-demo.gif"
             alt="OnePrompt Demo"
             className={`${styles.demoImage} ${styles.demoDesktop}`}
           />
           <img
-            src="./assets/media/One-Prompt-demo-vertical.gif"
+            src="/assets/media/One-Prompt-demo-vertical.gif"
             alt="OnePrompt Demo"
             className={`${styles.demoImage} ${styles.demoMobile}`}
           />

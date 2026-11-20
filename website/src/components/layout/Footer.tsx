@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Container } from './Container';
+import { pathFor } from '../../routes';
 import styles from './Footer.module.css';
 
 export function Footer() {
@@ -15,13 +16,14 @@ export function Footer() {
           <div className={styles.content}>
             <div className={styles.brand}>
               <div className={styles.logo}>
-                <img src="./assets/logo/logo.png" alt="OnePrompt" />
+                <img src="/assets/logo/logo.png" alt="OnePrompt" />
                 <span>OnePrompt</span>
               </div>
               <p className={styles.tagline}>{t('footer.tagline')}</p>
             </div>
 
             <div className={styles.links}>
+              <a href={pathFor('en', 'compare')}>Claude vs ChatGPT vs Gemini</a>
               <a
                 href="https://github.com/calabr93/one-prompt"
                 target="_blank"

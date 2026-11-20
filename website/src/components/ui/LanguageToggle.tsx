@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { currentRoute, pathFor } from '../../routes';
 import styles from './LanguageToggle.module.css';
 
 const LANGUAGES = [
@@ -23,6 +24,11 @@ export function LanguageToggle() {
   const handleChange = (code: string) => {
     i18n.changeLanguage(code);
     localStorage.setItem('language', code);
+    // Each language has its own address (/it/, /es/…): keep the URL in step, without reloading.
+    const { page } = currentRoute();
+    if (page !== 'compare') {
+      window.history.replaceState(null, '', pathFor(code, page) + window.location.hash);
+    }
     setIsOpen(false);
   };
 

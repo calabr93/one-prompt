@@ -38,7 +38,7 @@ export function PlatformsSection() {
                   className={styles.platform}
                 >
                   <img
-                    src={`./assets/ai-services/${platform.logo}`}
+                    src={`/assets/ai-services/${platform.logo}`}
                     alt={platform.name}
                   />
                   <span>{platform.name}</span>
@@ -59,7 +59,7 @@ export function PlatformsSection() {
                   className={styles.platform}
                 >
                   <img
-                    src={`./assets/ai-services/${platform.logo}`}
+                    src={`/assets/ai-services/${platform.logo}`}
                     alt={platform.name}
                   />
                   <span>{platform.name}</span>

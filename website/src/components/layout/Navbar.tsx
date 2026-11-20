@@ -4,7 +4,9 @@ import { LanguageToggle } from '../ui/LanguageToggle';
 import { Button } from '../ui/Button';
 import styles from './Navbar.module.css';
 
-export function Navbar() {
+// On the home page the menu links are plain anchors (#features); on the other pages they go back to
+// the home page in the current language (/it/#features).
+export function Navbar({ homeHref = '' }: { homeHref?: string }) {
   const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,8 +22,8 @@ export function Navbar() {
   return (
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
-        <a href="#" className={styles.logo}>
-          <img src="./assets/logo/logo.png" alt="OnePrompt" />
+        <a href={homeHref || '#'} className={styles.logo}>
+          <img src="/assets/logo/logo.png" alt="OnePrompt" />
           <span>OnePrompt</span>
         </a>
 
@@ -39,10 +41,10 @@ export function Navbar() {
         </div>
 
         <div className={`${styles.nav} ${mobileMenuOpen ? styles.open : ''}`}>
-          <a href="#features" className={styles.link} onClick={() => setMobileMenuOpen(false)}>
+          <a href={`${homeHref}#features`} className={styles.link} onClick={() => setMobileMenuOpen(false)}>
             {t('nav.features')}
           </a>
-          <a href="#pricing" className={styles.link} onClick={() => setMobileMenuOpen(false)}>
+          <a href={`${homeHref}#pricing`} className={styles.link} onClick={() => setMobileMenuOpen(false)}>
             {t('nav.pricing')}
           </a>
           <a
@@ -57,7 +59,7 @@ export function Navbar() {
 
         <div className={styles.actions}>
           <LanguageToggle />
-          <Button href="#download" size="small">
+          <Button href={`${homeHref}#download`} size="small">
             {t('nav.download')}
           </Button>
         </div>

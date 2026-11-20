@@ -15,6 +15,12 @@
 - Web Mode (free, unlimited): uses the web interfaces of ChatGPT, Claude, Gemini, Grok, DeepSeek and Perplexity with your existing accounts. To respect the AI providers' Terms of Service, the standard edition does not automate the browser: each prompt needs a few manual clicks.
 - API Mode: uses the official APIs of ChatGPT, Claude and Gemini. The desktop app includes 10 free credits, optional credits start at $4.99, no subscription. The open source GitHub edition lets developers configure their own API keys.
 
+## Pages
+
+- Home: https://one-prompt.app/ (also in Italian /it/, Spanish /es/, French /fr/, German /de/, Portuguese /pt/, Turkish /tr/)
+- Cross-Check prompt templates: https://one-prompt.app/prompts/
+- Claude Pro vs ChatGPT Plus vs Gemini (Google AI Pro), prices and limits: https://one-prompt.app/compare/claude-pro-vs-chatgpt-plus-vs-gemini/
+
 ## Download
 
 - Website: https://one-prompt.app/
