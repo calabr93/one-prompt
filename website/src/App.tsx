@@ -36,8 +36,20 @@ function HomePage() {
   );
 }
 
+function initialPage(): string {
+  if (typeof window === 'undefined') return '/';
+  const hash = window.location.hash.slice(1);
+  return hash.startsWith('/') ? hash : '/';
+}
+
 function App() {
-  const [currentPage, setCurrentPage] = useState<string>('/');
+  const [currentPage, setCurrentPage] = useState<string>(initialPage);
+
+  // index.html hides the prerendered English markup for visitors who need another language or page:
+  // show the root again once React has rendered.
+  useEffect(() => {
+    document.documentElement.classList.remove('prerender-wait');
+  }, []);
 
   useEffect(() => {
     const handleHashChange = () => {

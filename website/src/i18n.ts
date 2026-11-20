@@ -9,8 +9,13 @@ import de from './locales/de.json';
 import pt from './locales/pt.json';
 import tr from './locales/tr.json';
 
-// Simple language detection
+// The build also renders the home page in Node (scripts/prerender.mjs), where there is no browser:
+// there the page is rendered in English.
+const isBrowser = typeof window !== 'undefined';
+
+// Simple language detection (keep in sync with the prerender-wait script in index.html)
 const getLanguage = () => {
+  if (!isBrowser) return 'en';
   const saved = localStorage.getItem('language');
   if (saved) return saved;
 
@@ -38,12 +43,14 @@ i18n
     },
   });
 
-// Update HTML lang attribute when language changes
-i18n.on('languageChanged', (lng) => {
-  document.documentElement.setAttribute('lang', lng);
-});
+if (isBrowser) {
+  // Update HTML lang attribute when language changes
+  i18n.on('languageChanged', (lng) => {
+    document.documentElement.setAttribute('lang', lng);
+  });
 
-// Set initial lang attribute
-document.documentElement.setAttribute('lang', i18n.language);
+  // Set initial lang attribute
+  document.documentElement.setAttribute('lang', i18n.language);
+}
 
 export default i18n;

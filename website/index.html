@@ -5,24 +5,79 @@
     <link rel="icon" type="image/png" href="/assets/logo/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- The page ships already rendered in English (scripts/prerender.mjs) so crawlers that don't run
+         JavaScript can read it. Keep it hidden until React renders when the visitor needs another
+         language, the phone layout or the #/prompts page. Same language rule as src/i18n.ts. -->
+    <script>
+      (function () {
+        try {
+          var supported = ['it', 'en', 'es', 'fr', 'de', 'pt', 'tr'];
+          var lang = localStorage.getItem('language');
+          if (!lang) {
+            lang = (navigator.language || 'en').split('-')[0];
+            if (supported.indexOf(lang) < 0) lang = 'en';
+          }
+          var uaData = navigator.userAgentData;
+          var phone = (uaData && uaData.mobile) || /Android.+Mobile|iPhone|iPod|Windows Phone/i.test(navigator.userAgent);
+          if (lang !== 'en' || phone || location.hash.indexOf('#/') === 0) {
+            document.documentElement.classList.add('prerender-wait');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('prerender-wait');
+        }
+      })();
+    </script>
+    <style>html.prerender-wait #root { visibility: hidden; }</style>
+
     <!-- SEO -->
     <title>OnePrompt - Compare AIs in an Instant</title>
     <meta name="description" content="Compare responses from ChatGPT, Claude, Gemini and other AI services in a single app. Open source and free." />
     <meta name="keywords" content="AI, ChatGPT, Claude, Gemini, AI comparison, prompt, open source" />
     <meta name="author" content="Fabio Calabretta" />
+    <link rel="canonical" href="https://one-prompt.app/" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://one-prompt.app/#website",
+            "url": "https://one-prompt.app/",
+            "name": "OnePrompt",
+            "description": "Free, open source desktop app for Mac, Windows and Linux to compare responses from ChatGPT, Claude, Gemini, Grok, DeepSeek and Perplexity side by side in one window.",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://one-prompt.app/#organization" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://one-prompt.app/#organization",
+            "name": "OnePrompt",
+            "url": "https://one-prompt.app/",
+            "logo": "https://one-prompt.app/assets/logo/logo.png",
+            "email": "info@one-prompt.app",
+            "sameAs": ["https://github.com/calabr93/one-prompt"]
+          }
+        ]
+      }
+    </script>
 
     <!-- Open Graph -->
     <meta property="og:title" content="OnePrompt - Compare AIs in an Instant" />
     <meta property="og:description" content="Compare responses from ChatGPT, Claude, Gemini and other AI services in a single app." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://one-prompt.app" />
-    <meta property="og:image" content="https://one-prompt.app/assets/logo/logo.png" />
+    <meta property="og:url" content="https://one-prompt.app/" />
+    <meta property="og:image" content="https://one-prompt.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="OnePrompt: ChatGPT, Gemini and Grok answering the same prompt side by side" />
     <meta property="og:locale" content="en_US" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="OnePrompt - Compare AIs in an Instant" />
     <meta name="twitter:description" content="Compare responses from ChatGPT, Claude, Gemini and other AI services in a single app." />
+    <meta name="twitter:image" content="https://one-prompt.app/og-image.png" />
 
     <!-- PostHog Analytics (only on official domain): full tracking after consent, anonymous cookieless counting after denial -->
     <script>

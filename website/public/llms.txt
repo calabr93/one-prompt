@@ -1,0 +1,23 @@
+# OnePrompt
+
+> OnePrompt is a free, open source desktop app for Mac, Windows and Linux that shows the answers of ChatGPT, Claude, Gemini, Grok, DeepSeek and Perplexity side by side in one window, so you can compare AIs in an instant and pick the best answer.
+
+## What it does
+
+- Write a prompt once and send it to several AI services with a few clicks.
+- See all the responses side by side in an adaptive grid.
+- Cross-Check: ask each AI to review and compare the other AIs' answers, to find the most accurate, complete or relevant one.
+- Multiple sessions in separate tabs, like a browser.
+- Privacy first: prompts, responses and API keys stay on your computer.
+
+## Two modes
+
+- Web Mode (free, unlimited): uses the web interfaces of ChatGPT, Claude, Gemini, Grok, DeepSeek and Perplexity with your existing accounts. To respect the AI providers' Terms of Service, the standard edition does not automate the browser: each prompt needs a few manual clicks.
+- API Mode: uses the official APIs of ChatGPT, Claude and Gemini. The desktop app includes 10 free credits, optional credits start at $4.99, no subscription. The open source GitHub edition lets developers configure their own API keys.
+
+## Download
+
+- Website: https://one-prompt.app/
+- macOS (Apple Silicon and Intel, macOS 13 or later), Windows (installer and portable) and Linux (AppImage and .deb): https://github.com/calabr93/one-prompt/releases/latest
+- Source code (MIT License): https://github.com/calabr93/one-prompt
+- Contact: info@one-prompt.app
